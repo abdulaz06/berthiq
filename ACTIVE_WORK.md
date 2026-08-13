@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-_Nothing yet — the project hasn't started. First claim will be M0-1 (repo scaffold), by Abdul._
+- [M0-1] Repository scaffold — Abdul — branch task/M0-1-scaffold — started 2026-08-12
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
