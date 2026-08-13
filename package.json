@@ -1,0 +1,9 @@
+{
+  "name": "berthiq",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root workspace helper — hosts `concurrently` so `just dev` runs both servers with one portable command. Application code lives in backend/ and frontend/.",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -1,0 +1,1 @@
+"""BerthIQ backend application package."""

@@ -1,0 +1,16 @@
+# Normalize line endings to LF for the whole repo so the Windows checkout
+# (Abdul) and the macOS checkout (Shravani) never fight over CRLF vs LF.
+* text=auto eol=lf
+
+# Shell scripts must stay LF even on Windows or they won't run under sh/bash.
+*.sh text eol=lf
+
+# Common binary types — never touch their bytes.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.joblib binary
+*.woff binary
+*.woff2 binary

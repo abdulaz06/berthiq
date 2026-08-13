@@ -1,0 +1,40 @@
+# ---- Secrets & per-machine config (never commit) ----
+.env
+.env.local
+.env.*.local
+aisstream_key.txt
+
+# ---- Raw / collected data (never commit) ----
+ais_data/
+backend/data/datasets/
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+backend/.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+backend/openapi.json
+
+# ---- Model artifacts (trained offline, can be large) ----
+*.joblib
+
+# ---- Node / Next.js ----
+node_modules/
+frontend/.next/
+.next/
+*.tsbuildinfo
+
+# ---- Test / build output ----
+coverage/
+frontend/coverage/
+playwright-report/
+test-results/
+
+# ---- Editor / OS cruft ----
+.DS_Store
+.idea/
+.vscode/

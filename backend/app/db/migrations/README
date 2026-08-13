@@ -1,0 +1,6 @@
+Alembic migrations for BerthIQ.
+
+Generate a revision:  cd backend && "<venv python>" -m alembic revision -m "message"
+Apply:                just migrate   (== alembic upgrade head)
+
+The first real migration (the M1 core tables) lands in M0-2.
