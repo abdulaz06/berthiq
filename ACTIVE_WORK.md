@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M0-1] Repository scaffold — Abdul — branch task/M0-1-scaffold — started 2026-08-12
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,11 +28,9 @@ _None._
 
 ## Ready to pick up
 
-Only **M0-1** is ready (everything else depends on the scaffold existing).
+M0-1 has merged, so all of its dependents are now open (each depends only on the
+scaffold). Pick whichever is next — they can be worked in parallel:
 
-- [M0-1] Repository scaffold — *this is the one-time setup task; Abdul runs SETUP_PROMPT.*
-
-After M0-1 merges, move these into Ready (all depend only on M0-1):
 - [M0-2] Database bootstrap
 - [M0-3] Contracts + fixtures
 - [M0-5] Health-check vertical slice
@@ -43,14 +41,21 @@ After M0-1 merges, move these into Ready (all depend only on M0-1):
 
 ## Done
 
-_None yet._
-
-<!-- format:
-- [M0-1] Repository scaffold — Abdul — merged 2026-08-14
--->
+- [M0-1] Repository scaffold — Abdul — merged 2026-08-12
 
 ---
 
 ## Notes / decisions in flight
 
-_Use this space for short coordination notes between sessions (e.g. "renamed the risk endpoint field X→Y in M1-07, frontend M1-08 should use the updated fixture")._
+- **`just` on Windows needs a POSIX shell.** The `justfile` sets
+  `windows-shell` to Git's bundled `sh.exe` (`C:\Program Files\Git\usr\bin\sh.exe`).
+  If a Windows machine has Git elsewhere, update that one line.
+- **`next-env.d.ts` is committed** (not gitignored) so CI's standalone `tsc`
+  is deterministic. Next may rewrite it locally — commit the change if it does.
+- **Frontend env:** non-secret dev defaults live in committed
+  `frontend/.env.development` (`NEXT_PUBLIC_USE_FIXTURES=false`,
+  `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000`); secrets/overrides go in
+  gitignored `.env` / `.env.local`.
+- **Postgres:** this machine has PostgreSQL **16** (docs assumed 15). The
+  `docker-compose.yml` fallback pins 15; native 16 works fine for dev. Health
+  slice doesn't touch the DB yet — real DB use starts at M0-2.
