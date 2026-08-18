@@ -1,0 +1,35 @@
+{
+  "id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
+  "name": "Khalifa Port — Demo (6 months)",
+  "source": "builtin",
+  "status": "ready",
+  "port_config": "khalifa",
+  "event_count": 7043,
+  "case_count": 612,
+  "active_case_count": 24,
+  "time_range": ["2026-02-01T00:00:00+04:00", "2026-08-18T09:00:00+04:00"],
+  "activities": [
+    "Pre-Arrival Notification",
+    "Anchorage Wait",
+    "Documentation Review",
+    "Customs & Port Clearance",
+    "Pilot Assignment",
+    "Berthing",
+    "Cargo Operations",
+    "Departure Clearance",
+    "Unberthing"
+  ],
+  "resources": [
+    "reviewer_amina",
+    "reviewer_khalid",
+    "reviewer_yousef",
+    "pilot_omar",
+    "pilot_saeed",
+    "planner_fatima",
+    "KCT-1",
+    "KCT-2",
+    "KCT-3",
+    "KCT-4",
+    "KCT-5"
+  ]
+}

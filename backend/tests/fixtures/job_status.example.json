@@ -1,0 +1,9 @@
+{
+  "id": "9d1b7c40-5e83-4a2f-b6c1-8a0f2e5d7c19",
+  "job_type": "optimization",
+  "status": "succeeded",
+  "progress": 1.0,
+  "result_type": "optimization_run",
+  "result_id": "1001",
+  "error": null
+}

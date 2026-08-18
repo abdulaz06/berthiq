@@ -1,0 +1,50 @@
+{
+  "run_id": "1001",
+  "scenario_id": "42",
+  "solver_status": "OPTIMAL",
+  "objective_value": 128.5,
+  "runtime_ms": 2140,
+  "assignments": [
+    { "vessel": "MSC Shristi", "berth": "KCT-1", "start": "2026-08-18T13:00:00+04:00", "reviewer": "reviewer_amina" },
+    { "vessel": "CMA CGM Jaguar", "berth": "KCT-3", "start": "2026-08-18T14:00:00+04:00", "reviewer": "reviewer_khalid" },
+    { "vessel": "MV Ghantoot", "berth": "KCT-5", "start": "2026-08-18T14:30:00+04:00", "reviewer": "reviewer_yousef" },
+    { "vessel": "Maersk Kensington", "berth": "KCT-2", "start": "2026-08-18T18:00:00+04:00", "reviewer": "reviewer_amina" }
+  ],
+  "changed_decisions": [
+    { "vessel": "MV Ghantoot", "berth": "KCT-5", "start": "2026-08-18T14:30:00+04:00", "reviewer": "reviewer_yousef" }
+  ],
+  "evidence": {
+    "kind": "recommendation",
+    "solver_status": "OPTIMAL",
+    "objective_value": 128.5,
+    "binding_constraints": [
+      {
+        "kind": "berth_no_overlap",
+        "detail": "KCT-3 was double-booked by MV Ghantoot and CMA CGM Jaguar between 14:00 and 20:00"
+      },
+      {
+        "kind": "draft_limit",
+        "detail": "MV Ghantoot draft 14.2 m fits KCT-5 (depth 16.0 m) but not KCT-4 (depth 13.5 m)"
+      }
+    ],
+    "penalized_soft_constraints": [
+      {
+        "kind": "plan_change",
+        "detail": "Reassigning MV Ghantoot from KCT-3 to KCT-5 changes the published berth plan"
+      }
+    ],
+    "top_factors": [],
+    "baseline_deltas": {
+      "avg_waiting_time": { "value": -3.1, "unit": "hours", "provenance": "optimized" },
+      "berth_conflicts": { "value": -1.0, "unit": "count", "provenance": "optimized" }
+    },
+    "simulation_seed": null,
+    "replications": null,
+    "notes": [
+      "Moving MV Ghantoot from KCT-3 to KCT-5 clears the only berth overlap",
+      "Solver reaches OPTIMAL in 2.14 seconds"
+    ]
+  },
+  "narrative": "Moving MV Ghantoot from Berth KCT-3 to KCT-5 clears a berth overlap and lowers average waiting time by 3.1 hours, changing one decision in the published plan.",
+  "infeasibility": null
+}

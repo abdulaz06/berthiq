@@ -24,7 +24,22 @@ from sqlalchemy import ForeignKey, Index, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from app.core.provenance import Provenance
 from app.db.base import Base
+
+__all__ = [
+    "Provenance",
+    "DatasetSource",
+    "DatasetStatus",
+    "CaseOutcome",
+    "JobType",
+    "JobStatus",
+    "Dataset",
+    "Event",
+    "Case",
+    "Job",
+    "ALL_ENUMS",
+]
 
 # --- Enumerated types (docs/DATABASE.md §2) --------------------------------
 # str-mixin so members serialize to their value; member name == value keeps the
@@ -47,13 +62,6 @@ class CaseOutcome(str, enum.Enum):
     active = "active"
     on_time = "on_time"
     late = "late"
-
-
-class Provenance(str, enum.Enum):
-    observed = "observed"
-    predicted = "predicted"
-    simulated = "simulated"
-    optimized = "optimized"
 
 
 class JobType(str, enum.Enum):

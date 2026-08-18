@@ -1,0 +1,93 @@
+{
+  "dataset_id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
+  "nodes": [
+    { "activity": "Pre-Arrival Notification", "frequency": 612, "median_duration_min": 15.0 },
+    { "activity": "Anchorage Wait", "frequency": 612, "median_duration_min": 384.0 },
+    { "activity": "Documentation Review", "frequency": 741, "median_duration_min": 172.0 },
+    { "activity": "Customs & Port Clearance", "frequency": 612, "median_duration_min": 96.0 },
+    { "activity": "Pilot Assignment", "frequency": 612, "median_duration_min": 42.0 },
+    { "activity": "Berthing", "frequency": 612, "median_duration_min": 63.0 },
+    { "activity": "Cargo Operations", "frequency": 612, "median_duration_min": 1080.0 },
+    { "activity": "Departure Clearance", "frequency": 612, "median_duration_min": 54.0 },
+    { "activity": "Unberthing", "frequency": 612, "median_duration_min": 48.0 }
+  ],
+  "edges": [
+    { "source": "Pre-Arrival Notification", "target": "Anchorage Wait", "frequency": 612, "median_wait_min": 22.0, "p90_wait_min": 95.0 },
+    { "source": "Anchorage Wait", "target": "Documentation Review", "frequency": 612, "median_wait_min": 30.0, "p90_wait_min": 210.0 },
+    { "source": "Documentation Review", "target": "Customs & Port Clearance", "frequency": 612, "median_wait_min": 45.0, "p90_wait_min": 260.0 },
+    { "source": "Customs & Port Clearance", "target": "Documentation Review", "frequency": 129, "median_wait_min": 180.0, "p90_wait_min": 540.0 },
+    { "source": "Customs & Port Clearance", "target": "Pilot Assignment", "frequency": 612, "median_wait_min": 38.0, "p90_wait_min": 150.0 },
+    { "source": "Pilot Assignment", "target": "Berthing", "frequency": 612, "median_wait_min": 26.0, "p90_wait_min": 120.0 },
+    { "source": "Berthing", "target": "Cargo Operations", "frequency": 612, "median_wait_min": 18.0, "p90_wait_min": 70.0 },
+    { "source": "Cargo Operations", "target": "Departure Clearance", "frequency": 612, "median_wait_min": 40.0, "p90_wait_min": 165.0 },
+    { "source": "Departure Clearance", "target": "Unberthing", "frequency": 612, "median_wait_min": 20.0, "p90_wait_min": 80.0 }
+  ],
+  "variants": [
+    {
+      "sequence": [
+        "Pre-Arrival Notification", "Anchorage Wait", "Documentation Review",
+        "Customs & Port Clearance", "Pilot Assignment", "Berthing",
+        "Cargo Operations", "Departure Clearance", "Unberthing"
+      ],
+      "count": 483,
+      "median_total_min": 2036.0
+    },
+    {
+      "sequence": [
+        "Pre-Arrival Notification", "Anchorage Wait", "Documentation Review",
+        "Customs & Port Clearance", "Documentation Review", "Customs & Port Clearance",
+        "Pilot Assignment", "Berthing", "Cargo Operations", "Departure Clearance", "Unberthing"
+      ],
+      "count": 129,
+      "median_total_min": 2494.0
+    }
+  ],
+  "bottlenecks": [
+    {
+      "activity": "Documentation Review",
+      "metric": "rework_rate",
+      "value": { "value": 21.1, "unit": "percent", "provenance": "observed" },
+      "rank": 1,
+      "evidence": {
+        "kind": "bottleneck",
+        "solver_status": null,
+        "objective_value": null,
+        "binding_constraints": [],
+        "penalized_soft_constraints": [],
+        "top_factors": [],
+        "baseline_deltas": {},
+        "simulation_seed": null,
+        "replications": null,
+        "notes": [
+          "129 of 612 cases return from Customs & Port Clearance to Documentation Review",
+          "Rework adds a median of 180 minutes before clearance can resume"
+        ]
+      }
+    },
+    {
+      "activity": "Anchorage Wait",
+      "metric": "median_wait",
+      "value": { "value": 6.4, "unit": "hours", "provenance": "observed" },
+      "rank": 2,
+      "evidence": {
+        "kind": "bottleneck",
+        "solver_status": null,
+        "objective_value": null,
+        "binding_constraints": [],
+        "penalized_soft_constraints": [],
+        "top_factors": [],
+        "baseline_deltas": {},
+        "simulation_seed": null,
+        "replications": null,
+        "notes": [
+          "Median anchorage wait is 6.4 hours, with a p90 of 3.5 hours before Documentation Review begins"
+        ]
+      }
+    }
+  ],
+  "metrics": {
+    "throughput_per_week": { "value": 23.5, "unit": "count", "provenance": "observed" },
+    "rework_rate": { "value": 21.1, "unit": "percent", "provenance": "observed" },
+    "avg_utilization": { "value": 78.0, "unit": "percent", "provenance": "observed" }
+  }
+}

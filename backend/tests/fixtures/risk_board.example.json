@@ -1,0 +1,46 @@
+{
+  "dataset_id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
+  "model_version": "risk-hgb-2026.08.1",
+  "cases": [
+    {
+      "case_id": "KHL-2026-0588",
+      "vessel_type": "container",
+      "current_stage": "Documentation Review",
+      "miss_probability": 0.82,
+      "predicted_remaining_min": 640.0,
+      "top_factors": [
+        { "feature": "documentation_returns", "contribution": 0.34, "direction": "increases_risk" },
+        { "feature": "reviewer_queue_length", "contribution": 0.21, "direction": "increases_risk" },
+        { "feature": "loa_m", "contribution": 0.08, "direction": "increases_risk" },
+        { "feature": "hours_to_window_end", "contribution": -0.05, "direction": "decreases_risk" }
+      ],
+      "service_window_end": "2026-08-18T22:00:00+04:00"
+    },
+    {
+      "case_id": "KHL-2026-0601",
+      "vessel_type": "bulk",
+      "current_stage": "Anchorage Wait",
+      "miss_probability": 0.47,
+      "predicted_remaining_min": 910.0,
+      "top_factors": [
+        { "feature": "anchorage_wait_min", "contribution": 0.19, "direction": "increases_risk" },
+        { "feature": "weather_severity", "contribution": 0.14, "direction": "increases_risk" },
+        { "feature": "berth_availability", "contribution": -0.12, "direction": "decreases_risk" }
+      ],
+      "service_window_end": "2026-08-19T08:00:00+04:00"
+    },
+    {
+      "case_id": "KHL-2026-0609",
+      "vessel_type": "container",
+      "current_stage": "Cargo Operations",
+      "miss_probability": 0.13,
+      "predicted_remaining_min": 300.0,
+      "top_factors": [
+        { "feature": "cargo_progress", "contribution": -0.22, "direction": "decreases_risk" },
+        { "feature": "crane_allocation", "contribution": -0.10, "direction": "decreases_risk" },
+        { "feature": "hours_to_window_end", "contribution": -0.07, "direction": "decreases_risk" }
+      ],
+      "service_window_end": "2026-08-18T20:00:00+04:00"
+    }
+  ]
+}

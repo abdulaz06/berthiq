@@ -1,0 +1,18 @@
+{
+  "dataset_id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
+  "name": "Clear the KCT-3 overlap, protect priority reefer",
+  "constraints": {
+    "reviewer_count": 3,
+    "reviewer_shift_caps": { "day": 8, "night": 6 },
+    "locked_berths": { "MSC Shristi": "KCT-1" },
+    "allow_parallel_low_risk": true,
+    "priority_vessels": ["MSC Shristi", "CMA CGM Jaguar"]
+  },
+  "objective_weights": {
+    "waiting_time": 1.0,
+    "tardiness": 2.0,
+    "reviewer_overtime": 0.5,
+    "workload_imbalance": 0.5,
+    "plan_changes": 0.3
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "kind": "recommendation",
+  "solver_status": "OPTIMAL",
+  "objective_value": 128.5,
+  "binding_constraints": [
+    {
+      "kind": "berth_no_overlap",
+      "detail": "KCT-3 is double-booked by MV Ghantoot and CMA CGM Jaguar between 14:00 and 20:00 on 2026-08-18"
+    }
+  ],
+  "penalized_soft_constraints": [
+    {
+      "kind": "plan_change",
+      "detail": "Reassigning MV Ghantoot from KCT-3 to KCT-5 changes the published berth plan"
+    }
+  ],
+  "top_factors": [],
+  "baseline_deltas": {
+    "avg_waiting_time": { "value": -3.1, "unit": "hours", "provenance": "simulated" },
+    "window_compliance": { "value": 12.0, "unit": "percent", "provenance": "simulated" }
+  },
+  "simulation_seed": 20260818,
+  "replications": 30,
+  "notes": [
+    "Moving MV Ghantoot from KCT-3 to KCT-5 clears the berth overlap",
+    "Simulated average waiting time falls by 3.1 hours",
+    "Simulated service-window compliance rises by 12 percentage points"
+  ]
+}
