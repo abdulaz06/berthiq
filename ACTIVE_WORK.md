@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-_Nothing claimed right now._
+- [M0-7] Provenance primitives — Abdul — branch task/M0-7-provenance — started 2026-08-18
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,17 +28,14 @@ _None._
 
 ## Ready to pick up
 
-M0-8 has merged — CI is now hardened (job timeouts, Playwright cache, provenance
-lint). The remaining open M0 set (all with merged deps):
+Open M0 set (all with merged deps):
 
 - [M0-4] Type generation + API client stub  — depends on M0-3 (done)
-- [M0-5] Health-check vertical slice
 - [M0-6] Synthetic generator skeleton + seed  — depends on M0-2 (done)
-- [M0-7] Provenance primitives
 
 Every M1 *frontend* task can also be built against the committed M0-3 fixtures
-(M1-03/05/08/10/12), with M0-4 (typed client) + M0-7 (provenance badge) as the
-clean prerequisites.
+(M1-03/05/08/10/12), with M0-4 (typed client) + M0-7 (provenance badge, in
+progress) as the clean prerequisites.
 
 Note on provenance: the canonical `Provenance` enum lives in
 `backend/app/core/provenance.py` (values: observed/predicted/simulated/optimized).
@@ -53,6 +50,9 @@ future KPI components pass that check.
 
 ## Done
 
+- [M0-5] Health-check vertical slice — satisfied by the M0-1 scaffold (live
+  /api/health page rendering end-to-end through the real client); no separate
+  build needed — closed 2026-08-18
 - [M0-8] CI hardening — Abdul — merged 2026-08-18
 - [M0-3] Contracts + fixtures — Abdul — merged 2026-08-18
 - [M0-2] Database bootstrap — Abdul — merged 2026-08-18
