@@ -45,9 +45,11 @@ seed:
     cd backend && "{{venv_python}}" scripts/generate_dataset.py
 
 # Regenerate frontend/lib/types/api.ts from the backend's OpenAPI (M0-4).
+# api.ts is committed and generated — never hand-edit it (a banner says so).
 types:
     "{{venv_python}}" -c "import json, pathlib, sys; sys.path.insert(0, 'backend'); from app.main import app; pathlib.Path('backend/openapi.json').write_text(json.dumps(app.openapi(), indent=2))"
     cd frontend && npx openapi-typescript ../backend/openapi.json -o lib/types/api.ts
+    cd frontend && node scripts/prepend-generated-banner.mjs lib/types/api.ts
 
 # Run backend + frontend test suites.
 test:
