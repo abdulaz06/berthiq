@@ -12,6 +12,8 @@ from logging.config import fileConfig
 
 from alembic import context
 from app.config import settings
+from app.db import Base
+from app.db import models as _models  # noqa: F401 — registers tables on Base.metadata
 from sqlalchemy import engine_from_config, pool
 
 config = context.config
@@ -20,8 +22,9 @@ config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# M0-2: set this to `Base.metadata` once app.db.models defines the ORM Base.
-target_metadata = None
+# Autogenerate diffs against the ORM models. Importing app.db.models above is
+# what populates Base.metadata with the tables/enums.
+target_metadata = Base.metadata
 
 
 def run_migrations_offline() -> None:

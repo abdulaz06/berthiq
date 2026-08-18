@@ -20,6 +20,25 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    # A throwaway Postgres for the M0-2 migration + ORM round-trip tests. The
+    # schema uses UUID/JSONB/native enums, so a real Postgres (not SQLite) is
+    # required; tests read this via DATABASE_URL (same source as Alembic env.py).
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: berthiq_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/berthiq_test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
