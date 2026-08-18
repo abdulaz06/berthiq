@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-_Nothing claimed right now._
+- [M0-4] Type generation + API client stub — Abdul — branch task/M0-4-typegen — started 2026-08-18
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
