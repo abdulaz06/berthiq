@@ -18,6 +18,49 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-18 — Abdul — M0-7 provenance primitives (+ M0-5 closed)
+**Task(s):** M0-7 (Provenance primitives); also marked M0-5 Done (no build).
+**Branch:** task/M0-7-provenance → squash-merged to main (branch deleted)
+**Did:**
+- **M0-5 closed without a build** — the health-check vertical slice was already
+  satisfied by the M0-1 scaffold (live `/api/health` page rendering end-to-end
+  through the real client). Recorded in ACTIVE_WORK Done; nothing rebuilt.
+- **M0-7 = frontend half only.** The backend half of the backlog item already
+  exists and was reused, not duplicated: `Provenance` enum in
+  `backend/app/core/provenance.py` and the `KpiValue` Pydantic schema (required
+  `provenance` field → can't construct untagged) from M0-2/M0-3. Built:
+  - `frontend/lib/provenance.ts`: `Provenance` union (observed/predicted/
+    simulated/optimized, mirroring the backend enum), `PROVENANCE_STYLES`
+    colour+label+tooltip map (four far-apart hues: slate/amber/sky/emerald),
+    `isProvenance` guard.
+  - `frontend/components/provenance/ProvenanceBadge.tsx`: the pill — distinct
+    colour + label + tooltip per state, `data-provenance` hook. Pure component
+    (no "use client" needed).
+  - `ProvenanceBadge.test.tsx`: renders all four states distinctly.
+  - `frontend/vitest.config.ts`: added the `@/*` alias (vitest doesn't read
+    tsconfig `paths`) and `esbuild.jsx: "automatic"` so `.tsx` component tests
+    transform without importing React. **This unblocks all future M1 component
+    tests that use `@/…` imports or JSX.**
+**State:** Merged to main. Branch CI fully green (backend, frontend incl. the new
+badge tests + provenance lint, e2e). Local: frontend tsc/eslint/vitest (7 tests)
++ provenance scan green; backend still green (21 passed, 6 DB-skips). The M0-8
+provenance lint passes against the real badge — the GOOD fixture (KpiValue +
+`<ProvenanceBadge>`) points at this real component and passes; BAD is still flagged.
+**Next step:** Only **M0-4 (Type generation + API client stub)** and **M0-6
+(Synthetic generator skeleton + seed)** remain to finish M0. M0-4 is the natural
+next pick — it wires `just types` (backend OpenAPI → `openapi-typescript` →
+`frontend/lib/types/api.ts`) and the fixture-returning typed client. **Watch-out
+for M0-4:** the M0-3 contract schemas are NOT in the OpenAPI output yet (no route
+references them), so decide there whether to add thin stub routes / `response_model`
+refs so the types actually emit, or sequence type-gen to fill in as M1 endpoints
+land. The GOOD/BAD provenance fixtures import `@/lib/types/api` — once M0-4
+generates that file, those imports resolve for real.
+**Gotchas:**
+- If a future KPI component renders a `KpiValue` without `<ProvenanceBadge>`, the
+  CI `provenance check` step fails — that's intended. Import the badge from
+  `@/components/provenance/ProvenanceBadge`.
+- `gh` is at `C:\Program Files\GitHub CLI\gh.exe` (not on PATH).
+
 ## 2026-08-18 — Abdul — M0-8 CI hardening
 **Task(s):** M0-8 (CI hardening)
 **Branch:** task/M0-8-ci-hardening → squash-merged to main (branch deleted)

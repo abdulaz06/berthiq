@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M0-7] Provenance primitives — Abdul — branch task/M0-7-provenance — started 2026-08-18
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,14 +28,14 @@ _None._
 
 ## Ready to pick up
 
-Open M0 set (all with merged deps):
+Open M0 set (all with merged deps) — only these two remain to finish M0:
 
 - [M0-4] Type generation + API client stub  — depends on M0-3 (done)
 - [M0-6] Synthetic generator skeleton + seed  — depends on M0-2 (done)
 
 Every M1 *frontend* task can also be built against the committed M0-3 fixtures
-(M1-03/05/08/10/12), with M0-4 (typed client) + M0-7 (provenance badge, in
-progress) as the clean prerequisites.
+(M1-03/05/08/10/12); its two prerequisites now exist — M0-7 (`<ProvenanceBadge>`
++ `lib/provenance.ts`) is merged, and M0-4 (typed client) is the remaining one.
 
 Note on provenance: the canonical `Provenance` enum lives in
 `backend/app/core/provenance.py` (values: observed/predicted/simulated/optimized).
@@ -50,6 +50,8 @@ future KPI components pass that check.
 
 ## Done
 
+- [M0-7] Provenance primitives — Abdul — merged 2026-08-18 (frontend badge +
+  lib/provenance.ts; backend enum/KpiValue already existed from M0-2/M0-3)
 - [M0-5] Health-check vertical slice — satisfied by the M0-1 scaffold (live
   /api/health page rendering end-to-end through the real client); no separate
   build needed — closed 2026-08-18
