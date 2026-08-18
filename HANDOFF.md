@@ -18,6 +18,55 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-18 — Abdul — M0-2 database bootstrap
+**Task(s):** M0-2 (Database bootstrap)
+**Branch:** task/M0-2-db-bootstrap → squash-merged to main (branch deleted)
+**Did:** Built the DB layer for the four M1 core tables per `docs/DATABASE.md`.
+- `backend/app/db/base.py`: `Base(DeclarativeBase)` + constraint naming convention.
+- `backend/app/db/models.py`: the six enum types (`dataset_source`,
+  `dataset_status`, `case_outcome`, `provenance`, `job_type`, `job_status`;
+  `sim_run_type` deferred to the sim tables) as str-Enums, and ORM models
+  `Dataset`, `Event`, `Case`, `Job` — real core columns + JSONB `attributes`,
+  FK `ON DELETE CASCADE`, indexes matching the doc. `provenance` is created now
+  even though no M0-2 table uses it (kpis/contracts depend on it later).
+- `backend/app/db/session.py`: `engine` + `SessionLocal` + `get_db` dependency.
+- `migrations/versions/0001_core_tables.py`: hand-written first migration —
+  creates all six enums explicitly (so the unused `provenance` type lands), then
+  the tables/indexes; downgrade drops tables then enums. `env.py` now points
+  `target_metadata` at `Base.metadata`.
+- Tests: `test_migrations.py` (upgrade→downgrade leaves a clean schema, asserts
+  tables + enum types appear/disappear), `test_models_roundtrip.py` (ORM
+  round-trip per table + server-default checks + unique constraint + cascade
+  delete). `conftest.py` provides a session engine that **skips** the DB suite
+  when no Postgres is reachable.
+- CI: added a `postgres:16` service + `DATABASE_URL` env to the backend job so
+  the DB tests run for real in CI.
+**State:** Merged to main. Branch CI was fully green — backend/frontend/e2e all
+pass, and the backend `pytest` step reported **7 passed** against the CI Postgres
+(DB tests executed, not skipped; the `duplicate key ... uq_cases_dataset_case`
+line in the log is the intentional unique-constraint test). Verified locally:
+ruff + mypy clean, `alembic heads/history` load the revision, health test passes,
+DB tests skip cleanly with no local DB. `just migrate` will apply this migration
+against any `DATABASE_URL`. NOTE: I did **not** run the DB tests against a live DB
+locally (no local pg password on hand) — CI is the live-DB verification.
+**Next step:** Pick the next Ready M0 task. Highest-leverage is **M0-3 (Contracts
++ fixtures)** — it's the seam that unblocks every M1 frontend task and M0-4. When
+building M0-3's `KpiValue`/`provenance` shapes, align with the DB-level
+`Provenance` enum already defined in `backend/app/db/models.py` (values:
+observed/predicted/simulated/optimized) rather than introducing a second one —
+same caveat applies to M0-7's `core/provenance.py`. **M0-6 (generator + seed) is
+now unblocked** too (depends on M0-2) if someone wants the data track moving.
+**Gotchas:**
+- DB tests read `DATABASE_URL` (same var Alembic uses) — see the expanded
+  "DB tests" note in `ACTIVE_WORK.md`. On macOS: `createdb berthiq_test` then
+  `DATABASE_URL=postgresql+psycopg2://<mac-user>@localhost:5432/berthiq_test just test`.
+- The migration creates enums with `create_type=False` + explicit `.create()`,
+  so **offline** `alembic upgrade --sql` won't work (checkfirst needs a live
+  connection). Run migrations online (the normal path); that's what `just
+  migrate` and CI do.
+- `jobs.scenario_id` is a plain `BIGINT` (no FK) for now — the `scenarios` table
+  doesn't exist yet. Add the FK when that table lands (later milestone).
+
 ## 2026-08-12 — Abdul — scaffold session
 **Task(s):** M0-1 (repository scaffold)
 **Branch:** task/M0-1-scaffold → squash-merged to main (branch deleted)

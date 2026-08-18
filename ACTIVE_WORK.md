@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M0-2] Database bootstrap — Abdul — branch task/M0-2-db-bootstrap — started 2026-08-18
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,19 +28,25 @@ _None._
 
 ## Ready to pick up
 
-M0-1 has merged, so all of its dependents are now open (each depends only on the
-scaffold). Pick whichever is next — they can be worked in parallel:
+M0-2 has merged, so the DB schema exists and M0-6 (which depends on it) is now
+open too. These can be worked in parallel:
 
-- [M0-2] Database bootstrap
-- [M0-3] Contracts + fixtures
+- [M0-3] Contracts + fixtures  — the seam; unblocks every M1 frontend task + M0-4
 - [M0-5] Health-check vertical slice
+- [M0-6] Synthetic generator skeleton + seed  — now unblocked (depends on M0-2)
 - [M0-7] Provenance primitives
 - [M0-8] CI hardening
+
+Note: M0-3 and M0-7 both define a `provenance` enum / `KpiValue`-adjacent shape.
+M0-2 already created the DB-level `provenance` enum + `Provenance` Python enum in
+`backend/app/db/models.py`; M0-7's `core/provenance.py` should reuse/align with
+that, not redefine a conflicting one.
 
 ---
 
 ## Done
 
+- [M0-2] Database bootstrap — Abdul — merged 2026-08-18
 - [M0-1] Repository scaffold — Abdul — merged 2026-08-12
 
 ---
@@ -57,5 +63,14 @@ scaffold). Pick whichever is next — they can be worked in parallel:
   `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000`); secrets/overrides go in
   gitignored `.env` / `.env.local`.
 - **Postgres:** this machine has PostgreSQL **16** (docs assumed 15). The
-  `docker-compose.yml` fallback pins 15; native 16 works fine for dev. Health
-  slice doesn't touch the DB yet — real DB use starts at M0-2.
+  `docker-compose.yml` fallback pins 15; native 16 works fine for dev.
+- **DB tests (M0-2 onward):** they need a real Postgres and read the connection
+  from `DATABASE_URL` — the *same* source Alembic's env.py uses, so tests and
+  migrations always target the same DB. Point them at a throwaway DB, e.g.
+  `createdb berthiq_test` then run with
+  `DATABASE_URL=postgresql+psycopg2://<user>[:<pw>]@localhost:5432/berthiq_test`.
+  If no DB is reachable the DB tests **skip** (not fail), so `just test` stays
+  green on a machine without Postgres configured. **CI runs them for real** via a
+  `postgres:16` service in the backend job (see `.github/workflows/ci.yml`); a
+  green backend job with the DB tests *skipped* would be a false green, so if you
+  touch that job, keep the service + `DATABASE_URL` env.
