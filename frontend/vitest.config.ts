@@ -1,6 +1,14 @@
+import { fileURLToPath } from "node:url";
+
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  // Mirror the tsconfig `@/*` path alias so tests can import like the app does.
+  resolve: {
+    alias: { "@": fileURLToPath(new URL(".", import.meta.url)) },
+  },
+  // Automatic JSX runtime — components render without importing React explicitly.
+  esbuild: { jsx: "automatic" },
   test: {
     environment: "jsdom",
     globals: true,
