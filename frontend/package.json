@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "check:provenance": "node scripts/check-provenance.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test"

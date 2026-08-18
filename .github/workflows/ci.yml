@@ -17,6 +17,9 @@ jobs:
   backend:
     name: backend (ruff · mypy · pytest)
     runs-on: ubuntu-latest
+    # Fail fast: a hung step (network, apt, a wedged test) errors in minutes
+    # instead of occupying a runner for GitHub's 6-hour default.
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: backend
@@ -58,8 +61,9 @@ jobs:
         run: pytest -q
 
   frontend:
-    name: frontend (eslint · tsc · vitest)
+    name: frontend (eslint · tsc · vitest · provenance)
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     defaults:
       run:
         working-directory: frontend
@@ -78,10 +82,16 @@ jobs:
         run: npm run typecheck
       - name: vitest
         run: npm run test
+      # Provenance lint (CLAUDE.md rule #3): no KPI reaches the screen without
+      # <ProvenanceBadge>. The rule's own "does it fire?" proof runs inside vitest
+      # above (scripts/check-provenance.test.mjs); this scans the real app.
+      - name: provenance check
+        run: npm run check:provenance
 
   e2e:
     name: e2e (playwright placeholder)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: frontend
@@ -94,7 +104,23 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
       - name: Install
         run: npm ci
-      - name: Install Playwright browser
+      # Cache the Chromium download (~120MB) keyed on the Playwright version, so
+      # only the first run per version pays the download. This is what turned a
+      # ~5-minute step (and, when the mirror hung, a 26-minute stall) into seconds.
+      - name: Resolve Playwright version
+        id: pw
+        run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ steps.pw.outputs.version }}
+      # Step-level timeout so a wedged download/apt fails in 8 min, not 15+.
+      # On a cache hit the browser is already present, so this only installs OS
+      # deps and returns quickly; on a miss it downloads then populates the cache.
+      - name: Install Playwright browser (+ OS deps)
+        timeout-minutes: 8
         run: npx playwright install --with-deps chromium
       - name: Run Playwright smoke (loads the app in fixtures mode)
         run: npm run e2e
