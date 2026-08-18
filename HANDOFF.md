@@ -18,6 +18,51 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-18 — Abdul — M0-4 type generation + typed API client
+**Task(s):** M0-4 (Type generation + API client)
+**Branch:** task/M0-4-typegen → squash-merged to main (branch deleted)
+**Did:** Resolved the M0-3 open question and wired the generated-types seam.
+- **Stub routes** — `backend/app/api/contract_stubs.py`: a scaffolding router
+  (mounted under `/api` in `main.py`) with GET/POST stubs for the §5 endpoints,
+  each returning **501**, whose `response_model`/request-body references publish
+  all M1 contracts into OpenAPI. Result: `app.openapi()` now exposes **26**
+  component schemas (was ~2). `_not_implemented()` is typed `NoReturn` so mypy
+  accepts the declared response models. Clearly marked "delete the stub when the
+  real route lands."
+- **`just types`** now runs a third step, `prepend-generated-banner.mjs`, adding a
+  "GENERATED FILE — DO NOT EDIT BY HAND" banner (openapi-typescript emits none).
+- **`frontend/lib/types/api.ts`** regenerated — full `paths` + 26 `components`
+  schemas, 960+ lines (was an empty `Record<string, never>` placeholder).
+  Committed; `backend/openapi.json` stays gitignored (intermediate).
+- **`frontend/lib/api/contracts.ts`** — typed accessors `getDataset`,
+  `getValidation`, `getDiscovery`, `getRisk`, `getOptimization`, `getSimulation`,
+  `getJob`. Return types come from the generated `components["schemas"][…]`. Each
+  returns the committed fixture when `NEXT_PUBLIC_USE_FIXTURES==="true"`, else
+  `apiGet` to the backend — one flag flips every call, no other change.
+- **`contracts.test.ts`** — per-fixture structural-compatibility check. Uses a
+  `Widen<T>` mapped type so benign JSON widening (`"builtin"`→`string`,
+  `[string,string]`→`string[]`) is tolerated while a *real* missing/wrong-shaped
+  field still fails `tsc`. Plus flag-behavior tests (fixtures mode returns the
+  fixture without touching `fetch`; live mode calls the right URL via a mock).
+**State:** Merged to main. Branch CI fully green (backend ruff/mypy/pytest,
+frontend eslint/tsc/vitest — now **10** tests — + provenance, e2e). Local verified:
+stub `GET /api/jobs/abc` → 501, `GET /api/health` → 200, backend 21 passed/6
+DB-skips; `just types` regenerates cleanly end-to-end on Windows.
+**Next step:** **M0-6 (Synthetic generator skeleton + seed)** is the LAST M0 task
+— `backend/scripts/generate_dataset.py` producing a small valid seeded Khalifa
+event log, `data/ports/khalifa.json` + placeholder `data/geo/khalifa.geojson`,
+and `just seed` loading it + rebuilding `cases` (deterministic under a fixed seed;
+two runs → identical rows). Depends on M0-2 (done). After M0-6, M0 is complete.
+**Gotchas:**
+- CI does NOT regenerate `api.ts` — it type-checks the committed one. So after any
+  schema change you MUST run `just types` and commit the result, or the generated
+  types silently drift from the backend. (A CI "regenerate + git diff --exit-code"
+  guard would catch this; not built — candidate for a future infra task.)
+- `just types` needs the backend importable (venv) AND node/npx. The stub routes
+  are what make the output non-empty; if you delete a stub before its real route
+  exists, that contract drops out of `api.ts`.
+- `gh` is at `C:\Program Files\GitHub CLI\gh.exe` (not on PATH).
+
 ## 2026-08-18 — Abdul — M0-7 provenance primitives (+ M0-5 closed)
 **Task(s):** M0-7 (Provenance primitives); also marked M0-5 Done (no build).
 **Branch:** task/M0-7-provenance → squash-merged to main (branch deleted)

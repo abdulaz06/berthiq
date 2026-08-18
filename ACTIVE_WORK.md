@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M0-4] Type generation + API client stub — Abdul — branch task/M0-4-typegen — started 2026-08-18
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,14 +28,21 @@ _None._
 
 ## Ready to pick up
 
-Open M0 set (all with merged deps) — only these two remain to finish M0:
+**M0 is one task from complete** — only **M0-6 (Synthetic generator skeleton +
+seed)** remains (depends on M0-2, done). After it, M0 is done and M1 begins.
 
-- [M0-4] Type generation + API client stub  — depends on M0-3 (done)
 - [M0-6] Synthetic generator skeleton + seed  — depends on M0-2 (done)
 
-Every M1 *frontend* task can also be built against the committed M0-3 fixtures
-(M1-03/05/08/10/12); its two prerequisites now exist — M0-7 (`<ProvenanceBadge>`
-+ `lib/provenance.ts`) is merged, and M0-4 (typed client) is the remaining one.
+All M1 *frontend* prerequisites now exist: the M0-3 fixtures, the M0-7
+`<ProvenanceBadge>`, and the M0-4 typed client (`frontend/lib/api/contracts.ts`,
+generated `lib/types/api.ts`). M1 frontend tasks (M1-03/05/08/10/12) can be built
+against fixtures now; flip `NEXT_PUBLIC_USE_FIXTURES=false` once each backend twin
+lands.
+
+Heads-up for M1 backend tasks: real endpoints live behind **stub routes** in
+`backend/app/api/contract_stubs.py` (each returns 501). When you implement a real
+route at one of those paths (e.g. `GET /api/discovery/{id}`), delete its stub from
+that file in the same change, then run `just types` to refresh `api.ts`.
 
 Note on provenance: the canonical `Provenance` enum lives in
 `backend/app/core/provenance.py` (values: observed/predicted/simulated/optimized).
@@ -50,6 +57,8 @@ future KPI components pass that check.
 
 ## Done
 
+- [M0-4] Type generation + API client — Abdul — merged 2026-08-18 (generated
+  api.ts + typed fixtures-or-live client; stub routes publish the contracts)
 - [M0-7] Provenance primitives — Abdul — merged 2026-08-18 (frontend badge +
   lib/provenance.ts; backend enum/KpiValue already existed from M0-2/M0-3)
 - [M0-5] Health-check vertical slice — satisfied by the M0-1 scaffold (live
