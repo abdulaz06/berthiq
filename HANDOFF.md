@@ -18,6 +18,52 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-18 — Abdul — M0-8 CI hardening
+**Task(s):** M0-8 (CI hardening)
+**Branch:** task/M0-8-ci-hardening → squash-merged to main (branch deleted)
+**Did:** Hardened `.github/workflows/ci.yml` and added the provenance lint.
+- **Job timeouts:** `timeout-minutes` on every job (backend 15, frontend 10,
+  e2e 15) + an 8-min **step** timeout on the Playwright install. This directly
+  fixes the M0-3 incident where that step hung 26 min (GitHub's default job
+  timeout is 6 h). A wedged step now fails fast.
+- **Playwright cache:** e2e caches `~/.cache/ms-playwright` keyed on the resolved
+  Playwright version (`actions/cache@v4`). First run per version downloads
+  Chromium and populates the cache; later runs restore in seconds. (Cache scope:
+  a cache saved on a feature branch is NOT visible to `main`, so the first run on
+  `main` after this merge is still a miss — the hit shows up on the next main run.)
+- **Provenance lint (CLAUDE.md rule #3):** `frontend/scripts/check-provenance.mjs`
+  flags any `*.tsx` that references `KpiValue` but never renders `<ProvenanceBadge>`
+  (comments are stripped first, so a mention in a comment doesn't count). Wired as
+  `npm run check:provenance` — a step in the frontend job scanning the real app
+  (`app/`, `components/`) — plus a vitest **proof** (`check-provenance.test.mjs`)
+  that the rule fires on a BAD fixture and passes a GOOD one. Fixtures live under
+  `frontend/scripts/__fixtures__/` (outside tsconfig `include` and Next's lint
+  dirs, so tsc/eslint ignore them); vitest picks up `scripts/**/*.test.mjs` via an
+  added include glob.
+- Frontend job renamed to `frontend (eslint · tsc · vitest · provenance)`.
+**State:** Merged to main. Branch CI fully green — all three jobs pass, including
+the new provenance step and the cached e2e. Local: backend `21 passed, 6 skipped`
++ ruff/mypy clean; frontend eslint/tsc/vitest(4 tests incl. the provenance proof)
++ real provenance scan all green. All six required checks (ruff, mypy, pytest,
+eslint, tsc, vitest — plus provenance) run on every push.
+**Next step:** Pick the next open M0 task — **M0-4 (Type generation + API client
+stub)** or **M0-7 (Provenance primitives)** are the highest-leverage. If you take
+M0-7, build `<ProvenanceBadge>` + `provenance.ts` against the four values in
+`backend/app/core/provenance.py`; once a real KPI component exists, the CI
+provenance lint will require the badge — the GOOD/BAD fixtures under
+`frontend/scripts/__fixtures__/` show the exact shape the rule expects.
+**Gotchas:**
+- "Blocks merge on failure" is enforced by process (WORKFLOW.md: never merge
+  red), not by branch-protection rules — I did **not** enable required-status-check
+  branch protection, because the team pushes docs/ACTIVE_WORK/HANDOFF *directly*
+  to main and a strict rule would block those. If you ever want a hard gate, add
+  branch protection that requires the `backend`/`frontend`/`e2e` checks but keep
+  direct-to-main allowances in mind.
+- The provenance rule is intentionally conservative (keys off the `KpiValue` type
+  name). Tighten it to track real JSX when KPI components land if false
+  positives/negatives show up.
+- `gh` still lives at `C:\Program Files\GitHub CLI\gh.exe` (not on PATH).
+
 ## 2026-08-18 — Abdul — M0-3 contracts + fixtures
 **Task(s):** M0-3 (Contracts + fixtures — the seam)
 **Branch:** task/M0-3-contracts → squash-merged to main (branch deleted)
