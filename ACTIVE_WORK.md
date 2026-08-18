@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M0-3] Contracts + fixtures — Abdul — branch task/M0-3-contracts — started 2026-08-18
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,24 +28,28 @@ _None._
 
 ## Ready to pick up
 
-M0-2 has merged, so the DB schema exists and M0-6 (which depends on it) is now
-open too. These can be worked in parallel:
+M0-3 has merged, so the contract fixtures exist in both folders. **M0-4 (type
+generation + client) is now unblocked**, and every M1 *frontend* task can now be
+built against the committed fixtures (M1-03/05/08/10/12), though the M0-4 typed
+client + M0-7 provenance badge are the clean prerequisites for those. Open M0 set:
 
-- [M0-3] Contracts + fixtures  — the seam; unblocks every M1 frontend task + M0-4
+- [M0-4] Type generation + API client stub  — now unblocked (depends on M0-3)
 - [M0-5] Health-check vertical slice
-- [M0-6] Synthetic generator skeleton + seed  — now unblocked (depends on M0-2)
+- [M0-6] Synthetic generator skeleton + seed
 - [M0-7] Provenance primitives
 - [M0-8] CI hardening
 
-Note: M0-3 and M0-7 both define a `provenance` enum / `KpiValue`-adjacent shape.
-M0-2 already created the DB-level `provenance` enum + `Provenance` Python enum in
-`backend/app/db/models.py`; M0-7's `core/provenance.py` should reuse/align with
-that, not redefine a conflicting one.
+Note on provenance: the canonical `Provenance` enum now lives in
+`backend/app/core/provenance.py` (values: observed/predicted/simulated/optimized).
+M0-2's DB model and M0-3's `KpiValue` schema both import it. **M0-7 should build
+`<ProvenanceBadge>` + `provenance.ts` against these same four values and reuse the
+existing `core/provenance.py`, not create a second definition.**
 
 ---
 
 ## Done
 
+- [M0-3] Contracts + fixtures — Abdul — merged 2026-08-18
 - [M0-2] Database bootstrap — Abdul — merged 2026-08-18
 - [M0-1] Repository scaffold — Abdul — merged 2026-08-12
 

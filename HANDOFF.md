@@ -18,6 +18,57 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-18 — Abdul — M0-3 contracts + fixtures
+**Task(s):** M0-3 (Contracts + fixtures — the seam)
+**Branch:** task/M0-3-contracts → squash-merged to main (branch deleted)
+**Did:** Implemented the M1 contract schemas from `docs/DATA_CONTRACTS.md` and the
+committed example fixtures that let the two halves build in parallel.
+- `backend/app/core/provenance.py`: the **canonical** `Provenance` enum (single
+  source of truth). Refactored M0-2's `app/db/models.py` to import it from here
+  instead of defining its own — same four values, DB enum name unchanged, **no
+  migration change** needed.
+- `backend/app/schemas/`: split by domain — `common.py` (`KpiValue`), `evidence.py`
+  (`EvidenceRecord`, `ShapFactor`, `ConstraintRef`), `datasets.py`
+  (`DatasetSummary`, `ValidationIssue`, `DataQualityReport`), `discovery.py`
+  (`ProcessModel` + `DfgNode`/`DfgEdge`/`Variant`/`Bottleneck`), `risk.py`
+  (`CaseRisk`, `RiskBoard`), `scenarios.py` (`ScenarioSpec`, `ScenarioConstraints`,
+  `ObjectiveWeights`, `Assignment`, `OptimizationResult`, `KpiDistribution`,
+  `SimulationResult`), `jobs.py` (`JobStatus`). `__init__.py` re-exports all.
+  `KpiValue.provenance` (and `KpiDistribution`) use the `Provenance` enum.
+- **10 fixtures** committed byte-identically to `backend/tests/fixtures/` and
+  `frontend/lib/fixtures/`: kpi_value, evidence_record, dataset_summary,
+  data_quality_report, process_model, risk_board, scenario_spec,
+  optimization_result, simulation_result, job_status. Realistic Khalifa data —
+  berths KCT-1..5, vessels (MSC Shristi, CMA CGM Jaguar, MV Ghantoot, …), +04:00
+  timestamps, the 9-stage flow with the documentation→customs rework loop.
+- `backend/tests/test_fixtures.py`: parametrized — every fixture validates against
+  its Pydantic model, and each backend fixture is byte-identical to its frontend
+  copy.
+**State:** Merged to main. Branch CI fully green (backend ruff/mypy/pytest,
+frontend eslint/tsc/vitest, e2e). Local: backend `21 passed, 6 skipped` (the 6 are
+the M0-2 DB tests skipping with no local DB), frontend typecheck/lint/vitest all
+pass. Verified with `gh run watch --exit-status` (now that gh is installed — but
+it's NOT on PATH; it lives at `C:\Program Files\GitHub CLI\gh.exe`, call by full
+path).
+**Next step:** Pick **M0-4 (Type generation + API client stub)** — now unblocked by
+M0-3. It runs `just types` (export backend OpenAPI → `openapi-typescript` →
+`frontend/lib/types/api.ts`) and adds a typed client in `frontend/lib/api/` that
+returns the fixture when `NEXT_PUBLIC_USE_FIXTURES=true`. **Important:** the M0-3
+schemas are NOT yet in the OpenAPI output because no API route references them
+(only `/api/health` is wired), so `just types` today won't emit the contract
+types. M0-4 either (a) adds thin stub routes/`response_model=` refs so the schemas
+surface in OpenAPI, or (b) is sequenced to fill in as M1 endpoints land — decide
+this at the start of M0-4. Alternatively M0-7 (Provenance primitives, frontend
+half) is a clean parallel pick.
+**Gotchas:**
+- `gh` is installed but not on the Bash/PowerShell PATH → use
+  `"/c/Program Files/GitHub CLI/gh.exe"`. Auth is fine (account abdulaz06).
+- Fixtures must stay byte-identical across the two folders — `test_fixtures.py`
+  enforces it. If you edit a fixture, edit the backend copy and re-copy to
+  frontend (or vice versa) in the same change, or that test fails.
+- Provenance now has ONE home: `core/provenance.py`. Don't reintroduce a second
+  enum in M0-7 — import/align with it (see the ACTIVE_WORK note).
+
 ## 2026-08-18 — Abdul — M0-2 database bootstrap
 **Task(s):** M0-2 (Database bootstrap)
 **Branch:** task/M0-2-db-bootstrap → squash-merged to main (branch deleted)
