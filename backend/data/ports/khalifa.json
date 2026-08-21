@@ -1,0 +1,75 @@
+{
+  "port": "khalifa",
+  "display_name": "Khalifa Port",
+  "description": "Deep-water, container-dominant port (Khalifa Port, Abu Dhabi). Real geography and berth names; all operational data is synthetic.",
+  "timezone": "+04:00",
+  "seed": 20260601,
+  "window": {
+    "start": "2026-02-01T00:00:00+04:00",
+    "days": 180
+  },
+  "targets": {
+    "completed_cases": 600,
+    "active_cases": 24,
+    "active_tail_days": 1.0
+  },
+  "berths": [
+    { "id": "KCT-1", "name": "Khalifa Container Terminal 1", "terminal_type": "container",   "length_m": 400, "draft_m": 18.0 },
+    { "id": "KCT-2", "name": "Khalifa Container Terminal 2", "terminal_type": "container",   "length_m": 400, "draft_m": 17.5 },
+    { "id": "KCT-3", "name": "Khalifa Container Terminal 3", "terminal_type": "container",   "length_m": 366, "draft_m": 16.5 },
+    { "id": "KCT-4", "name": "Khalifa Container Terminal 4", "terminal_type": "container",   "length_m": 350, "draft_m": 16.0 },
+    { "id": "KCT-5", "name": "Khalifa Container Terminal 5", "terminal_type": "container",   "length_m": 320, "draft_m": 15.0 },
+    { "id": "KBT-1", "name": "Khalifa Bulk Terminal 1",      "terminal_type": "bulk",        "length_m": 300, "draft_m": 14.0 },
+    { "id": "KGT-1", "name": "Khalifa General Terminal 1",   "terminal_type": "general",     "length_m": 250, "draft_m": 12.0 },
+    { "id": "KGT-2", "name": "Khalifa General Terminal 2",   "terminal_type": "general",     "length_m": 220, "draft_m": 11.0 }
+  ],
+  "reviewers": {
+    "pool": ["reviewer_amina", "reviewer_khalid", "reviewer_yousef", "reviewer_fatima", "reviewer_noura"],
+    "shifts": {
+      "day":   { "start_hour": 6,  "end_hour": 18, "reviewers": ["reviewer_amina", "reviewer_khalid"] },
+      "night": { "start_hour": 18, "end_hour": 6,  "reviewers": ["reviewer_noura"] }
+    },
+    "service_minutes": { "mean": 230, "spread": 70, "min": 60 }
+  },
+  "planners": { "pool": ["planner_hassan", "planner_layla"] },
+  "pilots":   { "pool": ["pilot_omar", "pilot_saeed", "pilot_rashid"], "service_minutes": { "mean": 75, "spread": 25, "min": 30 } },
+  "agents":   { "pool": ["agent_gulf", "agent_emirates", "agent_national", "agent_orient"] },
+  "vessel_mix": [
+    { "type": "container", "cargo_type": "containers",  "weight": 0.55, "loa": [200, 400], "draft": [10.0, 17.0] },
+    { "type": "bulk",      "cargo_type": "dry_bulk",    "weight": 0.20, "loa": [180, 300], "draft": [9.0, 14.0] },
+    { "type": "tanker",    "cargo_type": "liquid_bulk", "weight": 0.10, "loa": [180, 280], "draft": [9.0, 13.5] },
+    { "type": "general",   "cargo_type": "breakbulk",   "weight": 0.10, "loa": [120, 240], "draft": [7.0, 11.5] },
+    { "type": "roro",      "cargo_type": "vehicles",    "weight": 0.05, "loa": [150, 220], "draft": [7.0, 10.5] }
+  ],
+  "weather": {
+    "base_severity": 0.12,
+    "daily_drift": 0.08,
+    "storm_probability": 0.06,
+    "storm_severity": [0.55, 0.95],
+    "service_multiplier_max": 1.4
+  },
+  "durations_minutes": {
+    "documents_submitted": { "mean": 240, "spread": 120, "min": 60 },
+    "completeness_check":  { "mean": 45,  "spread": 20,  "min": 15 },
+    "arrival_plan":        { "mean": 30,  "spread": 15,  "min": 10 },
+    "berth_planning":      { "mean": 120, "spread": 60,  "min": 30 },
+    "cargo_start":         { "mean": 90,  "spread": 40,  "min": 30 },
+    "travel_to_anchorage": { "mean": 720, "spread": 300, "min": 180 },
+    "berth_occupancy":     { "mean": 420, "spread": 150, "min": 180 }
+  },
+  "levers": {
+    "rework": {
+      "base_reject_prob": 0.11,
+      "incompleteness_weight": 0.78,
+      "max_iterations": 3
+    },
+    "service_window": {
+      "target_offset_hours": 30,
+      "tolerance_hours": 18
+    }
+  },
+  "arrivals": {
+    "day_hour_weight": 1.0,
+    "night_hour_weight": 0.55
+  }
+}

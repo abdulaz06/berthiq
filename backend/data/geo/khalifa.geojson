@@ -1,0 +1,16 @@
+{
+  "type": "FeatureCollection",
+  "name": "khalifa-berths-placeholder",
+  "_note": "Placeholder geometry for M0-6. Real berth/quay polygons from OpenStreetMap (ODbL) land with the port-map view (strong version). Coordinates are approximate points near Khalifa Port, Abu Dhabi.",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+  "features": [
+    { "type": "Feature", "properties": { "berth": "KCT-1", "terminal_type": "container" }, "geometry": { "type": "Point", "coordinates": [54.6480, 24.8060] } },
+    { "type": "Feature", "properties": { "berth": "KCT-2", "terminal_type": "container" }, "geometry": { "type": "Point", "coordinates": [54.6490, 24.8055] } },
+    { "type": "Feature", "properties": { "berth": "KCT-3", "terminal_type": "container" }, "geometry": { "type": "Point", "coordinates": [54.6500, 24.8050] } },
+    { "type": "Feature", "properties": { "berth": "KCT-4", "terminal_type": "container" }, "geometry": { "type": "Point", "coordinates": [54.6510, 24.8045] } },
+    { "type": "Feature", "properties": { "berth": "KCT-5", "terminal_type": "container" }, "geometry": { "type": "Point", "coordinates": [54.6520, 24.8040] } },
+    { "type": "Feature", "properties": { "berth": "KBT-1", "terminal_type": "bulk" },      "geometry": { "type": "Point", "coordinates": [54.6530, 24.8035] } },
+    { "type": "Feature", "properties": { "berth": "KGT-1", "terminal_type": "general" },   "geometry": { "type": "Point", "coordinates": [54.6540, 24.8030] } },
+    { "type": "Feature", "properties": { "berth": "KGT-2", "terminal_type": "general" },   "geometry": { "type": "Point", "coordinates": [54.6550, 24.8025] } }
+  ]
+}
