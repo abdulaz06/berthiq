@@ -18,6 +18,64 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-20 — Abdul — M0-6 synthetic generator + seed (M0 COMPLETE)
+**Task(s):** M0-6 (Synthetic generator + seed)
+**Branch:** task/M0-6-generator → squash-merged to main (branch deleted)
+**Did:** Built the deterministic Khalifa generator and wired `just seed`.
+- **`backend/scripts/generate_dataset.py`** — pure `generate(cfg)` producing the
+  9 stages (PRODUCT_DEFINITION §5) with the stage-4→stage-2 rework loop, plus a
+  CSV/ground-truth writer, a DB loader that rebuilds `cases`, and a post-seed
+  distribution summary. All timing is a fn of the config `seed` + a fixed base
+  date (no wall-clock). Per-case RNG = `Random(seed*1_000_003 + idx)`; content
+  identity is a hash over event columns excluding the serial id.
+- **Causal levers** (all in `khalifa.json`, tunable without code): missing docs →
+  rework; finite reviewers on a night-shortage shift calendar → approval queue
+  (the dominant bottleneck); vessel LOA/draft vs berth → contention; seeded daily
+  weather → longer pilot/cargo service. Queues *emerge* from capacity.
+- **Ground truth** (true bottleneck, per-case delay cause, `doc_completeness`,
+  reference assignment) → `backend/data/datasets/khalifa/ground_truth.json`
+  (**gitignored**). `GROUND_TRUTH_KEYS` is the forbidden-name set; a test proves
+  none of them appear in `events`/`cases`/`datasets.stats` or the CSV.
+- **`khalifa.json`** (committed): 8 berths (KCT/KBT/KGT with LOA/draft/terminal),
+  reviewer pool + day/night shifts, pilots, planners, vessel mix, weather, levers,
+  seed=20260601. **`khalifa.geojson`** placeholder committed.
+- **Fixed `backend/alembic.ini`** logging handler `args=(sys_stderr,)` →
+  `(sys.stderr,)`. `just migrate` was broken for anyone (the migration test uses a
+  programmatic Config that skips `fileConfig`, so it never caught it).
+- **Tests** (`backend/tests/test_generator.py`, 12): determinism (content hash +
+  ground truth + stable dataset id), ordered events + valid outcomes, ground-truth
+  separation (pure + DB), reviewer-bottleneck dominance, target volumes, idempotent
+  byte-identical DB reseed.
+**Numbers (seed=20260601):** 6539 events, 624 cases → **26 active / 598 completed**,
+**36% rework**, **39% late**. Dominant bottleneck **Authority review /
+reviewer_overload** by total caused delay: reviewer 314k min vs missing_docs 204k
+vs berth 55k vs weather 6k (≈1.5–1.7× the runner-up); reviewer is also the #1
+per-case cause and #1 among late-only cases. Events are ~6.5k (target "~7k"): I
+kept completed anchored at ~600 rather than inflating case counts to hit a round
+number — bump `targets.completed_cases` if you want it nearer 7k.
+**State:** Merged to main; branch CI was GREEN (backend/frontend/e2e). Verified
+locally: `just migrate` + real `just seed` against local `berthiq` load 6539
+events/624 cases; full suite 38 passed against `berthiq_test`; ruff + mypy clean.
+`main` is green and runnable.
+**Next step:** M1 is open. Start **M1-04 (Discovery service)** or **M1-06
+(training)** or **M1-09 (optimizer)** against the seeded dataset — or do the light
+**M1-01** validation pass (dirty/stress variants + distribution checks vs the
+Pack). For discovery/eval, read the answer key from
+`backend/data/datasets/khalifa/ground_truth.json` (regenerate with `just seed`);
+`true_bottleneck.stage` == "Authority review".
+**Gotchas:**
+- **Never run pytest against your seed DB.** The `session` fixture drops tables
+  via `Base.metadata`, desyncing `alembic_version`; `test_migrations` then fails
+  `DROP TABLE jobs`. Use `DATABASE_URL=...:5432/berthiq_test pytest`. Repair a
+  polluted seed DB with `alembic stamp base && alembic upgrade head && just seed`.
+- `data/datasets/` is gitignored, so `events.csv` + `ground_truth.json` are
+  regenerable, never committed — the seed in the config is the source of truth.
+- Anchorage wait (stage 8) is largely a *symptom* of approval lag (short travel
+  makes approval gate berthing), so raw stage-wait would flag anchorage; the
+  ground truth attributes the *cause* to reviewer_overload. M1-04's bottleneck
+  ranking should reflect controllable cause, not just raw wait.
+- `gh` still not installed; watched CI via the git-credential token + GitHub API.
+
 ## 2026-08-18 — Abdul — M0-4 type generation + typed API client
 **Task(s):** M0-4 (Type generation + API client)
 **Branch:** task/M0-4-typegen → squash-merged to main (branch deleted)

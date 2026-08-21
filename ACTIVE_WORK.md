@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M0-6] Synthetic generator + seed — Abdul — branch task/M0-6-generator — started 2026-08-20
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,10 +28,19 @@ _None._
 
 ## Ready to pick up
 
-**M0 is one task from complete** — only **M0-6 (Synthetic generator skeleton +
-seed)** remains (depends on M0-2, done). After it, M0 is done and M1 begins.
+**M0 is COMPLETE.** M1 (the vertical slice) is now open. The natural next task is
+**M1-01 (Generator maturation)** — but M0-6 already delivered most of M1-01's
+scope (causal levers, ~600+~25 cases/~6.5k events, hidden ground truth). M1-01 is
+now mostly *validation/tuning*: confirm distributions vs the Pack, add
+dirty/stress dataset variants, and lock the seed-stability + bottleneck-dominance
+assertions (already present in `backend/tests/test_generator.py`). Other M1
+backend tasks that depend on M1-01 (M1-04 discovery, M1-06 training, M1-09
+optimizer) can start against the seeded dataset now.
 
-- [M0-6] Synthetic generator skeleton + seed  — depends on M0-2 (done)
+- [M1-01] Generator maturation — depends on M0-6 (done); largely validation now
+- [M1-04] Discovery service (DFG + variants + bottlenecks) — depends on M1-01, M0-3
+- [M1-06] Offline training pipeline — depends on M1-01
+- [M1-09] Optimization service (berth assignment) — depends on M1-01, M0-3
 
 All M1 *frontend* prerequisites now exist: the M0-3 fixtures, the M0-7
 `<ProvenanceBadge>`, and the M0-4 typed client (`frontend/lib/api/contracts.ts`,
@@ -57,6 +66,11 @@ future KPI components pass that check.
 
 ## Done
 
+- [M0-6] Synthetic generator + seed — Abdul — merged 2026-08-20 (deterministic
+  9-stage Khalifa generator with rework loop + causal levers; ~600 completed /
+  ~26 active / ~6.5k events; hidden ground truth in gitignored sibling artifact;
+  reviewer overload is the dominant bottleneck; `just seed` loads it. Also fixed
+  `alembic.ini` so `just migrate` works.) **M0 COMPLETE.**
 - [M0-4] Type generation + API client — Abdul — merged 2026-08-18 (generated
   api.ts + typed fixtures-or-live client; stub routes publish the contracts)
 - [M0-7] Provenance primitives — Abdul — merged 2026-08-18 (frontend badge +
@@ -84,6 +98,21 @@ future KPI components pass that check.
   gitignored `.env` / `.env.local`.
 - **Postgres:** this machine has PostgreSQL **16** (docs assumed 15). The
   `docker-compose.yml` fallback pins 15; native 16 works fine for dev.
+- **Seed vs. test DB (M0-6):** `just seed` and `just migrate` target the DB in
+  your `.env` `DATABASE_URL` (e.g. `berthiq`). Do **not** point `pytest` at that
+  same DB: the `session` fixture drops/recreates tables via `Base.metadata`,
+  which desyncs Alembic's `alembic_version` and makes `test_migrations` fail
+  (`DROP TABLE jobs` on missing tables). Run tests against a throwaway DB, e.g.
+  `DATABASE_URL=...:5432/berthiq_test pytest`. CI already does this. If you ever
+  seed and then test against the same DB by accident, repair with
+  `alembic stamp base && alembic upgrade head && just seed`.
+- **Generator lever balance (M0-6):** tuned so **Authority review /
+  reviewer_overload is the dominant bottleneck** by total caused delay (~1.7× the
+  runner-up) — the golden-path story (§18). Key levers in `khalifa.json`: 2 day /
+  1 night reviewers, 230-min mean review; 12-h vessel travel so approval gates
+  berthing; short (7-h) berth occupancy so berth conflict doesn't swamp reviewer.
+  ~36% rework, ~39% late. Re-tune via `khalifa.json` (no code change) and re-check
+  with the post-seed distribution summary if you touch it.
 - **DB tests (M0-2 onward):** they need a real Postgres and read the connection
   from `DATABASE_URL` — the *same* source Alembic's env.py uses, so tests and
   migrations always target the same DB. Point them at a throwaway DB, e.g.
