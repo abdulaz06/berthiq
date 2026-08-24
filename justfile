@@ -44,6 +44,11 @@ migrate:
 seed:
     cd backend && "{{venv_python}}" scripts/generate_dataset.py
 
+# Train the miss-risk model offline; writes backend/models/risk_model.joblib (M1-06).
+# Reads the seeded DB by default; `just train --generate` trains from khalifa.json (no DB).
+train *ARGS:
+    cd backend && "{{venv_python}}" scripts/train_models.py {{ARGS}}
+
 # Regenerate frontend/lib/types/api.ts from the backend's OpenAPI (M0-4).
 # api.ts is committed and generated — never hand-edit it (a banner says so).
 types:
