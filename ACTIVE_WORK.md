@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-_Nothing claimed right now._
+- [M1-06] Offline training pipeline (risk model) — Abdul — branch task/M1-06-training — started 2026-08-24
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -44,7 +44,6 @@ does **not** block the M1 backend tasks. Those depend on M0-6, which is done.
   **Authority review** (resource_load) as #1. Consider regenerating the fixture
   from live discovery output so the UI demo matches the golden path (small task;
   keep both fixture copies byte-identical — `test_fixtures.py` enforces it).
-- [M1-06] Offline training pipeline — depends on M0-6 (done)
 - [M1-09] Optimization service (berth assignment) — depends on M0-6 (done), M0-3
 
 All M1 *frontend* prerequisites now exist: the M0-3 fixtures, the M0-7
