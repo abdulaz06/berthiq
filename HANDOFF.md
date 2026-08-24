@@ -18,6 +18,87 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-24 — Abdul — M1-04 discovery service (DFG + variants + bottlenecks)
+**Task(s):** M1-04. Also closed **M1-01** as *absorbed into M0-6* (generator
+already delivers its scope; residual work is `khalifa.json` tuning, not a rebuild).
+**Branch:** task/M1-04-discovery → squash-merged to main (PR #1, branch deleted).
+**Did:** A PM4Py-based synchronous discovery service over the seeded event log.
+- **`backend/app/services/discovery.py`** — pure `discover_process_model(events,
+  dataset_id) -> ProcessModel`. PM4Py gives the DFG edge set + frequencies and the
+  trace variants; **all timing is computed from the real timestamps** (node median
+  duration; edge median/p90 wait = `max(0, next.start - prev.end)`; variant totals).
+  Determinism: PM4Py is fed a log whose timestamp is synthesized strictly-increasing
+  in **`seq`** order, so instant stages sharing a real timestamp can't reorder — its
+  topology is identical to seq-order. Also has DB helpers `run_discovery` /
+  `get_saved_process_model`.
+- **Bottleneck ranking is causal, not raw wait.** Stages are ranked by
+  *controllable delay* = total inbound queue wait + rework redo service. This puts
+  **Authority review** (reviewer overload, 4,443h total queue) at #1, ahead of the
+  anchorage *symptom* (525k min of passive duration but only 35k queue) — exactly
+  the trap the M0-6 handoff warned about. Each bottleneck is tagged one of
+  `resource_load` / `rework_rate` / `median_wait` with a KpiValue + EvidenceRecord
+  notes. The reviewer queue I compute from timestamps (266,577 min) cross-checks the
+  generator's injected `review_wait_min` sum (266,578) to the minute.
+- **Endpoints** (`backend/app/api/discovery.py`, mounted in `main.py`): `POST
+  /api/datasets/{id}/discover` (computes, caches, records an *already-succeeded*
+  discovery job, returns that JobStatus) and `GET /api/discovery/{dataset_id}`
+  (returns the cached ProcessModel; 404 if not discovered). Deleted the GET
+  /discovery stub from `contract_stubs.py`; regenerated `frontend/lib/types/api.ts`.
+- **DB:** new `process_models` table (docs/DATABASE.md §5.1) — ORM `ProcessModelRow`
+  + migration `0002_process_models` (JSONB dfg/variants/bottlenecks/metrics, UNIQUE
+  on dataset_id so re-discovery replaces).
+- **Dependency:** added `pm4py>=2.7,<3` to `backend/pyproject.toml`. It pulls
+  pandas/numpy/scipy/matplotlib (~40MB wheels) — fine on 8GB, installs via
+  `pip install -e ".[dev]"`. **pm4py is AGPL v3** ("commercial use requires
+  open-sourcing"): acceptable for this internal, non-distributed single-analyst
+  tool, but revisit if BerthIQ is ever shipped. Noted in pyproject + the service
+  docstring.
+- **Tests** (`backend/tests/test_discovery.py`, 6): tiny hand-built log with exact
+  nodes/edges/waits (incl. a rework back-edge); **top bottleneck == "Authority
+  review"** run over the generator's own in-memory log (no DB needed) with a <5s
+  assert and a ground-truth cross-check; all-KPIs-provenance-tagged; fixture-shape
+  validation; DB persistence round-trip; API endpoint flow (404 → discover → get).
+**Decision — synchronous for M1 (deliberate simplification of the DATA_CONTRACTS
+job envelope).** Discovery is <2s, so `POST …/discover` runs inline instead of
+spawning a worker; it still returns a `JobStatus{status:"succeeded",
+result_type:"process_model"}` so the frontend poll loop works unchanged (sees
+succeeded immediately, then GETs). The real async job/worker/polling machinery is
+deferred to **M1-09 (optimization)**, where operations are genuinely slow. `GET
+/api/jobs/{id}` therefore stays a 501 stub for now (nothing needs to poll it yet).
+**Numbers (seed=20260601):** 9 nodes, 10 edges (incl. the two rework back-edges),
+22 variants (happy path count 381). Metrics: throughput 23.3/wk, rework 35.6%,
+avg_utilization 23.0% (all `observed`). Discovery ~1.7s on the reference dataset.
+**State:** Merged to main; PR #1 CI fully GREEN (backend 44 passed, frontend
+eslint/tsc/vitest/provenance, e2e). Verified locally: ruff + mypy clean; full suite
+44 passed against `berthiq_test`; frontend tsc/eslint/vitest(10)/provenance green;
+live smoke test through the real endpoints against the seeded `berthiq` DB returns
+Authority review as #1. Applied migration 0002 to the local `berthiq` seed DB.
+`main` is green and runnable.
+**Next step:** **M1-05 (process graph + bottleneck panel UI)** is now live-able —
+build against `frontend/lib/fixtures/process_model.example.json`, then flip
+`NEXT_PUBLIC_USE_FIXTURES=false` to hit `GET /api/discovery/{id}`. Or take **M1-06
+(training)** / **M1-09 (optimizer)** on the backend.
+**Gotchas:**
+- **The committed `process_model` fixture is now out of step with reality** — it
+  shows rank-1 rework on "Documentation Review" + rank-2 "Anchorage Wait" (old
+  illustrative names/story), but the real endpoint returns **Authority review**
+  (`resource_load`) at #1 with the actual 9 Khalifa stage names. I left it as the
+  *shape* contract (M1-04 only needed shape-match, which holds). Recommend M1-05
+  regenerate it from live discovery so the UI demo matches the golden path — keep
+  the backend + frontend copies byte-identical (`test_fixtures.py` enforces).
+- The seeded-bottleneck test runs the **pure generator in-memory** (`generate(cfg)`
+  → `discover_process_model`), so it needs no seeded DB and runs in CI's empty
+  `berthiq_test`. Don't rewrite it to query a seeded DB.
+- Edge waits are clamped at 0: the generator lets a vessel physically arrive before
+  its berth frees (the "Berth assigned → anchorage" edge would otherwise read a
+  negative median wait). Anchorage's real cost lives in its *node duration*, not its
+  inbound edge wait — which is why raw-wait ranking would mis-flag it and the causal
+  ranking doesn't.
+- pm4py prints an AGPL banner to stdout on import; it's imported lazily inside the
+  service so it doesn't fire at app import or in the type-gen step.
+- `gh` now works (v2.97, at `C:\Program Files\GitHub CLI\gh.exe`, not on PATH).
+  `gh run watch <id> --exit-status` + `gh pr merge --squash --delete-branch`.
+
 ## 2026-08-20 — Abdul — M0-6 synthetic generator + seed (M0 COMPLETE)
 **Task(s):** M0-6 (Synthetic generator + seed)
 **Branch:** task/M0-6-generator → squash-merged to main (branch deleted)

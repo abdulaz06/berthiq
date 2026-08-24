@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M1-04] Discovery service (DFG + variants + bottlenecks) — Abdul — branch task/M1-04-discovery — started 2026-08-24
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -36,6 +36,14 @@ residual M1-01 work is *distribution tuning* (confirm vs the Pack, optional
 dirty/stress variants) — a `khalifa.json`-only follow-up, not a rebuild, and it
 does **not** block the M1 backend tasks. Those depend on M0-6, which is done.
 
+- [M1-05] Process graph + bottleneck panel UI — **now live-able** (M1-04 merged).
+  Build against `frontend/lib/fixtures/process_model.example.json`, then flip
+  `NEXT_PUBLIC_USE_FIXTURES=false` to hit the real `GET /api/discovery/{id}`.
+  ⚠️ The committed fixture still tells the *old* story (rank-1 rework on
+  "Documentation Review", rank-2 "Anchorage Wait") — the real endpoint returns
+  **Authority review** (resource_load) as #1. Consider regenerating the fixture
+  from live discovery output so the UI demo matches the golden path (small task;
+  keep both fixture copies byte-identical — `test_fixtures.py` enforces it).
 - [M1-06] Offline training pipeline — depends on M0-6 (done)
 - [M1-09] Optimization service (berth assignment) — depends on M0-6 (done), M0-3
 
@@ -63,6 +71,13 @@ future KPI components pass that check.
 
 ## Done
 
+- [M1-04] Discovery service (DFG + variants + bottlenecks) — Abdul — merged
+  2026-08-24 (PR #1). PM4Py-based DFG (edge freqs + variants) with timing from
+  real timestamps; bottleneck ranking by controllable delay (queue wait + rework
+  redo) → independently rediscovers **Authority review** as the #1 bottleneck
+  (matches ground truth, <5s). Synchronous `POST …/discover` + `GET
+  /discovery/{id}`; new `process_models` table (migration 0002). 44 backend tests
+  green.
 - [M1-01] Generator maturation — **absorbed into M0-6** — closed 2026-08-24. M0-6
   delivered the generator's substantive scope (9-stage causal-lever generator,
   hidden ground truth, seed-stability + reviewer-bottleneck-dominance tests). Any
