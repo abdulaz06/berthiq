@@ -25,7 +25,6 @@ from app.schemas import (
     DatasetSummary,
     JobStatus,
     OptimizationResult,
-    ProcessModel,
     RiskBoard,
     ScenarioSpec,
     SimulationResult,
@@ -59,9 +58,8 @@ def get_validation(dataset_id: str) -> DataQualityReport:
 
 
 # --- Discovery (§5.2) ------------------------------------------------------
-@router.get("/discovery/{dataset_id}", response_model=ProcessModel)
-def get_discovery(dataset_id: str) -> ProcessModel:
-    _not_implemented()
+# Implemented for real in app/api/discovery.py (M1-04): POST
+# /datasets/{id}/discover and GET /discovery/{dataset_id}. Stub removed.
 
 
 # --- Prediction / risk (§5.3) ---------------------------------------------

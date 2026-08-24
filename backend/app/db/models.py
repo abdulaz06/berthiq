@@ -38,6 +38,7 @@ __all__ = [
     "Event",
     "Case",
     "Job",
+    "ProcessModelRow",
     "ALL_ENUMS",
 ]
 
@@ -210,6 +211,35 @@ class Case(Base):
         sa.UniqueConstraint("dataset_id", "case_id", name="uq_cases_dataset_case"),
         Index("idx_cases_active", "dataset_id", "is_active"),
     )
+
+
+# --- Derived layer (docs/DATABASE.md §5) -----------------------------------
+
+
+class ProcessModelRow(Base):
+    """Cached discovery output — one current model per dataset (docs/DATABASE.md
+    §5.1). Re-discovery replaces the row (UNIQUE on ``dataset_id``). The four
+    JSONB blobs together serialize a :class:`app.schemas.ProcessModel`."""
+
+    __tablename__ = "process_models"
+
+    id: Mapped[int] = mapped_column(sa.BigInteger, primary_key=True, autoincrement=True)
+    dataset_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("datasets.id", ondelete="CASCADE"),
+        nullable=False,
+    )
+    dfg: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    variants: Mapped[list[Any]] = mapped_column(JSONB, nullable=False)
+    bottlenecks: Mapped[list[Any]] = mapped_column(JSONB, nullable=False)
+    metrics: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")
+    )
+
+    dataset: Mapped[Dataset] = relationship()
+
+    __table_args__ = (sa.UniqueConstraint("dataset_id", name="uq_process_models_dataset"),)
 
 
 # --- Coordination layer (docs/DATABASE.md §7) ------------------------------
