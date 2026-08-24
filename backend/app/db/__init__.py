@@ -19,6 +19,7 @@ from app.db.models import (
     Job,
     JobStatus,
     JobType,
+    ProcessModelRow,
     Provenance,
 )
 from app.db.session import SessionLocal, engine, get_db
@@ -35,6 +36,7 @@ __all__ = [
     "Job",
     "JobStatus",
     "JobType",
+    "ProcessModelRow",
     "Provenance",
     "SessionLocal",
     "engine",
