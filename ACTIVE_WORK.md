@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-_Nothing claimed right now._
+- [M1-04] Discovery service (DFG + variants + bottlenecks) — Abdul — branch task/M1-04-discovery — started 2026-08-24
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -28,19 +28,16 @@ _None._
 
 ## Ready to pick up
 
-**M0 is COMPLETE.** M1 (the vertical slice) is now open. The natural next task is
-**M1-01 (Generator maturation)** — but M0-6 already delivered most of M1-01's
-scope (causal levers, ~600+~25 cases/~6.5k events, hidden ground truth). M1-01 is
-now mostly *validation/tuning*: confirm distributions vs the Pack, add
-dirty/stress dataset variants, and lock the seed-stability + bottleneck-dominance
-assertions (already present in `backend/tests/test_generator.py`). Other M1
-backend tasks that depend on M1-01 (M1-04 discovery, M1-06 training, M1-09
-optimizer) can start against the seeded dataset now.
+**M0 is COMPLETE.** M1 (the vertical slice) is now open. **M1-01 (Generator
+maturation) is absorbed into M0-6** (see Done) — the deterministic generator with
+causal levers, ~600+~26 cases/~6.5k events, hidden ground truth, and the
+seed-stability + reviewer-bottleneck-dominance assertions all shipped in M0-6. Any
+residual M1-01 work is *distribution tuning* (confirm vs the Pack, optional
+dirty/stress variants) — a `khalifa.json`-only follow-up, not a rebuild, and it
+does **not** block the M1 backend tasks. Those depend on M0-6, which is done.
 
-- [M1-01] Generator maturation — depends on M0-6 (done); largely validation now
-- [M1-04] Discovery service (DFG + variants + bottlenecks) — depends on M1-01, M0-3
-- [M1-06] Offline training pipeline — depends on M1-01
-- [M1-09] Optimization service (berth assignment) — depends on M1-01, M0-3
+- [M1-06] Offline training pipeline — depends on M0-6 (done)
+- [M1-09] Optimization service (berth assignment) — depends on M0-6 (done), M0-3
 
 All M1 *frontend* prerequisites now exist: the M0-3 fixtures, the M0-7
 `<ProvenanceBadge>`, and the M0-4 typed client (`frontend/lib/api/contracts.ts`,
@@ -66,6 +63,12 @@ future KPI components pass that check.
 
 ## Done
 
+- [M1-01] Generator maturation — **absorbed into M0-6** — closed 2026-08-24. M0-6
+  delivered the generator's substantive scope (9-stage causal-lever generator,
+  hidden ground truth, seed-stability + reviewer-bottleneck-dominance tests). Any
+  remaining work is `khalifa.json` distribution tuning, not a rebuild, and blocks
+  nothing. Reopen as a small tuning task only if the Pack demands different
+  distributions.
 - [M0-6] Synthetic generator + seed — Abdul — merged 2026-08-20 (deterministic
   9-stage Khalifa generator with rework loop + causal levers; ~600 completed /
   ~26 active / ~6.5k events; hidden ground truth in gitignored sibling artifact;
