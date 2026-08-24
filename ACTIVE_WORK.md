@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M1-06] Offline training pipeline (risk model) — Abdul — branch task/M1-06-training — started 2026-08-24
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -44,6 +44,15 @@ does **not** block the M1 backend tasks. Those depend on M0-6, which is done.
   **Authority review** (resource_load) as #1. Consider regenerating the fixture
   from live discovery output so the UI demo matches the golden path (small task;
   keep both fixture copies byte-identical — `test_fixtures.py` enforces it).
+- [M1-07] Risk endpoint (inference + SHAP) — **now unblocked** (M1-06 merged).
+  Reuse `app/services/prediction.py`: `RiskModel.load(backend/models/risk_model.joblib)`
+  + `build_dataset(events, include_active=True)` to score active cases, and
+  `RiskModel.shap_values` for per-case `ShapFactor`s. Serve `GET
+  /api/datasets/{id}/risk` (RiskBoard) + `GET /api/cases/{cid}/explanation`
+  (CaseExplanation — add that schema; it's referenced in DATA_CONTRACTS §5.3 but
+  not yet a Pydantic model). Delete the `/risk` stub + `just types`. Note the
+  artifact is gitignored/regenerable — decide whether M1-07/CI runs `just train`
+  or ships a committed model (currently must run `just train` first).
 - [M1-09] Optimization service (berth assignment) — depends on M0-6 (done), M0-3
 
 All M1 *frontend* prerequisites now exist: the M0-3 fixtures, the M0-7
@@ -70,6 +79,15 @@ future KPI components pass that check.
 
 ## Done
 
+- [M1-06] Offline training pipeline (risk model) — Abdul — merged 2026-08-24
+  (PR #2). Leakage-safe prefix features + chronological split; majority + logistic
+  baselines vs a HistGradientBoosting main model. HGB PR-AUC **0.878** > logistic
+  0.862 > majority 0.330 on the held-out future window; AUROC 0.915, Brier 0.103.
+  Reviewer-overload signals (reviewers_busy, reviewer_queue_len, hour_of_day) top
+  the SHAP ranking, matching M1-04. `just train` writes
+  `backend/models/risk_model.joblib` (gitignored). Reusable
+  `app/services/prediction.py` (feature extraction + `RiskModel`) for M1-07. 51
+  backend tests green.
 - [M1-04] Discovery service (DFG + variants + bottlenecks) — Abdul — merged
   2026-08-24 (PR #1). PM4Py-based DFG (edge freqs + variants) with timing from
   real timestamps; bottleneck ranking by controllable delay (queue wait + rework

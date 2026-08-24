@@ -18,6 +18,78 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-24 — Abdul — M1-06 offline training pipeline (miss-risk model)
+**Task(s):** M1-06 (offline risk-model training).
+**Branch:** task/M1-06-training → squash-merged to main (PR #2, branch deleted).
+**Did:** The leakage-safe, prefix-based miss-risk classifier (PRODUCT_DEFINITION §14).
+- **`backend/app/services/prediction.py`** — the *reusable* half (M1-07 will import
+  it). `build_dataset(events)` emits one row per case-prefix (state at each
+  completed event, excluding the terminal berthing — mirroring how an active case
+  is scored). Features: case-trajectory (stage, elapsed, time-in-stage, rework/
+  review counts, missing docs, LOA/draft, vessel/cargo type, window slack, weather,
+  hour/night) + **cross-case system state** (reviewers_busy, reviewer_queue_len,
+  cases_awaiting_berth, active_cases). `chronological_split` splits by *case* along
+  the anchor timeline (all prefixes of a case share a split). `RiskModel` =
+  HistGradientBoosting (native categoricals via ordinal codes) + SHAP TreeExplainer;
+  `save`/`load` a standalone joblib artifact.
+- **Leakage discipline.** A feature at prediction time `t` uses only info
+  observable by `t`. The system-state features are half-open interval counters over
+  event *times ≤ t* (e.g. reviewer queue = passed completeness-checks by t minus
+  reviews started by t), so **deleting every event that starts after t leaves every
+  feature unchanged** — asserted directly by the leakage test. Forbidden target-
+  derived names (outcome, actual_berthing, final rework_count, service_window_end)
+  are barred from FEATURE_COLUMNS by another test.
+- **`backend/scripts/train_models.py`** (`just train`; `--generate` for no-DB) —
+  builds the dataset, splits train/val/test in time, trains majority + logistic
+  baselines and the HGB main model (**refit on train+val**, hyperparameters chosen
+  on val), reports PR-AUC/AUROC/Brier + a calibration curve on the held-out FUTURE
+  window, prints top SHAP, and writes `backend/models/risk_model.joblib`.
+- **Deps:** scikit-learn (pinned `>=1.9,<1.10` so CI reproduces the margin), shap,
+  joblib, numpy, pandas. `*.joblib` already gitignored — the artifact is
+  regenerable, never committed.
+**Numbers (seed 20260601, 60/20/20 chrono split, test n=1121):** HGB **PR-AUC
+0.878** > logistic 0.862 > majority 0.330; AUROC 0.915 vs 0.909; Brier 0.103.
+Calibration curve tracks closely (0.02→0.01 … 0.93→0.95). Top SHAP:
+`current_stage`, `reviewers_busy`, `reviewer_queue_len`, `hour_of_day`, LOA — i.e.
+reviewer overload + the night shift dominate, consistent with the M1-04 bottleneck.
+**Key decisions:**
+- **No post-hoc calibration.** Isotonic collapsed the HGB scores into ~17 tied
+  levels and dropped PR-AUC 0.81→0.69; the raw HGB is already well-calibrated
+  (Brier 0.10). So the model is used directly and the calibration *curve* is
+  reported as a diagnostic. (Calibration is a SHOULD, not a MUST.)
+- **HGB regularized hard** (max_depth 3, min_samples_leaf 40, lr 0.03, l2 3, 400
+  iters, no early-stopping). The chronological test window is distribution-shifted
+  (base rate drops from 46%→33%); an over-flexible HGB overfits the training period
+  and *loses* to plain logistic. Shallow + regularized + refit-on-train+val gives a
+  stable ~+0.015 PR-AUC win. Config lives in `HGB_PARAMS`.
+- **Dropped `reviewer_load`** (= reviewers_busy / pool_size): the pool size is a
+  global-log quantity → the leakage test caught it changing when future events were
+  removed. It was perfectly collinear with `reviewers_busy` (constant pool), so no
+  info lost.
+**State:** Merged to main; PR #2 CI fully GREEN (backend 51 passed incl. the
+baseline-beating + leakage tests on CI's Linux/sklearn, frontend, e2e). Local: ruff
++ mypy clean; full suite 51 passed against `berthiq_test`; `just train` /
+`--generate` both produce the report + artifact. `main` green and runnable.
+**Next step:** **M1-07 (risk endpoint + SHAP)** is unblocked. Load the artifact via
+`RiskModel.load(backend/models/risk_model.joblib)`, score active cases with
+`build_dataset(events, include_active=True)` (take the latest prefix per active
+case), map SHAP → `ShapFactor` for `CaseRisk.top_factors`. Serve `GET
+/api/datasets/{id}/risk` (RiskBoard) and `GET /api/cases/{cid}/explanation`
+(CaseExplanation — that schema isn't built yet; it's in DATA_CONTRACTS §5.3). Delete
+the `/risk` stub + `just types`. **Decide the model-artifact story for CI/inference:**
+it's gitignored/regenerable, so either run `just train` in the risk endpoint's
+setup/CI, or train-and-cache on first request; the endpoint can't assume a committed
+`.joblib`.
+**Gotchas:**
+- Tests run on the generator's in-memory log (`g.generate(...).events`) — no seeded
+  DB needed, and they honor the "never pytest against berthiq" rule automatically.
+- shap imports matplotlib and builds a font cache on first import (one-time, a few
+  seconds in CI) and emits 3 harmless PendingDeprecationWarnings — not errors.
+- The `predicted_remaining_min` field on `CaseRisk` (a SHOULD in §14) has no model
+  yet — M1-07 can leave it `None` or add a per-stage-median regressor later.
+- `just train` reads the DB by default; use `just train --generate` on a machine
+  without the seed loaded.
+
 ## 2026-08-24 — Abdul — M1-04 discovery service (DFG + variants + bottlenecks)
 **Task(s):** M1-04. Also closed **M1-01** as *absorbed into M0-6* (generator
 already delivers its scope; residual work is `khalifa.json` tuning, not a rebuild).
