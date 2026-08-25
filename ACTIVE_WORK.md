@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-- [M1-07] Risk endpoint (inference + SHAP) — Abdul — branch task/M1-07-risk-endpoint — started 2026-08-25
+_Nothing claimed right now._
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
@@ -44,15 +44,17 @@ does **not** block the M1 backend tasks. Those depend on M0-6, which is done.
   **Authority review** (resource_load) as #1. Consider regenerating the fixture
   from live discovery output so the UI demo matches the golden path (small task;
   keep both fixture copies byte-identical — `test_fixtures.py` enforces it).
-- [M1-07] Risk endpoint (inference + SHAP) — **now unblocked** (M1-06 merged).
-  Reuse `app/services/prediction.py`: `RiskModel.load(backend/models/risk_model.joblib)`
-  + `build_dataset(events, include_active=True)` to score active cases, and
-  `RiskModel.shap_values` for per-case `ShapFactor`s. Serve `GET
-  /api/datasets/{id}/risk` (RiskBoard) + `GET /api/cases/{cid}/explanation`
-  (CaseExplanation — add that schema; it's referenced in DATA_CONTRACTS §5.3 but
-  not yet a Pydantic model). Delete the `/risk` stub + `just types`. Note the
-  artifact is gitignored/regenerable — decide whether M1-07/CI runs `just train`
-  or ships a committed model (currently must run `just train` first).
+- [M1-08] Risk board UI — **now live-able** (M1-07 merged). Build against
+  `frontend/lib/fixtures/risk_board.example.json` + the new
+  `case_explanation.example.json`, then flip `NEXT_PUBLIC_USE_FIXTURES=false` to hit
+  `GET /api/datasets/{id}/risk` and `GET /api/cases/{cid}/explanation?dataset_id=…`.
+  Sortable active-call board with `miss_probability` + top signed factors; the
+  probabilities are `predicted` provenance (badge them). ⚠️ Same as M1-05: the
+  committed `risk_board.example.json` still uses old illustrative stage/feature
+  names — the real endpoint returns actual stage names (`Authority review`, …) and
+  real feature names (`current_stage`, `reviewers_busy`, `window_slack_min`, …).
+  Consider refreshing the fixture from live output (keep both copies byte-identical).
+  A `getCaseExplanation` accessor still needs adding to `frontend/lib/api/contracts.ts`.
 - [M1-09] Optimization service (berth assignment) — depends on M0-6 (done), M0-3
 
 All M1 *frontend* prerequisites now exist: the M0-3 fixtures, the M0-7
@@ -79,6 +81,14 @@ future KPI components pass that check.
 
 ## Done
 
+- [M1-07] Risk endpoint (inference + SHAP) — Abdul — merged 2026-08-25 (PR #3).
+  `GET /api/datasets/{id}/risk` (RiskBoard, active cases scored) + `GET
+  /api/cases/{cid}/explanation` (CaseExplanation: prob + risk EvidenceRecord + a
+  deterministic `TemplateExplainer` narrative). Inference-only: loads the committed
+  `backend/models/risk_model.joblib` (now un-ignored + committed; deterministic
+  seed 20260601), never trains in-request. New `CaseExplanation` schema + fixture;
+  timestamps normalized to +04:00 so features are machine-independent. 60 backend
+  tests green.
 - [M1-06] Offline training pipeline (risk model) — Abdul — merged 2026-08-24
   (PR #2). Leakage-safe prefix features + chronological split; majority + logistic
   baselines vs a HistGradientBoosting main model. HGB PR-AUC **0.878** > logistic

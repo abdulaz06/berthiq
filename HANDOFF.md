@@ -18,6 +18,79 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-08-25 — Abdul — M1-07 risk endpoint (inference + SHAP)
+**Task(s):** M1-07 (risk endpoint — serve predictions).
+**Branch:** task/M1-07-risk-endpoint → squash-merged to main (PR #3, branch deleted).
+**Did:** Two inference-only endpoints over the committed model (DATA_CONTRACTS §5.3),
+reusing the M1-06 seams — no training in the request path.
+- **`backend/app/api/risk.py`** — `GET /api/datasets/{id}/risk` → RiskBoard (one
+  CaseRisk per *active* case: miss_probability, current_stage, vessel_type,
+  service_window_end, top-4 signed SHAP factors); `GET
+  /api/cases/{case_id}/explanation?dataset_id=…` → CaseExplanation (miss_probability
+  + EvidenceRecord kind='risk' with the top-8 SHAP factors + a narrative). Both fast
+  + synchronous. 404 for unknown/dataset-mismatch and for non-active (completed) cases.
+- **`backend/app/services/prediction.py`** (extended) — inference helpers:
+  `load_default_model()` (lru_cached load of the committed artifact),
+  `_active_case_rows()` (latest prefix per case that never berthed),
+  `score_risk_board()`, `score_case()`, and `_top_factors()` (SHAP → signed
+  ShapFactor; positive SHAP = increases_risk). Added `service_window_end` as a meta
+  column for display.
+- **`backend/app/services/explanation.py`** — `TemplateExplainer.render_risk()`:
+  deterministic, template-only narrative from the evidence numbers (a FEATURE_LABELS
+  map + risk band + Oxford-comma join), and `build_risk_evidence()`. No LLM, invents
+  no numbers (CLAUDE.md rule #4).
+- **Contract:** added the `CaseExplanation` Pydantic schema (was referenced in §5.3
+  but never built) + a committed `case_explanation.example.json` (backend+frontend,
+  byte-identical; registered in `test_fixtures.py`). Removed the `/risk` stub;
+  regenerated `frontend/lib/types/api.ts` (adds CaseExplanation + both routes).
+**Decision — committed the model artifact (as instructed).** Un-ignored the single
+file `backend/models/risk_model.joblib` (`!backend/models/risk_model.joblib` after
+the broad `*.joblib` ignore); `*.joblib binary` in `.gitattributes` keeps it from
+LF-mangling. It's small and deterministic (seed 20260601), so a committed copy and a
+fresh `just train` agree — CI and serving just `RiskModel.load()` it, no train step.
+`just train` still regenerates it.
+**Fix that made the committed artifact viable — timezone normalization.** psycopg2
+returns `timestamptz` in the DB *session* timezone, which differs by machine (UTC in
+CI, UTC-06:00 on this box) — so `hour_of_day`/`is_night`/window features (and thus
+the model + its scores) depended on where you ran it. `prediction._normalize` now
+converts every timestamp to the port wall clock (`PORT_TZ = +04:00`, Khalifa). After
+this, `just train` from the DB and from `--generate` produce **identical** metrics
+(PR-AUC 0.8777), and the committed artifact scores consistently on CI. If a later
+task adds multi-port support, take `PORT_TZ` from the port config instead of the
+constant.
+**Provenance note (rule #3 vs the frozen contract).** §5.3 types `miss_probability`
+and `predicted_remaining_min` as bare floats, and the committed `risk_board` fixture
+matches — so I did **not** wrap them in `KpiValue`. They're model outputs =
+`predicted` provenance; the RiskBoard's `model_version` is the anchor and M1-08's UI
+badges them as predicted. `predicted_remaining_min` is `None` (no remaining-time
+regressor yet — a §14 SHOULD).
+**State:** Merged to main; PR #3 CI fully GREEN (backend 60 passed incl. the
+artifact-load + determinism + no-retrain tests **on CI's Linux/UTC**, which is the
+real proof the committed binary + tz-normalization work cross-platform; frontend;
+e2e). Local: ruff + mypy clean; full suite 60 passed vs `berthiq_test`; frontend
+tsc/eslint/vitest(10)/provenance green; live smoke through the real endpoints against
+the seeded `berthiq` DB returns 26 active cases scored (probs 0.28–0.99) + narratives.
+`main` green and runnable.
+**Next step:** **M1-08 (risk board UI)** is unblocked — build against
+`risk_board.example.json` + `case_explanation.example.json`, then flip
+`NEXT_PUBLIC_USE_FIXTURES=false` to hit the two live routes. Add a
+`getCaseExplanation` accessor to `frontend/lib/api/contracts.ts`. Badge
+`miss_probability` as `predicted`. (Or take **M1-09 optimizer** on the backend.)
+**Gotchas:**
+- The committed `risk_board.example.json` is still the old illustrative example
+  (stage "Documentation Review", feature "documentation_returns"); the real endpoint
+  returns actual stage names + real feature names (`current_stage`, `reviewers_busy`,
+  `window_slack_min`, …). M1-07 only needed *shape* match (holds). Recommend M1-08
+  refresh both fixtures from live output — keep the two copies byte-identical
+  (`test_fixtures.py` enforces).
+- The endpoint scores only **active** cases (never reached "Berthed, cargo start").
+  `GET …/explanation` 404s for completed cases by design.
+- `load_default_model()` is `lru_cache`d — the artifact is read once per process. If
+  you retrain and want a running server to pick it up, restart it (or clear the cache).
+- If `backend/models/risk_model.joblib` is ever missing, the risk endpoints 500 on
+  first call — run `just train`. It's committed, so a clean checkout has it.
+- shap still emits 3 harmless matplotlib PendingDeprecationWarnings on import.
+
 ## 2026-08-24 — Abdul — M1-06 offline training pipeline (miss-risk model)
 **Task(s):** M1-06 (offline risk-model training).
 **Branch:** task/M1-06-training → squash-merged to main (PR #2, branch deleted).
