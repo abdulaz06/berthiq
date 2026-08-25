@@ -21,6 +21,10 @@ backend/openapi.json
 
 # ---- Model artifacts (trained offline, can be large) ----
 *.joblib
+# ...except the committed miss-risk model: it's small and deterministic (seed
+# 20260601), so a committed copy and a fresh `just train` agree, and CI/serving
+# just load it (M1-07). Regenerate with `just train`.
+!backend/models/risk_model.joblib
 
 # ---- Node / Next.js ----
 node_modules/

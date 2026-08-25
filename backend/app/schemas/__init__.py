@@ -13,7 +13,7 @@ from app.schemas.discovery import Bottleneck, DfgEdge, DfgNode, ProcessModel, Va
 from app.schemas.evidence import ConstraintRef, EvidenceRecord, ShapFactor
 from app.schemas.health import HealthResponse
 from app.schemas.jobs import JobStatus
-from app.schemas.risk import CaseRisk, RiskBoard
+from app.schemas.risk import CaseExplanation, CaseRisk, RiskBoard
 from app.schemas.scenarios import (
     Assignment,
     KpiDistribution,
@@ -27,6 +27,7 @@ from app.schemas.scenarios import (
 __all__ = [
     "Assignment",
     "Bottleneck",
+    "CaseExplanation",
     "CaseRisk",
     "ConstraintRef",
     "DataQualityReport",
