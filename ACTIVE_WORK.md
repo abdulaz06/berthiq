@@ -8,7 +8,7 @@ How to use it: pick the top task from **Ready to pick up** whose dependencies ar
 
 ## In progress
 
-_Nothing claimed right now._
+- [M1-07] Risk endpoint (inference + SHAP) — Abdul — branch task/M1-07-risk-endpoint — started 2026-08-25
 
 <!-- format:
 - [M1-09] berth optimizer — Abdul — branch task/M1-09-berth-optimizer — started 2026-08-14
