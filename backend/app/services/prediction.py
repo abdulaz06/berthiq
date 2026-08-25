@@ -25,9 +25,23 @@ so that deleting every event with ``start_ts > t`` leaves every feature unchange
 from __future__ import annotations
 
 import bisect
+import functools
+from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any, Protocol
+
+from app.schemas.evidence import ShapFactor
+from app.schemas.risk import CaseRisk, RiskBoard
+
+# The port's local wall clock (Khalifa / Asia/Dubai — fixed +04:00, no DST). All
+# timestamps are normalized to it so hour-of-day / night-shift features are
+# consistent no matter what timezone the DB session returns timestamps in (psycopg2
+# returns timestamptz in the *session* tz, which varies by machine — UTC in CI,
+# local elsewhere). Same absolute instant in → same local hour out → a deterministic
+# model. M1 is single-port; a multi-port build would take this from the port config.
+PORT_TZ = timezone(timedelta(hours=4))
 
 # --- The nine stages, in canonical order (mirrors the generator) -----------
 
@@ -90,7 +104,15 @@ FORBIDDEN_FEATURE_NAMES: frozenset[str] = frozenset(
 )
 
 LABEL_COLUMN = "label"
-META_COLUMNS: tuple[str, ...] = ("case_id", "prediction_time", "case_anchor")
+# Non-feature columns carried for splitting, scoring, and display. ``current_stage``
+# and ``vessel_type`` are *also* features, but the risk board needs their raw values
+# per row, so they are read directly from the feature columns at scoring time.
+META_COLUMNS: tuple[str, ...] = (
+    "case_id",
+    "prediction_time",
+    "case_anchor",
+    "service_window_end",
+)
 
 MODEL_VERSION = "risk-hgb-v1"
 
@@ -136,14 +158,16 @@ class _Ev:
     attributes: dict[str, Any]
 
 
-def _normalize(events: list[EventLike]) -> dict[str, list[_Ev]]:
+def _normalize(events: Sequence[EventLike]) -> dict[str, list[_Ev]]:
     by_case: dict[str, list[_Ev]] = {}
     for e in events:
+        end = e.end_ts.astimezone(PORT_TZ)
+        start = (e.start_ts.astimezone(PORT_TZ)) if e.start_ts is not None else end
         ev = _Ev(
             case_id=e.case_id,
             activity=e.activity,
-            start=e.start_ts if e.start_ts is not None else e.end_ts,
-            end=e.end_ts,
+            start=start,
+            end=end,
             resource_id=e.resource_id,
             status=e.status,
             seq=e.seq if e.seq is not None else 0,
@@ -245,10 +269,12 @@ def _prefix_features(prefix: list[_Ev], t: datetime) -> dict[str, Any]:
 
     # Service window end is set at stage 5; usable only once seen in the prefix.
     window_slack: float = float("nan")
+    sw_end_dt: datetime | None = None
     for e in prefix:
         sw_end = e.attributes.get("service_window_end")
         if sw_end:
-            window_slack = _mins(datetime.fromisoformat(sw_end), t)
+            sw_end_dt = datetime.fromisoformat(sw_end).astimezone(PORT_TZ)
+            window_slack = _mins(sw_end_dt, t)
             break
 
     # Weather severity is recorded from the anchorage stage on; latest seen value.
@@ -276,10 +302,12 @@ def _prefix_features(prefix: list[_Ev], t: datetime) -> dict[str, Any]:
         "window_slack_min": window_slack,
         "hour_of_day": float(t.hour),
         "is_night": 1.0 if (t.hour < 6 or t.hour >= 18) else 0.0,
+        # Meta (not a feature): the raw window end for display on the risk board.
+        "service_window_end": sw_end_dt,
     }
 
 
-def build_dataset(events: list[EventLike], *, include_active: bool = False) -> Any:
+def build_dataset(events: Sequence[EventLike], *, include_active: bool = False) -> Any:
     """Build the leakage-safe prefix dataset as a pandas DataFrame.
 
     One row per (completed case, prefix ending before the terminal berthing event)
@@ -467,3 +495,98 @@ class RiskModel:
             categorical_features=d["categorical_features"],
             model_version=d["model_version"],
         )
+
+
+# --- Inference: scoring active cases (M1-07) --------------------------------
+
+# The committed, deterministic artifact (seed 20260601). `just train` regenerates
+# it; a committed copy and a fresh train agree, so serving just loads this.
+DEFAULT_MODEL_PATH = Path(__file__).resolve().parents[2] / "models" / "risk_model.joblib"
+
+
+@functools.lru_cache(maxsize=1)
+def load_default_model() -> RiskModel:
+    """Load the committed artifact once and cache it (never trained in-request)."""
+    return RiskModel.load(DEFAULT_MODEL_PATH)
+
+
+def _active_case_rows(events: Sequence[EventLike]) -> Any:
+    """One row per still-active case (never reached the terminal stage): its latest
+    prefix — the case's current state, the point at which it is scored live."""
+    frame = build_dataset(events, include_active=True)
+    by_case = _normalize(events)
+    active_ids = {
+        cid
+        for cid, evs in by_case.items()
+        if not any(e.activity == _TERMINAL_STAGE for e in evs)
+    }
+    active = frame[frame["case_id"].isin(active_ids)]
+    if active.empty:
+        return active
+    # Latest prefix per case (max prediction_time, tie-broken by prefix length).
+    ordered = active.sort_values(["case_id", "prediction_time", "n_events"])
+    return ordered.groupby("case_id", as_index=False).tail(1).reset_index(drop=True)
+
+
+def _top_factors(shap_row: Any, feature_columns: list[str], *, top_k: int) -> list[ShapFactor]:
+    """Signed SHAP drivers for one row, largest |contribution| first. Positive SHAP
+    pushes toward a higher miss probability."""
+    order = sorted(range(len(feature_columns)), key=lambda j: -abs(float(shap_row[j])))
+    factors: list[ShapFactor] = []
+    for j in order[:top_k]:
+        c = round(float(shap_row[j]), 4)
+        factors.append(
+            ShapFactor(
+                feature=feature_columns[j],
+                contribution=c,
+                direction="increases_risk" if c >= 0 else "decreases_risk",
+            )
+        )
+    return factors
+
+
+def _cell(value: Any) -> Any:
+    """pandas NaN/NaT -> None for optional response fields."""
+    import pandas as pd
+
+    return None if value is None or (not isinstance(value, str) and pd.isna(value)) else value
+
+
+def score_risk_board(model: RiskModel, events: Sequence[EventLike], dataset_id: str) -> RiskBoard:
+    """Score every active case into a RiskBoard (inference only — no training)."""
+    rows = _active_case_rows(events)
+    cases: list[CaseRisk] = []
+    if not rows.empty:
+        proba = model.predict_proba(rows)
+        shap = model.shap_values(rows)
+        for i in range(len(rows)):
+            r = rows.iloc[i]
+            cases.append(
+                CaseRisk(
+                    case_id=str(r["case_id"]),
+                    vessel_type=_cell(r["vessel_type"]),
+                    current_stage=str(r["current_stage"]),
+                    miss_probability=round(float(proba[i]), 4),
+                    predicted_remaining_min=None,  # regressor is a later SHOULD (§14)
+                    top_factors=_top_factors(shap[i], model.feature_columns, top_k=4),
+                    service_window_end=_cell(r["service_window_end"]),
+                )
+            )
+    return RiskBoard(dataset_id=str(dataset_id), model_version=model.model_version, cases=cases)
+
+
+def score_case(
+    model: RiskModel, events: Sequence[EventLike], case_id: str, *, top_k: int = 8
+) -> tuple[float, str, list[ShapFactor]] | None:
+    """Score one active case: (miss_probability, current_stage, signed factors), or
+    ``None`` if the case is not an active case in this dataset."""
+    rows = _active_case_rows(events)
+    match = rows[rows["case_id"] == case_id] if not rows.empty else rows
+    if match.empty:
+        return None
+    row = match.iloc[[0]]
+    proba = float(model.predict_proba(row)[0])
+    shap = model.shap_values(row)[0]
+    return proba, str(row.iloc[0]["current_stage"]), _top_factors(
+        shap, model.feature_columns, top_k=top_k
+    )

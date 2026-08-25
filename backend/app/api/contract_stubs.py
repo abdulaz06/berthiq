@@ -25,7 +25,6 @@ from app.schemas import (
     DatasetSummary,
     JobStatus,
     OptimizationResult,
-    RiskBoard,
     ScenarioSpec,
     SimulationResult,
 )
@@ -63,9 +62,8 @@ def get_validation(dataset_id: str) -> DataQualityReport:
 
 
 # --- Prediction / risk (§5.3) ---------------------------------------------
-@router.get("/datasets/{dataset_id}/risk", response_model=RiskBoard)
-def get_risk(dataset_id: str) -> RiskBoard:
-    _not_implemented()
+# Implemented for real in app/api/risk.py (M1-07): GET /datasets/{id}/risk and
+# GET /cases/{case_id}/explanation. Stub removed.
 
 
 # --- Scenarios, optimization, simulation (§5.4) ---------------------------

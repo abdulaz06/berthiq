@@ -1,0 +1,27 @@
+{
+  "case_id": "KHL-2026-0588",
+  "miss_probability": 0.82,
+  "evidence": {
+    "kind": "risk",
+    "solver_status": null,
+    "objective_value": null,
+    "binding_constraints": [],
+    "penalized_soft_constraints": [],
+    "top_factors": [
+      { "feature": "current_stage", "contribution": 1.94, "direction": "increases_risk" },
+      { "feature": "reviewer_queue_len", "contribution": 0.63, "direction": "increases_risk" },
+      { "feature": "rework_count_so_far", "contribution": 0.41, "direction": "increases_risk" },
+      { "feature": "reviewers_busy", "contribution": 0.29, "direction": "increases_risk" },
+      { "feature": "loa", "contribution": 0.12, "direction": "increases_risk" },
+      { "feature": "window_slack_min", "contribution": -0.44, "direction": "decreases_risk" },
+      { "feature": "n_events", "contribution": -0.21, "direction": "decreases_risk" }
+    ],
+    "baseline_deltas": {},
+    "simulation_seed": null,
+    "replications": null,
+    "notes": [
+      "7 SHAP drivers: 5 increasing risk, 2 decreasing it"
+    ]
+  },
+  "narrative": "Port call KHL-2026-0588 has a high predicted risk of missing its service window (82%). Risk is driven up mainly by the current stage, the reviewer queue length and document rework so far. The time left in the service window and the number of steps completed pull it back down."
+}

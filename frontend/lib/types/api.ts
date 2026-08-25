@@ -72,6 +72,47 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/datasets/{dataset_id}/risk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Risk
+         * @description Score all active cases in the dataset (fast, synchronous, inference only).
+         */
+        get: operations["get_risk_api_datasets__dataset_id__risk_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/cases/{case_id}/explanation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Case Explanation
+         * @description Explain one active case: its miss probability, the SHAP evidence, and a
+         *     deterministic narrative rendered from that evidence.
+         */
+        get: operations["get_case_explanation_api_cases__case_id__explanation_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/datasets": {
         parameters: {
             query?: never;
@@ -115,23 +156,6 @@ export interface paths {
         };
         /** Get Validation */
         get: operations["get_validation_api_datasets__dataset_id__validation_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/datasets/{dataset_id}/risk": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get Risk */
-        get: operations["get_risk_api_datasets__dataset_id__risk_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -242,6 +266,21 @@ export interface components {
             /** Rank */
             rank: number;
             evidence: components["schemas"]["EvidenceRecord"];
+        };
+        /**
+         * CaseExplanation
+         * @description One case's miss-risk explanation: the probability, the structured evidence
+         *     (``kind='risk'`` with the SHAP drivers), and a deterministic narrative rendered
+         *     from that evidence by ``TemplateExplainer`` — never free text (§4).
+         */
+        CaseExplanation: {
+            /** Case Id */
+            case_id: string;
+            /** Miss Probability */
+            miss_probability: number;
+            evidence: components["schemas"]["EvidenceRecord"];
+            /** Narrative */
+            narrative: string;
         };
         /**
          * CaseRisk
@@ -777,6 +816,71 @@ export interface operations {
             };
         };
     };
+    get_risk_api_datasets__dataset_id__risk_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                dataset_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RiskBoard"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_case_explanation_api_cases__case_id__explanation_get: {
+        parameters: {
+            query: {
+                /** @description Dataset the case belongs to */
+                dataset_id: string;
+            };
+            header?: never;
+            path: {
+                case_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CaseExplanation"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_datasets_api_datasets_get: {
         parameters: {
             query?: never;
@@ -846,37 +950,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DataQualityReport"];
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    get_risk_api_datasets__dataset_id__risk_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                dataset_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RiskBoard"];
                 };
             };
             /** @description Validation Error */

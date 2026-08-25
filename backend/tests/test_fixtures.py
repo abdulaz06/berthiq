@@ -13,6 +13,7 @@ from pathlib import Path
 
 import pytest
 from app.schemas import (
+    CaseExplanation,
     DataQualityReport,
     DatasetSummary,
     EvidenceRecord,
@@ -37,6 +38,7 @@ FIXTURE_MODELS: dict[str, type[BaseModel]] = {
     "data_quality_report": DataQualityReport,
     "process_model": ProcessModel,
     "risk_board": RiskBoard,
+    "case_explanation": CaseExplanation,
     "scenario_spec": ScenarioSpec,
     "optimization_result": OptimizationResult,
     "simulation_result": SimulationResult,

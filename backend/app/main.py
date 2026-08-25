@@ -9,7 +9,7 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import contract_stubs, discovery, health
+from app.api import contract_stubs, discovery, health, risk
 from app.config import settings
 
 app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
@@ -26,6 +26,7 @@ app.add_middleware(
 app.include_router(health.router, prefix="/api")
 # Real M1 endpoints (replace their scaffold stubs below as they land).
 app.include_router(discovery.router, prefix="/api")
+app.include_router(risk.router, prefix="/api")
 # Scaffolding: stub routes that publish the M1 contract schemas into OpenAPI so
 # `just types` can generate frontend/lib/types/api.ts. Replaced route-by-route as
 # the real M1 endpoints land (see app/api/contract_stubs.py).
