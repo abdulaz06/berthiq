@@ -4,12 +4,13 @@ DB-backed tests need a real PostgreSQL (the schema uses UUID/JSONB/native enums,
 which SQLite can't stand in for). The test database URL is exactly
 ``settings.DATABASE_URL`` — the same source Alembic's env.py reads — so set
 ``DATABASE_URL`` in the environment to point tests at a throwaway database.
-When no database is reachable the DB fixtures ``skip`` rather than fail, so the
-suite stays green on a machine without Postgres configured; CI provides one.
+TEST_DATABASE_URL must explicitly match DATABASE_URL and name a disposable
+database ending in _test. Unreachable databases fail; they never silently skip.
 """
 
 from __future__ import annotations
 
+import os
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -18,7 +19,6 @@ import sqlalchemy as sa
 from alembic.config import Config
 from app.config import settings
 from sqlalchemy.engine import Engine
-from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session, sessionmaker
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
@@ -26,14 +26,17 @@ BACKEND_DIR = Path(__file__).resolve().parents[1]
 
 @pytest.fixture(scope="session")
 def db_engine() -> Iterator[Engine]:
-    """A session-wide engine, or skip the whole DB suite if none is reachable."""
+    """Fail closed before any destructive fixture can reach a non-test database."""
+    explicit = os.environ.get("TEST_DATABASE_URL")
+    database = sa.engine.make_url(settings.DATABASE_URL).database or ""
+    if explicit != settings.DATABASE_URL or not database.endswith("_test"):
+        pytest.fail(
+            "DB tests require matching TEST_DATABASE_URL and DATABASE_URL, with a "
+            "database name ending in _test. Use just test-backend."
+        )
     engine = sa.create_engine(settings.DATABASE_URL, future=True)
-    try:
-        with engine.connect() as conn:
-            conn.execute(sa.text("SELECT 1"))
-    except OperationalError as exc:
-        engine.dispose()
-        pytest.skip(f"No PostgreSQL reachable at DATABASE_URL ({exc.__class__.__name__}).")
+    with engine.connect() as conn:
+        conn.execute(sa.text("SELECT 1"))
     try:
         yield engine
     finally:

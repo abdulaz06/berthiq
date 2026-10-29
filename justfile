@@ -58,8 +58,12 @@ types:
 
 # Run backend + frontend test suites.
 test:
-    ( cd backend && "{{venv_python}}" -m pytest -q )
+    just test-backend
     npm --prefix frontend run test
+
+# Fail-closed database isolation, creating a dedicated test DB when needed.
+test-backend *ARGS="-q":
+    "{{venv_python}}" backend/scripts/test_backend.py {{ARGS}}
 
 # Run the golden-path end-to-end test (lands in M1-15).
 golden:
