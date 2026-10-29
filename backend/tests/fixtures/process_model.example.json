@@ -1,52 +1,523 @@
 {
-  "dataset_id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
+  "dataset_id": "866da630-2c3c-5c67-b061-e6f43fb8534d",
   "nodes": [
-    { "activity": "Pre-Arrival Notification", "frequency": 612, "median_duration_min": 15.0 },
-    { "activity": "Anchorage Wait", "frequency": 612, "median_duration_min": 384.0 },
-    { "activity": "Documentation Review", "frequency": 741, "median_duration_min": 172.0 },
-    { "activity": "Customs & Port Clearance", "frequency": 612, "median_duration_min": 96.0 },
-    { "activity": "Pilot Assignment", "frequency": 612, "median_duration_min": 42.0 },
-    { "activity": "Berthing", "frequency": 612, "median_duration_min": 63.0 },
-    { "activity": "Cargo Operations", "frequency": 612, "median_duration_min": 1080.0 },
-    { "activity": "Departure Clearance", "frequency": 612, "median_duration_min": 54.0 },
-    { "activity": "Unberthing", "frequency": 612, "median_duration_min": 48.0 }
+    {
+      "activity": "Documents submitted",
+      "frequency": 1019,
+      "median_duration_min": 286.9
+    },
+    {
+      "activity": "Completeness check",
+      "frequency": 1017,
+      "median_duration_min": 45.0
+    },
+    {
+      "activity": "Authority review",
+      "frequency": 888,
+      "median_duration_min": 227.0
+    },
+    {
+      "activity": "Port call request submitted",
+      "frequency": 624,
+      "median_duration_min": 0.0
+    },
+    {
+      "activity": "Arrival plan confirmed",
+      "frequency": 599,
+      "median_duration_min": 0.0
+    },
+    {
+      "activity": "Berth assigned",
+      "frequency": 598,
+      "median_duration_min": 0.0
+    },
+    {
+      "activity": "Berth planning",
+      "frequency": 598,
+      "median_duration_min": 126.0
+    },
+    {
+      "activity": "Berthed, cargo start",
+      "frequency": 598,
+      "median_duration_min": 0.0
+    },
+    {
+      "activity": "Vessel arrives / anchorage wait",
+      "frequency": 598,
+      "median_duration_min": 616.5
+    }
   ],
   "edges": [
-    { "source": "Pre-Arrival Notification", "target": "Anchorage Wait", "frequency": 612, "median_wait_min": 22.0, "p90_wait_min": 95.0 },
-    { "source": "Anchorage Wait", "target": "Documentation Review", "frequency": 612, "median_wait_min": 30.0, "p90_wait_min": 210.0 },
-    { "source": "Documentation Review", "target": "Customs & Port Clearance", "frequency": 612, "median_wait_min": 45.0, "p90_wait_min": 260.0 },
-    { "source": "Customs & Port Clearance", "target": "Documentation Review", "frequency": 129, "median_wait_min": 180.0, "p90_wait_min": 540.0 },
-    { "source": "Customs & Port Clearance", "target": "Pilot Assignment", "frequency": 612, "median_wait_min": 38.0, "p90_wait_min": 150.0 },
-    { "source": "Pilot Assignment", "target": "Berthing", "frequency": 612, "median_wait_min": 26.0, "p90_wait_min": 120.0 },
-    { "source": "Berthing", "target": "Cargo Operations", "frequency": 612, "median_wait_min": 18.0, "p90_wait_min": 70.0 },
-    { "source": "Cargo Operations", "target": "Departure Clearance", "frequency": 612, "median_wait_min": 40.0, "p90_wait_min": 165.0 },
-    { "source": "Departure Clearance", "target": "Unberthing", "frequency": 612, "median_wait_min": 20.0, "p90_wait_min": 80.0 }
+    {
+      "source": "Documents submitted",
+      "target": "Completeness check",
+      "frequency": 1017,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 0.0
+    },
+    {
+      "source": "Completeness check",
+      "target": "Authority review",
+      "frequency": 888,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 1142.2
+    },
+    {
+      "source": "Port call request submitted",
+      "target": "Documents submitted",
+      "frequency": 620,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 0.0
+    },
+    {
+      "source": "Authority review",
+      "target": "Arrival plan confirmed",
+      "frequency": 599,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 0.0
+    },
+    {
+      "source": "Arrival plan confirmed",
+      "target": "Berth planning",
+      "frequency": 598,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 0.0
+    },
+    {
+      "source": "Berth assigned",
+      "target": "Vessel arrives / anchorage wait",
+      "frequency": 598,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 263.0
+    },
+    {
+      "source": "Berth planning",
+      "target": "Berth assigned",
+      "frequency": 598,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 0.0
+    },
+    {
+      "source": "Vessel arrives / anchorage wait",
+      "target": "Berthed, cargo start",
+      "frequency": 598,
+      "median_wait_min": 174.9,
+      "p90_wait_min": 243.7
+    },
+    {
+      "source": "Authority review",
+      "target": "Documents submitted",
+      "frequency": 288,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 0.0
+    },
+    {
+      "source": "Completeness check",
+      "target": "Documents submitted",
+      "frequency": 111,
+      "median_wait_min": 0.0,
+      "p90_wait_min": 0.0
+    }
   ],
   "variants": [
     {
       "sequence": [
-        "Pre-Arrival Notification", "Anchorage Wait", "Documentation Review",
-        "Customs & Port Clearance", "Pilot Assignment", "Berthing",
-        "Cargo Operations", "Departure Clearance", "Unberthing"
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
       ],
-      "count": 483,
-      "median_total_min": 2036.0
+      "count": 381,
+      "median_total_min": 1235.5
     },
     {
       "sequence": [
-        "Pre-Arrival Notification", "Anchorage Wait", "Documentation Review",
-        "Customs & Port Clearance", "Documentation Review", "Customs & Port Clearance",
-        "Pilot Assignment", "Berthing", "Cargo Operations", "Departure Clearance", "Unberthing"
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
       ],
-      "count": 129,
-      "median_total_min": 2494.0
+      "count": 87,
+      "median_total_min": 1759.9
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 25,
+      "median_total_min": 3116.8
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 22,
+      "median_total_min": 1281.0
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 17,
+      "median_total_min": 2587.4
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check"
+      ],
+      "count": 16,
+      "median_total_min": 298.8
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 14,
+      "median_total_min": 2896.8
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 11,
+      "median_total_min": 2106.3
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 11,
+      "median_total_min": 1758.0
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 8,
+      "median_total_min": 2472.9
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 7,
+      "median_total_min": 2919.2
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 5,
+      "median_total_min": 2664.2
+    },
+    {
+      "sequence": [
+        "Port call request submitted"
+      ],
+      "count": 4,
+      "median_total_min": 0.0
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 3,
+      "median_total_min": 2731.9
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 3,
+      "median_total_min": 1738.9
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check"
+      ],
+      "count": 2,
+      "median_total_min": 588.8
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 2,
+      "median_total_min": 3441.6
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed",
+        "Berth planning",
+        "Berth assigned",
+        "Vessel arrives / anchorage wait",
+        "Berthed, cargo start"
+      ],
+      "count": 2,
+      "median_total_min": 2305.6
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted"
+      ],
+      "count": 1,
+      "median_total_min": 439.9
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review"
+      ],
+      "count": 1,
+      "median_total_min": 4178.6
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted"
+      ],
+      "count": 1,
+      "median_total_min": 706.2
+    },
+    {
+      "sequence": [
+        "Port call request submitted",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Documents submitted",
+        "Completeness check",
+        "Authority review",
+        "Arrival plan confirmed"
+      ],
+      "count": 1,
+      "median_total_min": 1184.8
     }
   ],
   "bottlenecks": [
     {
-      "activity": "Documentation Review",
-      "metric": "rework_rate",
-      "value": { "value": 21.1, "unit": "percent", "provenance": "observed" },
+      "activity": "Authority review",
+      "metric": "resource_load",
+      "value": {
+        "value": 5.0,
+        "unit": "hours",
+        "provenance": "observed"
+      },
       "rank": 1,
       "evidence": {
         "kind": "bottleneck",
@@ -59,15 +530,19 @@
         "simulation_seed": null,
         "replications": null,
         "notes": [
-          "129 of 612 cases return from Customs & Port Clearance to Documentation Review",
-          "Rework adds a median of 180 minutes before clearance can resume"
+          "3 resources serve 888 Authority review tasks; cases wait a mean of 5.0h (p90 19.0h) to begin",
+          "Total queue for this stage is 4,443h - the largest controllable delay in the process"
         ]
       }
     },
     {
-      "activity": "Anchorage Wait",
-      "metric": "median_wait",
-      "value": { "value": 6.4, "unit": "hours", "provenance": "observed" },
+      "activity": "Berthed, cargo start",
+      "metric": "resource_load",
+      "value": {
+        "value": 3.1,
+        "unit": "hours",
+        "provenance": "observed"
+      },
       "rank": 2,
       "evidence": {
         "kind": "bottleneck",
@@ -80,14 +555,101 @@
         "simulation_seed": null,
         "replications": null,
         "notes": [
-          "Median anchorage wait is 6.4 hours, with a p90 of 3.5 hours before Documentation Review begins"
+          "3 resources serve 598 Berthed, cargo start tasks; cases wait a mean of 3.1h (p90 4.1h) to begin",
+          "Total queue for this stage is 1,842h"
+        ]
+      }
+    },
+    {
+      "activity": "Documents submitted",
+      "metric": "rework_rate",
+      "value": {
+        "value": 35.8,
+        "unit": "percent",
+        "provenance": "observed"
+      },
+      "rank": 3,
+      "evidence": {
+        "kind": "bottleneck",
+        "solver_status": null,
+        "objective_value": null,
+        "binding_constraints": [],
+        "penalized_soft_constraints": [],
+        "top_factors": [],
+        "baseline_deltas": {},
+        "simulation_seed": null,
+        "replications": null,
+        "notes": [
+          "222 of 620 cases pass through Documents submitted more than once (35.8% rework)",
+          "Redone work in failed iterations adds 1,643h of service"
+        ]
+      }
+    },
+    {
+      "activity": "Vessel arrives / anchorage wait",
+      "metric": "median_wait",
+      "value": {
+        "value": 0.0,
+        "unit": "hours",
+        "provenance": "observed"
+      },
+      "rank": 4,
+      "evidence": {
+        "kind": "bottleneck",
+        "solver_status": null,
+        "objective_value": null,
+        "binding_constraints": [],
+        "penalized_soft_constraints": [],
+        "top_factors": [],
+        "baseline_deltas": {},
+        "simulation_seed": null,
+        "replications": null,
+        "notes": [
+          "Median wait to begin Vessel arrives / anchorage wait is 0.0h (p90 4.4h) across 598 cases"
+        ]
+      }
+    },
+    {
+      "activity": "Completeness check",
+      "metric": "rework_rate",
+      "value": {
+        "value": 35.9,
+        "unit": "percent",
+        "provenance": "observed"
+      },
+      "rank": 5,
+      "evidence": {
+        "kind": "bottleneck",
+        "solver_status": null,
+        "objective_value": null,
+        "binding_constraints": [],
+        "penalized_soft_constraints": [],
+        "top_factors": [],
+        "baseline_deltas": {},
+        "simulation_seed": null,
+        "replications": null,
+        "notes": [
+          "222 of 619 cases pass through Completeness check more than once (35.9% rework)",
+          "Redone work in failed iterations adds 244h of service"
         ]
       }
     }
   ],
   "metrics": {
-    "throughput_per_week": { "value": 23.5, "unit": "count", "provenance": "observed" },
-    "rework_rate": { "value": 21.1, "unit": "percent", "provenance": "observed" },
-    "avg_utilization": { "value": 78.0, "unit": "percent", "provenance": "observed" }
+    "throughput_per_week": {
+      "value": 23.31,
+      "unit": "count",
+      "provenance": "observed"
+    },
+    "rework_rate": {
+      "value": 35.6,
+      "unit": "percent",
+      "provenance": "observed"
+    },
+    "avg_utilization": {
+      "value": 23.0,
+      "unit": "percent",
+      "provenance": "observed"
+    }
   }
 }

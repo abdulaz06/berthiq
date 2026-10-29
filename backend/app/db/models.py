@@ -131,6 +131,7 @@ class Dataset(Base):
     time_range_start: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
     time_range_end: Mapped[datetime | None] = mapped_column(sa.DateTime(timezone=True))
     stats: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    owner_token: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), index=True)
     created_at: Mapped[datetime] = mapped_column(
         sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")
     )
@@ -262,7 +263,9 @@ class Job(Base):
     )
     # `scenarios` doesn't exist yet (later milestone); the FK to it is added with
     # that table. The column is present now per the contract in DATABASE.md §7.1.
-    scenario_id: Mapped[int | None] = mapped_column(sa.BigInteger)
+    scenario_id: Mapped[int | None] = mapped_column(
+        sa.BigInteger, ForeignKey("scenarios.id", ondelete="CASCADE")
+    )
     progress: Mapped[Decimal] = mapped_column(sa.Numeric, nullable=False, server_default="0")
     result_type: Mapped[str | None] = mapped_column(sa.Text)
     result_id: Mapped[str | None] = mapped_column(sa.Text)
@@ -280,3 +283,40 @@ class Job(Base):
     dataset: Mapped[Dataset | None] = relationship(back_populates="jobs")
 
     __table_args__ = (Index("idx_jobs_status", "status"),)
+
+
+class ScenarioRow(Base):
+    """Immutable input snapshot, scoped to an unguessable anonymous session token."""
+
+    __tablename__ = "scenarios"
+    id: Mapped[int] = mapped_column(sa.BigInteger, primary_key=True, autoincrement=True)
+    dataset_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("datasets.id", ondelete="CASCADE"), nullable=False
+    )
+    owner_token: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
+    spec: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    snapshot: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        sa.DateTime(timezone=True), server_default=func.now()
+    )
+    expires_at: Mapped[datetime] = mapped_column(
+        sa.DateTime(timezone=True), nullable=False, index=True
+    )
+
+
+class AnalysisRun(Base):
+    """Versioned immutable result envelope; payload validates against its Pydantic contract."""
+
+    __tablename__ = "analysis_runs"
+    id: Mapped[int] = mapped_column(sa.BigInteger, primary_key=True, autoincrement=True)
+    scenario_id: Mapped[int] = mapped_column(
+        sa.BigInteger, ForeignKey("scenarios.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    kind: Mapped[str] = mapped_column(sa.Text, nullable=False)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        sa.DateTime(timezone=True), server_default=func.now()
+    )
+    __table_args__ = (
+        sa.CheckConstraint("kind IN ('optimization', 'simulation')", name="ck_run_kind"),
+    )

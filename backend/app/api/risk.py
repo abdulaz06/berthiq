@@ -16,9 +16,10 @@ import uuid
 from typing import Annotated
 
 import sqlalchemy as sa
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
+from app.api.dependencies import ready_dataset
 from app.db import Dataset, Event, get_db
 from app.schemas import CaseExplanation, RiskBoard
 from app.services import prediction
@@ -55,9 +56,13 @@ def _load_events(session: Session, dataset_id: uuid.UUID) -> list[Event]:
 
 
 @router.get("/datasets/{dataset_id}/risk", response_model=RiskBoard)
-def get_risk(dataset_id: str, session: DbSession) -> RiskBoard:
+def get_risk(
+    dataset_id: str,
+    session: DbSession,
+    x_demo_session: Annotated[uuid.UUID | None, Header()] = None,
+) -> RiskBoard:
     """Score all active cases in the dataset (fast, synchronous, inference only)."""
-    dataset = _dataset_or_404(session, dataset_id)
+    dataset = ready_dataset(session, dataset_id, x_demo_session)
     events = _load_events(session, dataset.id)
     model = prediction.load_default_model()
     return prediction.score_risk_board(model, events, str(dataset.id))
@@ -68,10 +73,11 @@ def get_case_explanation(
     case_id: str,
     session: DbSession,
     dataset_id: Annotated[str, Query(description="Dataset the case belongs to")],
+    x_demo_session: Annotated[uuid.UUID | None, Header()] = None,
 ) -> CaseExplanation:
     """Explain one active case: its miss probability, the SHAP evidence, and a
     deterministic narrative rendered from that evidence."""
-    dataset = _dataset_or_404(session, dataset_id)
+    dataset = ready_dataset(session, dataset_id, x_demo_session)
     events = _load_events(session, dataset.id)
     model = prediction.load_default_model()
 

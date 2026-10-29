@@ -13,6 +13,8 @@ venv_python := if os_family() == "windows" {
     justfile_directory() / "backend/.venv/bin/python"
 }
 sys_python := if os_family() == "windows" { "python" } else { "python3" }
+npm_cmd := if os_family() == "windows" { "npm.cmd" } else { "npm" }
+npx_cmd := if os_family() == "windows" { "npx.cmd" } else { "npx" }
 
 # Default: list available recipes.
 default:
@@ -23,8 +25,8 @@ setup:
     {{sys_python}} -m venv backend/.venv
     "{{venv_python}}" -m pip install --upgrade pip
     "{{venv_python}}" -m pip install -e "./backend[dev]"
-    npm install
-    npm install --prefix frontend
+    {{npm_cmd}} install
+    {{npm_cmd}} install --prefix frontend
     @echo ""
     @echo "Setup done. Next: ensure Postgres is running, copy .env.example to .env,"
     @echo "then 'just migrate' (once M0-2 lands) and 'just dev'."
@@ -34,7 +36,7 @@ setup:
 #
 # Run backend + frontend together with ONE command on both OSes.
 dev:
-    npx concurrently -k -n backend,frontend -c blue,green "\"{{venv_python}}\" -m uvicorn app.main:app --app-dir backend --reload --port 8000" "npm --prefix frontend run dev"
+    {{npx_cmd}} concurrently -k -n backend,frontend -c blue,green "\"{{venv_python}}\" -m uvicorn app.main:app --app-dir backend --reload --port 8000" "npm --prefix frontend run dev"
 
 # Apply Alembic migrations (schema lands in M0-2).
 migrate:
@@ -53,13 +55,13 @@ train *ARGS:
 # api.ts is committed and generated — never hand-edit it (a banner says so).
 types:
     "{{venv_python}}" -c "import json, pathlib, sys; sys.path.insert(0, 'backend'); from app.main import app; pathlib.Path('backend/openapi.json').write_text(json.dumps(app.openapi(), indent=2))"
-    cd frontend && npx openapi-typescript ../backend/openapi.json -o lib/types/api.ts
+    cd frontend && node node_modules/openapi-typescript/bin/cli.js ../backend/openapi.json -o lib/types/api.ts
     cd frontend && node scripts/prepend-generated-banner.mjs lib/types/api.ts
 
 # Run backend + frontend test suites.
 test:
     just test-backend
-    npm --prefix frontend run test
+    {{npm_cmd}} --prefix frontend run test
 
 # Fail-closed database isolation, creating a dedicated test DB when needed.
 test-backend *ARGS="-q":

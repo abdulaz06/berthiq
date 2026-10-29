@@ -5,7 +5,26 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
+
+
+class ColumnMapping(BaseModel):
+    """Canonical field -> source column; attribute_map is source -> attribute."""
+
+    model_config = ConfigDict(extra="forbid")
+    case_id: str = Field(default="", max_length=200)
+    activity: str = Field(default="", max_length=200)
+    end_ts: str = Field(default="", max_length=200)
+    start_ts: str | None = None
+    resource_id: str | None = None
+    status: str | None = None
+    attribute_map: dict[str, str] = Field(default_factory=dict, max_length=40)
+
+
+class MappingPreview(BaseModel):
+    columns: list[str]
+    suggested: ColumnMapping
+    sample_rows: list[dict[str, str]]
 
 
 class DatasetSummary(BaseModel):

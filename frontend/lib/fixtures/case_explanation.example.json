@@ -1,6 +1,6 @@
 {
-  "case_id": "KHL-2026-0588",
-  "miss_probability": 0.82,
+  "case_id": "KHL-0595",
+  "miss_probability": 0.9925,
   "evidence": {
     "kind": "risk",
     "solver_status": null,
@@ -8,20 +8,53 @@
     "binding_constraints": [],
     "penalized_soft_constraints": [],
     "top_factors": [
-      { "feature": "current_stage", "contribution": 1.94, "direction": "increases_risk" },
-      { "feature": "reviewer_queue_len", "contribution": 0.63, "direction": "increases_risk" },
-      { "feature": "rework_count_so_far", "contribution": 0.41, "direction": "increases_risk" },
-      { "feature": "reviewers_busy", "contribution": 0.29, "direction": "increases_risk" },
-      { "feature": "loa", "contribution": 0.12, "direction": "increases_risk" },
-      { "feature": "window_slack_min", "contribution": -0.44, "direction": "decreases_risk" },
-      { "feature": "n_events", "contribution": -0.21, "direction": "decreases_risk" }
+      {
+        "feature": "current_stage",
+        "contribution": 2.2682,
+        "direction": "increases_risk"
+      },
+      {
+        "feature": "n_events",
+        "contribution": -0.9415,
+        "direction": "decreases_risk"
+      },
+      {
+        "feature": "reviewers_busy",
+        "contribution": 0.6039,
+        "direction": "increases_risk"
+      },
+      {
+        "feature": "loa",
+        "contribution": 0.4718,
+        "direction": "increases_risk"
+      },
+      {
+        "feature": "active_cases",
+        "contribution": 0.4414,
+        "direction": "increases_risk"
+      },
+      {
+        "feature": "cases_awaiting_berth",
+        "contribution": -0.3819,
+        "direction": "decreases_risk"
+      },
+      {
+        "feature": "vessel_type",
+        "contribution": -0.2282,
+        "direction": "decreases_risk"
+      },
+      {
+        "feature": "reviewer_queue_len",
+        "contribution": 0.1483,
+        "direction": "increases_risk"
+      }
     ],
     "baseline_deltas": {},
     "simulation_seed": null,
     "replications": null,
     "notes": [
-      "7 SHAP drivers: 5 increasing risk, 2 decreasing it"
+      "8 SHAP drivers: 5 increasing risk, 3 decreasing it"
     ]
   },
-  "narrative": "Port call KHL-2026-0588 has a high predicted risk of missing its service window (82%). Risk is driven up mainly by the current stage, the reviewer queue length and document rework so far. The time left in the service window and the number of steps completed pull it back down."
+  "narrative": "Port call KHL-0595 has a high predicted risk of missing its service window (99%). Risk is driven up mainly by the current stage, how many reviewers are currently busy and the vessel length (LOA). The number of steps completed and the number of calls awaiting a berth pull it back down."
 }

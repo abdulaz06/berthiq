@@ -1,6 +1,6 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Branch: `codex/berthiq-launch-sprint`.
+Active since 2026-10-28 (America/Chicago). Current branch: `codex/decision-engine`.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -23,10 +23,10 @@ longer apply. Do not mark a feature complete without executable evidence.
 
 | Area | Verified state |
 | --- | --- |
-| A: instructions, branch, audit | Instructions/tracker created; baseline verification in progress |
-| B: ingestion and validation | Missing at takeover |
-| B: optimizer, simulation, evidence | Missing at takeover |
-| B: scenarios, jobs, exports, map API | Missing at takeover |
+| A: instructions, branch, audit | Complete; PR #4 merged after all CI checks passed |
+| B: ingestion and validation | CSV/XLSX, mapping, validation, immutable persistence; tested |
+| B: optimizer, simulation, evidence | Joint reviewer/berth CP-SAT + matched SimPy; tested; historical simulator validation remains |
+| B: scenarios, jobs, exports, map API | Durable jobs/results, snapshots, session scope, quotas, TTL, export, replay API; tested |
 | C: design system, landing, navigation | Missing at takeover |
 | D: map, selection, event playback | Missing at takeover |
 | E: process, risk, studio, comparisons | Missing at takeover |
@@ -50,8 +50,32 @@ Use explicit bounded jobs and persist result/evidence payloads in PostgreSQL.
 
 ## Current implementation work
 
-CSV/XLSX parsing, mapping and validation service is being implemented; not yet
-verified or included in the safety checkpoint. OR-Tools/SimPy dependencies installed.
+2026-10-29: backend decision-engine milestone implemented. CSV/XLSX parsing has
+5 MiB/50k-row bounds, zipped workbook expansion checks, mapping, fatal/warning
+validation, private immutable versions. Public uploads default off. CP-SAT handles
+berth type/length/draft, arrivals, approvals, reviewer shifts and caps, pilot
+capacity, closures, observed commitments, locks, priorities, all five objective
+terms, and FIFO/greedy/no-change baselines. Returned schedules are independently
+checked. UNKNOWN is distinct from INFEASIBLE. Parallel review is explicitly
+rejected, never silently accepted. SimPy uses matched per-case random streams,
+review queues/rework, pilots, berth occupancy and weather-adjusted service. Reports
+distributions and staffing/overtime/imbalance costs. Current dataset is already
+late at cutoff: no claim that every KPI improves.
+
+Scenarios snapshot configuration and observable inputs, expire after 24h, and use
+unguessable UUID session tokens. Two worker slots; per-IP write limits, per-session
+and global row quotas; restart recovery; private JSON export/reset. Run one backend
+process (no multiprocess job recovery). Contract stubs removed. API operations data
+and readiness endpoint implemented. `just types` repaired for Windows npx/WSL issue.
+
+80 backend tests pass on disposable PostgreSQL, zero skips; Ruff and mypy pass.
+Frontend generated types and 10 existing unit tests pass. `refresh_fixtures.py`
+rebuilds paired fixtures from real service outputs; fixture runtime is zero by
+convention. Existing HGB artifact untouched. Verified stored-model held-out metrics:
+PR-AUC 0.8777, AUROC 0.9154, Brier 0.1030. Reference 20-replication simulation:
+62.874h → 45.067h waiting; 0% → 0% compliance; 0 → 0 conflicts. More staffed reviewer
+hours are a real cost. Exact evaluation in `REFERENCE_EVALUATION.json`.
+
 The generator's active Case summaries contain post-cutoff attributes; new decision
 services must derive state solely from observed event prefixes. Existing prediction
 already follows that boundary. Preserve model/generator until a deliberate revision.
@@ -75,6 +99,15 @@ an internal-only application).
 
 ## Exact next action
 
-Repair destructive-test safety, run baseline backend/frontend checks, inspect
-generator attributes and Caravan reference source, then implement ingestion and
-the bounded CP-SAT/SimPy decision loop before the full console.
+Push the decision-engine milestone, create/monitor its PR, fix any CI failures and
+merge when green. Continue frontend implementation on the next branch: build dark
+design system, real API state and desktop/mobile console, map and playback, then
+all analysis/scenario screens. npm install of maplibre-gl/@xyflow/react/lucide-react
+is in progress (frontend package changes belong to that next milestone).
+
+Remaining backend launch work: simulator historical-ground-truth validation
+experiment, stronger hostile-upload coverage, stale-job timeout recovery, production
+dependency lock/startup/seed configuration, full browser golden path. No visual
+verification or deployment has occurred yet. Read-only Caravan reference clone:
+Windows temp `berthiq-caravan-reference`; source inspected for tokens, landing,
+case study, navigation and safe-area/motion patterns; never modify it.

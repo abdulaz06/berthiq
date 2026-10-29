@@ -18,13 +18,16 @@ import uuid
 from decimal import Decimal
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status
+import sqlalchemy as sa
+from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.api.dependencies import ready_dataset
 from app.db import Dataset, Job, JobType, get_db
 from app.db import JobStatus as JobStatusEnum
 from app.schemas import JobStatus, ProcessModel
 from app.services import discovery
+from app.services.jobs import status as job_response
 
 router = APIRouter(tags=["discovery"])
 
@@ -45,10 +48,25 @@ def _dataset_or_404(session: Session, dataset_id: str) -> Dataset:
 
 
 @router.post("/datasets/{dataset_id}/discover", response_model=JobStatus)
-def discover(dataset_id: str, session: DbSession) -> JobStatus:
+def discover(
+    dataset_id: str,
+    session: DbSession,
+    x_demo_session: Annotated[uuid.UUID | None, Header()] = None,
+) -> JobStatus:
     """Discover and cache the process model for a dataset. Runs synchronously and
     returns an already-``succeeded`` discovery job pointing at the result."""
-    dataset = _dataset_or_404(session, dataset_id)
+    dataset = ready_dataset(session, dataset_id, x_demo_session)
+    previous = session.scalar(
+        sa.select(Job)
+        .where(
+            Job.dataset_id == dataset.id,
+            Job.job_type == JobType.discovery,
+            Job.status == JobStatusEnum.succeeded,
+        )
+        .order_by(Job.created_at.desc())
+    )
+    if previous and discovery.get_saved_process_model(session, dataset_id) is not None:
+        return job_response(previous)
 
     job = Job(job_type=JobType.discovery, status=JobStatusEnum.running, dataset_id=dataset.id)
     session.add(job)
@@ -82,9 +100,13 @@ def discover(dataset_id: str, session: DbSession) -> JobStatus:
 
 
 @router.get("/discovery/{dataset_id}", response_model=ProcessModel)
-def get_discovery(dataset_id: str, session: DbSession) -> ProcessModel:
+def get_discovery(
+    dataset_id: str,
+    session: DbSession,
+    x_demo_session: Annotated[uuid.UUID | None, Header()] = None,
+) -> ProcessModel:
     """Return the cached process model for a dataset (404 if not yet discovered)."""
-    _dataset_or_404(session, dataset_id)
+    ready_dataset(session, dataset_id, x_demo_session)
     model = discovery.get_saved_process_model(session, dataset_id)
     if model is None:
         raise HTTPException(

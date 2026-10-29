@@ -1,0 +1,86 @@
+{
+  "model": {
+    "name": "committed risk-hgb-v1",
+    "pr_auc": 0.8776852324125016,
+    "auroc": 0.9153794940079893,
+    "brier": 0.10297101486173611
+  },
+  "test_prefixes": 1121,
+  "event_count": 6539,
+  "active_cases": 26,
+  "bottleneck": "Authority review",
+  "scenario": {
+    "dataset_id": "866da630-2c3c-5c67-b061-e6f43fb8534d",
+    "name": "Khalifa / five-reviewer capacity experiment",
+    "constraints": {
+      "reviewer_count": 5,
+      "reviewer_shift_caps": null,
+      "locked_berths": null,
+      "allow_parallel_low_risk": false,
+      "priority_vessels": [],
+      "berth_closures": [],
+      "horizon_hours": 168
+    },
+    "objective_weights": {
+      "waiting_time": 1.0,
+      "tardiness": 4.0,
+      "reviewer_overtime": 2.0,
+      "workload_imbalance": 0.1,
+      "plan_changes": 30.0
+    }
+  },
+  "objective": 150158.0,
+  "solver_status": "FEASIBLE",
+  "simulation": {
+    "avg_waiting_time": [
+      {
+        "value": 62.87400641025641,
+        "unit": "hours",
+        "provenance": "simulated"
+      },
+      {
+        "value": 45.06730769230769,
+        "unit": "hours",
+        "provenance": "simulated"
+      }
+    ],
+    "window_compliance": [
+      {
+        "value": 0.0,
+        "unit": "percent",
+        "provenance": "simulated"
+      },
+      {
+        "value": 0.0,
+        "unit": "percent",
+        "provenance": "simulated"
+      }
+    ],
+    "berth_conflicts": [
+      {
+        "value": 0.0,
+        "unit": "count",
+        "provenance": "simulated"
+      },
+      {
+        "value": 0.0,
+        "unit": "count",
+        "provenance": "simulated"
+      }
+    ]
+  },
+  "limitations": [
+    "Active state uses observed event prefixes only; hidden ground truth is never read.",
+    "Unknown ETA, review, planning, pilot and occupancy durations use configured means.",
+    "Service windows not yet observed use request + mean travel + window tolerance.",
+    "Berth occupancy after recorded cargo start is assumed from the configured mean.",
+    "Berth occupation includes pilot approach and cargo service; targets apply to cargo start.",
+    "Review is non-preemptive within configured shifts; parallel review is not modeled.",
+    "Baseline preserves observed berth choices and configured reviewer capacity; missing choices are completed with FIFO. Closures apply to both sides.",
+    "Identical per-case random streams drive both plans, independent of execution order.",
+    "Review rework uses observable missing-document counts; up to three attempts.",
+    "Schedules show replication one; headline KPIs summarize every replication.",
+    "Resource queues prevent overlaps on both sides; zero conflicts may remain zero.",
+    "Variation intervals describe sampled outcomes, not confidence in real-world savings."
+  ]
+}
