@@ -20,31 +20,24 @@ npx_cmd := if os_family() == "windows" { "npx.cmd" } else { "npx" }
 default:
     @just --list
 
-# One-time setup: Python venv + backend deps + Node deps (Postgres installed separately).
+# Preserves existing .env and venv; refuses mixed Python ABIs.
 setup:
-    {{sys_python}} -m venv backend/.venv
-    "{{venv_python}}" -m pip install --upgrade pip
-    "{{venv_python}}" -m pip install -e "./backend[dev]"
-    {{npm_cmd}} install
-    {{npm_cmd}} install --prefix frontend
-    @echo ""
-    @echo "Setup done. Next: ensure Postgres is running, copy .env.example to .env,"
-    @echo "then 'just migrate' (once M0-2 lands) and 'just dev'."
+    node scripts/setup.mjs
 
-# npx concurrently keeps it portable — no shell backgrounding (&), which macOS
-# and Windows disagree about.
-#
-# Run backend + frontend together with ONE command on both OSes.
+doctor:
+    node scripts/doctor.mjs
+
+# Direct argv process spawning fixes Windows paths with spaces.
 dev:
-    {{npx_cmd}} concurrently -k -n backend,frontend -c blue,green "\"{{venv_python}}\" -m uvicorn app.main:app --app-dir backend --reload --port 8000" "npm --prefix frontend run dev"
+    node scripts/dev.mjs
 
 # Apply Alembic migrations (schema lands in M0-2).
 migrate:
     cd backend && "{{venv_python}}" -m alembic upgrade head
 
-# (Re)generate + load the deterministic built-in Khalifa dataset (M0-6).
+# Seed missing built-in data without deleting existing scenarios or datasets.
 seed:
-    cd backend && "{{venv_python}}" scripts/generate_dataset.py
+    cd backend && "{{venv_python}}" scripts/prepare_demo.py
 
 # Train the miss-risk model offline; writes backend/models/risk_model.joblib (M1-06).
 # Reads the seeded DB by default; `just train --generate` trains from khalifa.json (no DB).

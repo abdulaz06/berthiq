@@ -1,6 +1,6 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Current branch: `codex/demo-entry`.
+Active since 2026-10-28 (America/Chicago). Current branch: `codex/production-readiness`.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -27,10 +27,10 @@ longer apply. Do not mark a feature complete without executable evidence.
 | B: ingestion and validation | CSV/XLSX, mapping, validation, immutable persistence; tested |
 | B: optimizer, simulation, evidence | Joint reviewer/berth CP-SAT + matched SimPy; tested; historical simulator validation remains |
 | B: scenarios, jobs, exports, map API | Durable jobs/results, snapshots, session scope, quotas, TTL, export, replay API; tested |
-| C: design system, landing, navigation | Dark console tokens and responsive navigation; public landing still pending |
+| C: design system, landing, navigation | Public landing, case study, guided demo and responsive maritime console merged in #8 |
 | D: map, selection, event playback | MapLibre, OSM basemap/fallback, vessel/berth selection, prefix-safe replay, mobile detail sheet |
-| E: process, risk, studio, comparisons | Interactive discovery; private scenario/solver/simulation/export; Gantt and matched comparison implemented, final milestone verification in progress |
-| F: integrated E2E, CI, hosting, assets | Missing at takeover |
+| E: process, risk, studio, comparisons | Complete real journey merged in #7; tested against PostgreSQL |
+| F: integrated E2E, CI, hosting, assets | Seven real browser tests in CI; screenshots committed; deployment preparation underway, no verified hosting |
 
 ## Architecture decisions
 
@@ -152,12 +152,36 @@ private CSV upload/mapping/use, denied anonymous access and fatal timestamp hand
 1920x1080 and 390x844 screenshots inspected in DOCS/media. Final metadata check and
 milestone commit/CI are next. Existing `.env.example` deletion remains unstaged.
 
+## Production runtime and dependency security — in verification
+
+PR #8 verified green and squash-merged as `bd2c6b1`. Preserved the user's local
+configuration, repaired Python 3.12 venv and unrelated `.env.example` deletion.
+Updated Next/React, Vitest/Vite, ESLint, FastAPI/Starlette and pytest; npm audit and
+pip-audit report zero known dependency vulnerabilities. Universal Python lock and
+Node 24/Python 3.12 runtime declarations added. Pinned scikit-learn 1.9.0 to match
+the committed artifact (no retraining). Flat ESLint and OXC JSX config migrated.
+
+Direct-argv Node launcher replaces nested-shell concurrently commands. `just dev`
+started both servers on Windows; API readiness, homepage and console returned 200.
+Ctrl+C stopped the owned servers (Git shell reports interrupt as exit 512).
+Doctor checks mixed extension ABIs, native imports and model loading. Setup keeps
+existing venv/configuration and refuses mixed ABIs; repair steps preserve a backup.
+`just seed` now inserts only if missing, preserving scenario/dataset history.
+Production preflight requires explicit DB/HTTPS origins, migration head, seeded
+data and loadable model. Release/start/setup guidance is in SETUP.md/DEPLOYMENT.md.
+
+Initial upgrade regression: 83 backend tests, 17 frontend tests, lint, typecheck,
+provenance, production build and seven PostgreSQL-backed browser tests passed.
+Desktop console and mobile simulation screenshots inspected: layout preserved;
+mobile SVG labels remain a refinement candidate. Added release/idempotent-seed
+tests: 87 backend tests now pass with no skips; Ruff/mypy and pip check pass. Final browser rerun and CI remain before merging this milestone.
+
 ## Exact next action
 
-Commit/push `codex/demo-entry`, open PR, monitor and squash-merge after green CI.
-Continue production preparation, dependency security upgrades (npm audit currently
-14 findings, including critical dev-tool findings), accessibility/design polish,
-backend historical simulator validation, stale-job recovery and hostile-upload
-coverage, documentation and deployment configuration. No public deployment exists.
-Hosting credentials or payment may be needed only when ready to provision.
+Finish runtime milestone checks, commit/push/open PR and merge only with green CI.
+Then implement hard background-job timeouts, restart/resource and hostile-upload
+tests, offline historical simulator validation, README/case-study update and final
+responsive accessibility/visual refinement. Project licensing requires contributor
+decision before public launch (PM4Py AGPL dependency; no project LICENSE yet).
+No public deployment exists. Hosting credentials/payment are only needed at provisioning.
 Read-only Caravan reference clone: Windows temp `berthiq-caravan-reference`.
