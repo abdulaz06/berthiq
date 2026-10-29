@@ -484,10 +484,7 @@ export interface components {
         };
         /** Body_upload_api_datasets_post */
         Body_upload_api_datasets_post: {
-            /**
-             * File
-             * Format: binary
-             */
+            /** File */
             file: string;
         };
         /**
@@ -1152,6 +1149,10 @@ export interface components {
             msg: string;
             /** Error Type */
             type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
         };
         /**
          * ValidationIssue

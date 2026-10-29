@@ -689,7 +689,7 @@ def write_artifacts(result: GenResult) -> tuple[Path, Path]:
 # --- DB loading ------------------------------------------------------------
 
 
-def load_into_db(result: GenResult) -> None:
+def load_into_db(result: GenResult, *, replace: bool = True) -> None:
     """(Re)load the generated dataset into Postgres, rebuilding the cases table.
     Deletes any prior built-in row for this deterministic dataset id first, so a
     re-seed is idempotent."""
@@ -703,6 +703,9 @@ def load_into_db(result: GenResult) -> None:
 
     engine = sa.create_engine(settings.DATABASE_URL, future=True)
     with Session(engine, expire_on_commit=False) as session:
+        session.execute(sa.text("SELECT pg_advisory_xact_lock(742903)"))
+        if not replace and session.get(Dataset, result.dataset_id) is not None:
+            return
         session.execute(sa.delete(Dataset).where(Dataset.id == result.dataset_id))
         session.flush()
 
