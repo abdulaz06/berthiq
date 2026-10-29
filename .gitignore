@@ -29,6 +29,7 @@ backend/openapi.json
 # ---- Node / Next.js ----
 node_modules/
 frontend/.next/
+frontend/public/vendor/
 .next/
 *.tsbuildinfo
 
