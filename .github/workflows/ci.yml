@@ -88,6 +88,8 @@ jobs:
       # above (scripts/check-provenance.test.mjs); this scans the real app.
       - name: provenance check
         run: npm run check:provenance
+      - name: Production build
+        run: npm run build
 
   e2e:
     name: e2e (playwright placeholder)

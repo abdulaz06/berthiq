@@ -1,6 +1,6 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Current branch: `codex/decision-engine`.
+Active since 2026-10-28 (America/Chicago). Current branch: `codex/maritime-console`.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -27,9 +27,9 @@ longer apply. Do not mark a feature complete without executable evidence.
 | B: ingestion and validation | CSV/XLSX, mapping, validation, immutable persistence; tested |
 | B: optimizer, simulation, evidence | Joint reviewer/berth CP-SAT + matched SimPy; tested; historical simulator validation remains |
 | B: scenarios, jobs, exports, map API | Durable jobs/results, snapshots, session scope, quotas, TTL, export, replay API; tested |
-| C: design system, landing, navigation | Missing at takeover |
-| D: map, selection, event playback | Missing at takeover |
-| E: process, risk, studio, comparisons | Missing at takeover |
+| C: design system, landing, navigation | Dark console tokens and responsive navigation; public landing still pending |
+| D: map, selection, event playback | MapLibre, OSM basemap/fallback, vessel/berth selection, prefix-safe replay, mobile detail sheet |
+| E: process, risk, studio, comparisons | Live risk board/SHAP connected; process and studio UI next |
 | F: integrated E2E, CI, hosting, assets | Missing at takeover |
 
 ## Architecture decisions
@@ -92,22 +92,40 @@ images (dark immersive maps, polished panels, dedicated mobile composition).
 ## Known gaps / external dependencies
 
 No verified public deployment. Hosting credentials may be needed after repository
-work is complete. No map geometry has been independently verified yet. No browser
-or responsive inspection completed yet. PM4Py distribution licensing needs an
+work is complete. Operational berth coordinates remain approximate; geography uses attributed OpenFreeMap/OSM. Desktop and mobile browser inspection completed for the console milestone. PM4Py distribution licensing needs an
 accurate source disclosure for the public deployment (historical comment assumed
 an internal-only application).
 
+## Frontend milestone — 2026-10-29
+
+PR #5 merged after all GitHub checks passed, main `2983ea4`. Preserved all
+interrupted frontend package and console changes, and the unrelated `.env.example`
+deletion. Console now calls real operations and risk APIs: datasets, vessel/berth
+selection, observed event feed, latest-prefix risk and SHAP explanations, replay
+clock and speeds, focused presentation mode, mobile navigation and detail sheet.
+MapLibre uses version-matched same-origin worker and an attributed OpenFreeMap
+OSM basemap, with a bounded-time local schematic fallback. Operational coordinates
+and motion remain simulated/approximate. Risk stays explicitly fixed during replay.
+Next updated to patched 15.5.28; production build added to CI.
+
+Evidence: production build, lint/type checks, 12 unit tests, provenance check pass.
+Three live Playwright tests pass against PostgreSQL-backed API + production frontend:
+1920x1080 map/render/selection/playback, tile failure fallback, and 390x844 navigation/risk/detail sheet.
+Screenshots inspected in DOCS/media. This is the initial console milestone, not
+full launch acceptance. Full golden path will be added with Scenario Studio.
+Remaining npm audit findings (mainly dev tooling) still require triage.
+
 ## Exact next action
 
-Push the decision-engine milestone, create/monitor its PR, fix any CI failures and
-merge when green. Continue frontend implementation on the next branch: build dark
-design system, real API state and desktop/mobile console, map and playback, then
-all analysis/scenario screens. npm install of maplibre-gl/@xyflow/react/lucide-react
-is in progress (frontend package changes belong to that next milestone).
+Commit/push/PR the verified maritime console milestone, merge after green CI.
+Continue process discovery graph and Scenario Studio on the next milestone branch:
+real session-scoped create/optimize/poll/simulate/results, Gantt and comparison,
+export, integrated browser golden path. Then dataset management, public landing,
+case study/tour, deployment, final visual refinement and launch documentation.
 
 Remaining backend launch work: simulator historical-ground-truth validation
 experiment, stronger hostile-upload coverage, stale-job timeout recovery, production
-dependency lock/startup/seed configuration, full browser golden path. No visual
-verification or deployment has occurred yet. Read-only Caravan reference clone:
-Windows temp `berthiq-caravan-reference`; source inspected for tokens, landing,
-case study, navigation and safe-area/motion patterns; never modify it.
+dependency lock/startup/seed configuration. No public deployment has occurred.
+Read-only Caravan reference clone: Windows temp `berthiq-caravan-reference`.
+
+

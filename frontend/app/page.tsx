@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 import { getHealth, type Health } from "../lib/api/health";
 
@@ -32,6 +33,7 @@ export default function Home() {
           Maritime port-call operations — reconstruct, predict, recommend.
         </p>
       </header>
+      <Link href="/console" className="rounded-xl bg-slate-900 px-6 py-4 text-center font-medium text-white">Open operations console →</Link>
 
       <section
         aria-label="Backend health"
