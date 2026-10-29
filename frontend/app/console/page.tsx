@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Anchor,
+  Database,
+  HelpCircle,
   ArrowUpRight,
   Activity,
   GitBranch,
@@ -21,7 +23,8 @@ import {
   Waves,
   X,
 } from "lucide-react";
-import { apiGet } from "@/lib/api/client";
+import { sessionRequest } from "@/lib/api/session";
+import DatasetManager from "@/components/datasets/DatasetManager";
 import type { DatasetSummary } from "@/lib/api/contracts";
 import {
   portTime,
@@ -42,7 +45,7 @@ const PortMap = dynamic(() => import("@/components/map/PortMap"), {
   ssr: false,
   loading: () => <div className="map-loading">Preparing harbor chart…</div>,
 });
-type View = "port" | "risk" | "events" | "process" | "studio";
+type View = "port" | "risk" | "events" | "process" | "studio" | "data";
 
 export default function ConsolePage() {
   const [datasets, setDatasets] = useState<DatasetSummary[]>([]);
@@ -61,9 +64,42 @@ export default function ConsolePage() {
   const [focus, setFocus] = useState(false);
   const [showRisk, setShowRisk] = useState(true);
   const [attempt, setAttempt] = useState(0);
+  const [tour, setTour] = useState<number | null>(null);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("tour")) setTour(0);
+  }, []);
+  const steps = [
+    {
+      view: "port",
+      title: "Read the harbor",
+      body: "Select a vessel for its observed events and predicted risk. Scrub the clock to replay the last 48 hours.",
+    },
+    {
+      view: "process",
+      title: "Find the bottleneck",
+      body: "The graph is discovered from canonical events. Select Authority review to inspect its transitions and rework.",
+    },
+    {
+      view: "risk",
+      title: "Inspect the prediction",
+      body: "Choose a high-risk call to see signed SHAP contributions. The model is trained on synthetic examples; explanations are not causal.",
+    },
+    {
+      view: "studio",
+      title: "Test a different plan",
+      body: "Start with five reviewers. Save & optimize, inspect constraints and the berth schedule, then run the matched simulation.",
+    },
+    {
+      view: "studio",
+      title: "Compare the whole outcome",
+      body: "Read waiting time alongside compliance, conflicts and staffing cost. Switch the comparison source to see the first matched replication, then export the evidence.",
+    },
+  ] as const;
+  const synthetic =
+    datasets.find((d) => d.id === dataset)?.source !== "uploaded";
   useEffect(() => {
     let active = true;
-    apiGet<DatasetSummary[]>("/api/datasets")
+    sessionRequest<DatasetSummary[]>("/api/datasets")
       .then((list) => {
         if (!active) return;
         const ready = list.filter((d) => d.status === "ready");
@@ -91,7 +127,7 @@ export default function ConsolePage() {
     setError("");
     setRiskError("");
     setPlaying(false);
-    apiGet<Operations>(`/api/datasets/${dataset}/operations`)
+    sessionRequest<Operations>(`/api/datasets/${dataset}/operations`)
       .then((result) => {
         if (!active) return;
         setData(result);
@@ -106,7 +142,7 @@ export default function ConsolePage() {
             "Operational data could not be loaded. Retry the connection.",
           ),
       );
-    apiGet<Risk>(`/api/datasets/${dataset}/risk`)
+    sessionRequest<Risk>(`/api/datasets/${dataset}/risk`)
       .then((result) => active && setRisk(result))
       .catch(
         () =>
@@ -175,7 +211,11 @@ export default function ConsolePage() {
         "At berth",
     ).length ?? 0;
   const riskCases = [...(risk?.cases ?? [])]
-    .filter((c) => c.case_id.toLowerCase().includes(search.toLowerCase()))
+    .filter(
+      (c) =>
+        c.case_id.toLowerCase().includes(search.toLowerCase()) ||
+        (c.vessel_type ?? "").toLowerCase().includes(search.toLowerCase()),
+    )
     .sort((a, b) => b.miss_probability - a.miss_probability);
   return (
     <main className={`harbor ${focus ? "focus-mode" : ""}`}>
@@ -190,6 +230,7 @@ export default function ConsolePage() {
             ["events", Radio, "Events"],
             ["process", GitBranch, "Process"],
             ["studio", FlaskConical, "Studio"],
+            ["data", Database, "Data"],
           ] as const
         ).map(([id, Icon, label]) => (
           <button
@@ -246,6 +287,16 @@ export default function ConsolePage() {
           >
             <Maximize2 />
           </button>
+          <button
+            className="icon-button tour-trigger"
+            aria-label="Start guided walkthrough"
+            onClick={() => {
+              setTour(0);
+              setView("port");
+            }}
+          >
+            <HelpCircle size={18} />
+          </button>
         </header>
         <div className="workspace-title">
           <div>
@@ -259,8 +310,12 @@ export default function ConsolePage() {
                     ? "Process intelligence"
                     : view === "studio"
                       ? "Decision workspace"
-                      : "Operational activity"}
-              <span className="status-pill">Synthetic dataset</span>
+                      : view === "data"
+                        ? "Data workspace"
+                        : "Operational activity"}
+              <span className="status-pill">
+                {synthetic ? "Synthetic dataset" : "Private event log"}
+              </span>
             </h1>
           </div>
           <p>
@@ -269,6 +324,37 @@ export default function ConsolePage() {
             <span>Understand the pressure.</span>
           </p>
         </div>
+        {tour !== null && (
+          <section className="tour-card" aria-label="Guided walkthrough">
+            <span className="eyebrow">
+              GUIDED DEMO · {tour + 1} / {steps.length}
+            </span>
+            <div>
+              <h2>{steps[tour].title}</h2>
+              <p>{steps[tour].body}</p>
+            </div>
+            <button
+              className="secondary"
+              onClick={() => {
+                const next = tour + 1;
+                if (next === steps.length) setTour(null);
+                else {
+                  setTour(next);
+                  setView(steps[next].view);
+                }
+              }}
+            >
+              {tour === steps.length - 1 ? "Finish walkthrough" : "Next step"}
+            </button>
+            <button
+              aria-label="Close walkthrough"
+              className="icon-button"
+              onClick={() => setTour(null)}
+            >
+              <X size={16} />
+            </button>
+          </section>
+        )}
         {error ? (
           <section className="connection-state" role="alert">
             <Anchor size={40} />
@@ -290,7 +376,9 @@ export default function ConsolePage() {
         ) : (
           <>
             <section
-              hidden={view === "studio" || view === "process"}
+              hidden={
+                view === "studio" || view === "process" || view === "data"
+              }
               className="telemetry"
               aria-label="Operational indicators"
             >
@@ -369,7 +457,17 @@ export default function ConsolePage() {
                 onSelect={selectVessel}
               />
             </div>
-            {!["studio", "process"].includes(view) && (
+            <div hidden={view !== "data"}>
+              <DatasetManager
+                enabled={view === "data"}
+                onUse={(d) => {
+                  setDatasets((ds) => [...ds.filter((x) => x.id !== d.id), d]);
+                  setDataset(d.id);
+                  setView("port");
+                }}
+              />
+            </div>
+            {!["studio", "process", "data"].includes(view) && (
               <div className="console-grid">
                 <section className="main-panel">
                   <div className="panel-toolbar">
@@ -736,7 +834,8 @@ export default function ConsolePage() {
             <footer className="console-footer">
               <span>
                 <i />
-                Synthetic operations. Simulated positions. No live AIS.
+                {synthetic ? "Synthetic operations." : "Uploaded events."}{" "}
+                Simulated positions. No live AIS.
               </span>
               <span>
                 Replay occupancy uses a configured{" "}

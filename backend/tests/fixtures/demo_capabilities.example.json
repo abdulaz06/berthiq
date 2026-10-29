@@ -1,0 +1,6 @@
+{
+  "uploads_enabled": false,
+  "max_upload_bytes": 5242880,
+  "max_event_rows": 50000,
+  "session_ttl_hours": 24
+}

@@ -22,9 +22,13 @@ export async function sessionRequest<T>(
     signal,
     headers: {
       "X-Demo-Session": demoSession(),
-      ...(body ? { "Content-Type": "application/json" } : {}),
+      ...(body && !(body instanceof FormData)
+        ? { "Content-Type": "application/json" }
+        : {}),
     },
-    ...(body ? { body: JSON.stringify(body) } : {}),
+    ...(body
+      ? { body: body instanceof FormData ? body : JSON.stringify(body) }
+      : {}),
   });
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));

@@ -21,6 +21,13 @@ class ColumnMapping(BaseModel):
     attribute_map: dict[str, str] = Field(default_factory=dict, max_length=40)
 
 
+class DemoCapabilities(BaseModel):
+    uploads_enabled: bool
+    max_upload_bytes: int
+    max_event_rows: int
+    session_ttl_hours: int
+
+
 class MappingPreview(BaseModel):
     columns: list[str]
     suggested: ColumnMapping

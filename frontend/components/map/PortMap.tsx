@@ -255,7 +255,7 @@ export default function PortMap({
             ? simulatedPlan
               ? "Simulated berth occupancy · first replication"
               : "Planned berth occupancy · not a simulated trajectory"
-            : "Synthetic vessel"}
+            : data.operations_disclosure.startsWith("Uploaded") ? "Uploaded port call" : "Synthetic vessel"}
         </span>
         {showRisk && (
           <span>

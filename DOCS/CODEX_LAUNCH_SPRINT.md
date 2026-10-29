@@ -1,6 +1,6 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Current branch: `codex/scenario-workspace`.
+Active since 2026-10-28 (America/Chicago). Current branch: `codex/demo-entry`.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -115,9 +115,9 @@ Screenshots inspected in DOCS/media. This is the initial console milestone, not
 full launch acceptance. Full golden path will be added with Scenario Studio.
 Remaining npm audit findings (mainly dev tooling) still require triage.
 
-## Decision workspace — verified locally
+## Decision workspace — merged
 
-PR #6 merged with every CI check green (`31b2b17`); PRs #4–6 are complete.
+PR #7 merged with every CI check green, including the new real PostgreSQL/API golden path (`7ace264`); PRs #4–7 are complete.
 Current branch preserves the Scenario Studio, React Flow discovery explorer,
 berth Gantt, comparison map, distribution charts and session API implementation.
 Full real browser journey passed in its first run (five tests): desktop port,
@@ -135,15 +135,29 @@ CI now provisions isolated PostgreSQL, migrates and seeds, runs the real API and
 production frontend, and executes the integrated browser suite. `just golden`
 uses this same suite and creates/cleans only its own private demo session.
 
+## Public entry and data workspace — verified locally
+
+Dark maritime public landing with actual console imagery, guided in-console
+walkthrough, engineering case study linked to the committed evaluation, app icon
+and Open Graph image. Dataset workspace reads server capabilities, lists/validates
+versions, uploads private CSV/XLSX, previews/corrects mappings and separates fatal
+errors from warnings. Console requests now carry the private session token; uploaded
+logs are identified separately from built-in synthetic data. Uploads remain off by
+default; enabled only for isolated CI and local upload verification.
+
+Evidence: 83 backend tests passed, zero skips; Ruff and mypy pass. 17 frontend
+unit tests and provenance check pass; production build passes. Seven real browser
+tests pass, adding public desktop/mobile entry, guided navigation, validation,
+private CSV upload/mapping/use, denied anonymous access and fatal timestamp handling.
+1920x1080 and 390x844 screenshots inspected in DOCS/media. Final metadata check and
+milestone commit/CI are next. Existing `.env.example` deletion remains unstaged.
+
 ## Exact next action
 
-Finish live golden-path rerun and desktop/mobile screenshot review, commit/push
-`codex/scenario-workspace`, open PR, repair CI if needed and squash-merge green.
-Then continue dataset management, public landing, case study/guided demo, deployment
-preparation, accessibility and final design polish, and launch documentation.
-
-Remaining backend launch work: simulator historical-ground-truth validation
-experiment, stronger hostile-upload coverage, stale-job timeout recovery, production
-dependency lock/startup/seed configuration. No public deployment has occurred.
+Commit/push `codex/demo-entry`, open PR, monitor and squash-merge after green CI.
+Continue production preparation, dependency security upgrades (npm audit currently
+14 findings, including critical dev-tool findings), accessibility/design polish,
+backend historical simulator validation, stale-job recovery and hostile-upload
+coverage, documentation and deployment configuration. No public deployment exists.
+Hosting credentials or payment may be needed only when ready to provision.
 Read-only Caravan reference clone: Windows temp `berthiq-caravan-reference`.
-

@@ -1,9 +1,9 @@
 import { expect, test } from "@playwright/test";
 
-test("app loads and renders the BerthIQ dashboard", async ({ page }) => {
+test("public landing opens the operations console", async ({ page }) => {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "BerthIQ", level: 1 }),
+    page.getByRole("heading", { name: "Every port call. A clearer decision.", level: 1 }),
   ).toBeVisible();
-  await expect(page.getByTestId("health-status")).toBeVisible();
+  await expect(page.getByRole("link", {name:"Explore the control room"})).toHaveAttribute("href","/console");
 });

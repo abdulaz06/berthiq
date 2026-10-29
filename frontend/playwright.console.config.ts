@@ -12,6 +12,7 @@ export default defineConfig({
     {
       command: `"${process.env.BERTHIQ_PYTHON ?? (process.platform === "win32" ? "../backend/.venv/Scripts/python.exe" : "../backend/.venv/bin/python")}" -m uvicorn app.main:app --app-dir ../backend --port 8000`,
       url: "http://localhost:8000/api/ready",
+      env: { ENABLE_UPLOADS: "true" },
       timeout: 60000,
       reuseExistingServer: !process.env.CI,
     },
