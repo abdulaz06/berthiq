@@ -13,7 +13,8 @@
     "check:provenance": "node scripts/check-provenance.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "golden": "playwright test -c playwright.console.config.ts"
   },
   "dependencies": {
     "@xyflow/react": "^12.12.0",

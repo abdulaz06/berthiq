@@ -1,6 +1,6 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Current branch: `codex/maritime-console`.
+Active since 2026-10-28 (America/Chicago). Current branch: `codex/scenario-workspace`.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -29,7 +29,7 @@ longer apply. Do not mark a feature complete without executable evidence.
 | B: scenarios, jobs, exports, map API | Durable jobs/results, snapshots, session scope, quotas, TTL, export, replay API; tested |
 | C: design system, landing, navigation | Dark console tokens and responsive navigation; public landing still pending |
 | D: map, selection, event playback | MapLibre, OSM basemap/fallback, vessel/berth selection, prefix-safe replay, mobile detail sheet |
-| E: process, risk, studio, comparisons | Live risk board/SHAP connected; process and studio UI next |
+| E: process, risk, studio, comparisons | Interactive discovery; private scenario/solver/simulation/export; Gantt and matched comparison implemented, final milestone verification in progress |
 | F: integrated E2E, CI, hosting, assets | Missing at takeover |
 
 ## Architecture decisions
@@ -115,17 +115,35 @@ Screenshots inspected in DOCS/media. This is the initial console milestone, not
 full launch acceptance. Full golden path will be added with Scenario Studio.
 Remaining npm audit findings (mainly dev tooling) still require triage.
 
+## Decision workspace — verified locally
+
+PR #6 merged with every CI check green (`31b2b17`); PRs #4–6 are complete.
+Current branch preserves the Scenario Studio, React Flow discovery explorer,
+berth Gantt, comparison map, distribution charts and session API implementation.
+Full real browser journey passed in its first run (five tests): desktop port,
+offline map fallback, mobile risk, discovery → feasible optimization → 20 matched
+simulations → private export → saved-result reload, and mobile infeasible lock.
+16 frontend unit tests pass; production build passes. Final visual/semantics
+refinements and rerun are in progress, before committing this milestone.
+
+The deterministic FIFO solver baseline uses candidate staffing. The stochastic
+no-change baseline retains original staffing; these must never share a misleading
+label. Comparison now toggles between deterministic plans and replication-one
+simulated schedules. Distribution charts show p10–p90 variability, not confidence
+intervals. Staffing costs, zero compliance and unchanged conflicts remain visible.
+CI now provisions isolated PostgreSQL, migrates and seeds, runs the real API and
+production frontend, and executes the integrated browser suite. `just golden`
+uses this same suite and creates/cleans only its own private demo session.
+
 ## Exact next action
 
-Commit/push/PR the verified maritime console milestone, merge after green CI.
-Continue process discovery graph and Scenario Studio on the next milestone branch:
-real session-scoped create/optimize/poll/simulate/results, Gantt and comparison,
-export, integrated browser golden path. Then dataset management, public landing,
-case study/tour, deployment, final visual refinement and launch documentation.
+Finish live golden-path rerun and desktop/mobile screenshot review, commit/push
+`codex/scenario-workspace`, open PR, repair CI if needed and squash-merge green.
+Then continue dataset management, public landing, case study/guided demo, deployment
+preparation, accessibility and final design polish, and launch documentation.
 
 Remaining backend launch work: simulator historical-ground-truth validation
 experiment, stronger hostile-upload coverage, stale-job timeout recovery, production
 dependency lock/startup/seed configuration. No public deployment has occurred.
 Read-only Caravan reference clone: Windows temp `berthiq-caravan-reference`.
-
 

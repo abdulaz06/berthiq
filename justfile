@@ -67,6 +67,7 @@ test:
 test-backend *ARGS="-q":
     "{{venv_python}}" backend/scripts/test_backend.py {{ARGS}}
 
-# Run the golden-path end-to-end test (lands in M1-15).
+# Against the seeded development DB; creates and cleans only its private scenarios.
+# Production frontend build required. Starts/reuses backend and frontend servers.
 golden:
-    @echo "golden: the Playwright golden-path E2E is built in M1-15."
+    cd frontend && {{npm_cmd}} run golden
