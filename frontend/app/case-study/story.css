@@ -1,0 +1,257 @@
+.story article {
+  max-width: 1120px;
+  margin: auto;
+  padding: 0 55px;
+}
+.story-back {
+  margin-left: auto;
+}
+.story-hero {
+  padding: 95px 0 65px;
+  border-bottom: 1px solid var(--edge);
+}
+.story-hero h1 {
+  font-size: clamp(45px, 4.8vw, 72px);
+  line-height: 1.12;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  margin: 30px 0;
+}
+.story-hero > p {
+  font-size: 19px;
+  line-height: 1.8;
+  color: #9bb3bf;
+  max-width: 680px;
+}
+.story-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 35px;
+  margin-top: 38px;
+  font: 9px monospace;
+  letter-spacing: 0.07em;
+  color: #638797;
+}
+.story-section {
+  padding: 75px 0;
+  border-bottom: 1px solid var(--edge);
+}
+.story-section h2 {
+  font-size: 43px;
+  margin: 25px 0 35px;
+}
+.story-section > p {
+  font-size: 16px;
+  line-height: 2;
+  color: #9eb5c1;
+  margin: 20px 0;
+  max-width: 850px;
+}
+.story-pipeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 35px 0;
+  gap: 14px;
+}
+.story-pipeline > div {
+  padding: 24px 20px;
+  border: 1px solid #304652;
+  background: #12232d;
+  border-radius: 8px;
+}
+.story-pipeline span {
+  font: 10px monospace;
+  color: #6ea69f;
+}
+.story-pipeline h3 {
+  font-size: 19px;
+  letter-spacing: -0.02em;
+  margin: 22px 0 15px;
+}
+.story-pipeline p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--dim);
+}
+.story-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 40px 0 25px;
+}
+.story-metrics > div {
+  padding: 25px;
+  border: 1px solid #2a4550;
+  border-radius: 8px;
+  background: #12232d;
+}
+.story-metrics > div > span,
+.story-outcome > div > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #9fbcc7;
+}
+.story [data-provenance] {
+  font-size: 8px;
+  background: #1b3039;
+  border-color: #304d57;
+  color: #a5bfc9;
+}
+.story-metrics strong {
+  display: block;
+  font-size: 37px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  margin: 25px 0 15px;
+  color: #d4eeea;
+}
+.story-metrics small {
+  font-size: 10px;
+  color: #6f91a2;
+}
+.story .story-note {
+  font-size: 11px;
+  line-height: 1.9;
+  color: #7696a5;
+  margin: 20px 0;
+}
+.story-outcome {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 30px;
+  background: #142832;
+  border: 1px solid #33545d;
+  border-radius: 10px;
+  margin: 35px 0;
+}
+.story-outcome > div {
+  min-width: 330px;
+}
+.story-outcome strong {
+  font-size: 38px;
+  color: #b9eee2;
+  font-weight: 400;
+  display: block;
+  margin-top: 22px;
+}
+.story-outcome strong small {
+  font-size: 17px;
+  color: #719b9f;
+}
+.story-outcome p {
+  font-size: 12px;
+  line-height: 1.95;
+  color: #9db9c6;
+}
+.story-section > img {
+  border: 1px solid #2d4751;
+  border-radius: 10px;
+  width: 100%;
+  height: auto;
+}
+.story-limits {
+  list-style: none;
+  margin: 25px 0 0;
+  padding: 0;
+}
+.story-limits li {
+  border-top: 1px solid var(--edge);
+  padding: 22px 0;
+  font-size: 14px;
+  line-height: 1.95;
+  color: #90adbc;
+}
+.story-limits strong {
+  color: #d4e1e7;
+  font-weight: 500;
+}
+.story-links {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  margin-top: 35px;
+}
+@media (max-width: 760px) {
+  .story article {
+    padding: 0 22px;
+  }
+  .story-back {
+    display: none;
+  }
+  .story-hero {
+    padding: 55px 0 40px;
+  }
+  .story-hero h1 {
+    font-size: 42px;
+    line-height: 1.13;
+  }
+  .story-hero > p {
+    font-size: 16px;
+  }
+  .story-meta {
+    gap: 15px;
+    font-size: 8px;
+    line-height: 1.8;
+  }
+  .story-section {
+    padding: 45px 0;
+  }
+  .story-section h2 {
+    font-size: 33px;
+    margin: 23px 0;
+  }
+  .story-section > p {
+    font-size: 14px;
+    line-height: 1.95;
+  }
+  .story-pipeline {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .story-pipeline > div {
+    padding: 19px 15px;
+  }
+  .story-pipeline h3 {
+    font-size: 18px;
+  }
+  .story-pipeline p {
+    font-size: 11px;
+  }
+  .story-metrics {
+    grid-template-columns: 1fr;
+    margin: 25px 0;
+    gap: 12px;
+  }
+  .story-metrics > div {
+    padding: 20px;
+  }
+  .story-metrics strong {
+    font-size: 35px;
+    margin: 17px 0 10px;
+  }
+  .story-outcome {
+    display: block;
+    padding: 22px;
+    margin: 25px 0;
+  }
+  .story-outcome > div {
+    min-width: 0;
+  }
+  .story-outcome p {
+    margin-top: 22px;
+  }
+  .story-outcome strong {
+    font-size: 34px;
+  }
+  .story-limits li {
+    font-size: 13px;
+  }
+  .story-links {
+    gap: 20px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

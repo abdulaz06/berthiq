@@ -98,6 +98,10 @@ def operations(
             "event_count": KpiValue(value=len(events), unit="events", provenance="observed"),
         },
         geography_disclosure="Berths are schematic approximations, not surveyed geometry.",
-        operations_disclosure="Synthetic replay. Vessel positions are simulated, not live AIS.",
+        operations_disclosure=(
+            "Uploaded event replay. Positions are simulated, not live AIS."
+            if dataset.source.value == "uploaded"
+            else "Synthetic replay. Vessel positions are simulated, not live AIS."
+        ),
         occupancy_assumption_minutes=cfg["durations_minutes"]["berth_occupancy"]["mean"],
     )

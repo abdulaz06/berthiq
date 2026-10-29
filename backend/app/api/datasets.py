@@ -9,10 +9,26 @@ from fastapi import APIRouter, Header, HTTPException, UploadFile
 from app.api.dependencies import Db, Owner, dataset_or_404
 from app.config import settings
 from app.db.models import Dataset, DatasetSource
-from app.schemas.datasets import ColumnMapping, DataQualityReport, DatasetSummary, MappingPreview
+from app.schemas.datasets import (
+    ColumnMapping,
+    DataQualityReport,
+    DatasetSummary,
+    DemoCapabilities,
+    MappingPreview,
+)
 from app.services import ingestion
 
 router = APIRouter(tags=["datasets"])
+
+
+@router.get("/demo/capabilities", response_model=DemoCapabilities)
+def capabilities():
+    return DemoCapabilities(
+        uploads_enabled=settings.ENABLE_UPLOADS,
+        max_upload_bytes=ingestion.MAX_BYTES,
+        max_event_rows=ingestion.MAX_ROWS,
+        session_ttl_hours=settings.DEMO_TTL_HOURS,
+    )
 
 
 @router.get("/datasets", response_model=list[DatasetSummary])

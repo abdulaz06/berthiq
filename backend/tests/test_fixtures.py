@@ -25,6 +25,7 @@ from app.schemas import (
     ScenarioSpec,
     SimulationResult,
 )
+from app.schemas.datasets import DemoCapabilities
 from pydantic import BaseModel
 
 BACKEND_FIXTURES = Path(__file__).resolve().parents[1] / "tests" / "fixtures"
@@ -35,6 +36,7 @@ FIXTURE_MODELS: dict[str, type[BaseModel]] = {
     "kpi_value": KpiValue,
     "evidence_record": EvidenceRecord,
     "dataset_summary": DatasetSummary,
+    "demo_capabilities": DemoCapabilities,
     "data_quality_report": DataQualityReport,
     "process_model": ProcessModel,
     "risk_board": RiskBoard,

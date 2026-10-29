@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import dataQualityReportFixture from "../fixtures/data_quality_report.example.json";
 import datasetSummaryFixture from "../fixtures/dataset_summary.example.json";
+import demoCapabilitiesFixture from "../fixtures/demo_capabilities.example.json";
 import jobStatusFixture from "../fixtures/job_status.example.json";
 import optimizationResultFixture from "../fixtures/optimization_result.example.json";
 import processModelFixture from "../fixtures/process_model.example.json";
@@ -42,6 +43,7 @@ describe("generated types ↔ committed fixtures", () => {
   it("each fixture is structurally compatible with its generated schema", () => {
     const checks = [
       structurallyMatches<Widen<Schemas["DatasetSummary"]>>(datasetSummaryFixture),
+      structurallyMatches<Widen<Schemas["DemoCapabilities"]>>(demoCapabilitiesFixture),
       structurallyMatches<Widen<Schemas["DataQualityReport"]>>(dataQualityReportFixture),
       structurallyMatches<Widen<Schemas["ProcessModel"]>>(processModelFixture),
       structurallyMatches<Widen<Schemas["RiskBoard"]>>(riskBoardFixture),
@@ -50,7 +52,7 @@ describe("generated types ↔ committed fixtures", () => {
       structurallyMatches<Widen<Schemas["JobStatus"]>>(jobStatusFixture),
     ];
     // Runtime sanity: the checks preserved the fixtures (and thus ran at all).
-    expect(checks).toHaveLength(7);
+    expect(checks).toHaveLength(8);
     expect(datasetSummaryFixture.id).toBeTruthy();
     expect(jobStatusFixture.job_type).toBe("optimization");
   });

@@ -903,3 +903,265 @@
     height: 420px;
   }
 }
+.data-layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+.data-layout > div {
+  min-width: 0;
+}
+.data-layout h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dataset-list button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  gap: 15px;
+  padding: 20px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.dataset-list strong {
+  font-size: 13px;
+  font-weight: 400;
+}
+.dataset-list small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 8px;
+}
+.upload-card {
+  margin-top: 22px;
+}
+.upload-card > svg {
+  color: var(--seafoam);
+  margin-bottom: 20px;
+}
+.upload-card p {
+  font-size: 12px;
+  line-height: 1.9;
+  color: var(--muted);
+}
+.upload-target {
+  display: block;
+  position: relative;
+  border: 1px dashed #476575;
+  border-radius: 8px;
+  padding: 20px 10px;
+  margin: 20px 0;
+  text-align: center;
+  color: #b7ded9;
+  font-size: 12px;
+}
+.upload-target input {
+  display: block;
+  width: 100%;
+  font-size: 10px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+.dataset-detail > code {
+  display: block;
+  font: 10px monospace;
+  color: #6f8d9e;
+  word-break: break-all;
+}
+.dataset-detail h4 {
+  font-size: 17px;
+  margin: 28px 0 14px;
+}
+.mapping-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin: 20px 0;
+  min-width: 0;
+}
+.mapping-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-transform: capitalize;
+  font-size: 12px;
+  color: #a3bbc7;
+}
+.mapping-grid select {
+  padding: 12px;
+  background: #0d1822;
+  border: 1px solid #30424f;
+  border-radius: 7px;
+  width: 100%;
+  min-width: 0;
+  color: #d3e2e9;
+}
+.dataset-detail summary {
+  cursor: pointer;
+  padding: 15px 0;
+  color: #acc4d0;
+  font-size: 12px;
+  border-top: 1px solid var(--line);
+}
+.dataset-detail .primary {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 24px;
+}
+.data-preview {
+  overflow: auto;
+  max-height: 260px;
+}
+.data-preview table {
+  font-size: 11px;
+  text-align: left;
+  border-collapse: collapse;
+}
+.data-preview th,
+.data-preview td {
+  padding: 12px;
+  border: 1px solid var(--line);
+  min-width: 125px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.validation-report > p {
+  font-size: 12px;
+  color: #aac9bc;
+}
+.quality-issue {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid #4f4935;
+  border-radius: 8px;
+  background: #2b291e;
+  margin: 12px 0;
+}
+.quality-issue.fatal {
+  border-color: #79524c;
+  background: #332422;
+}
+.quality-issue span {
+  font: 10px monospace;
+  color: #d7bd8b;
+}
+.quality-issue strong {
+  font-size: 12px;
+  font-weight: 400;
+}
+.quality-issue small {
+  font-size: 10px;
+  color: #a59c86;
+}
+.data-empty {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px;
+}
+.data-empty > svg {
+  color: var(--seafoam);
+  margin-bottom: 30px;
+}
+.data-empty h3 {
+  font-size: 28px;
+}
+.data-empty p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--muted);
+  max-width: 430px;
+}
+.tour-card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  border: 1px solid #3a666d;
+  border-radius: 10px;
+  background: #172d35;
+  margin-bottom: 22px;
+}
+.tour-card > div {
+  flex: 1;
+}
+.tour-card h2 {
+  font-size: 17px;
+  margin-bottom: 7px;
+}
+.tour-card p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #a4c1cb;
+}
+.tour-card .secondary {
+  white-space: nowrap;
+}
+.tour-trigger {
+  margin-left: -20px;
+}
+@media (max-width: 900px) {
+  .data-layout {
+    grid-template-columns: 1fr;
+  }
+  .data-empty {
+    min-height: 260px;
+    padding: 30px;
+  }
+  .tour-card {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .tour-card > div {
+    flex-basis: 100%;
+  }
+  .tour-trigger {
+    margin-left: 0;
+  }
+}
+@media (max-width: 760px) {
+  .rail button {
+    width: 16%;
+    font-size: 9px;
+  }
+  .console-header > .tour-trigger {
+    display: inline-grid;
+    min-width: 34px;
+    min-height: 38px;
+  }
+  .mapping-grid {
+    grid-template-columns: 1fr;
+  }
+  .data-layout {
+    gap: 16px;
+  }
+  .data-empty p {
+    font-size: 12px;
+  }
+  .tour-card {
+    padding: 16px;
+  }
+  .tour-card .secondary {
+    min-height: 44px;
+  }
+  .tour-card > div {
+    flex-basis: 100%;
+  }
+  .tour-card .icon-button {
+    margin-left: auto;
+  }
+  .distribution-chart svg text {
+    font-family: Arial, sans-serif;
+  }
+}

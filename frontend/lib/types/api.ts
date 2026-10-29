@@ -130,6 +130,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/demo/capabilities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Capabilities */
+        get: operations["capabilities_api_demo_capabilities_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/datasets": {
         parameters: {
             query?: never;
@@ -615,6 +632,17 @@ export interface components {
             activities: string[];
             /** Resources */
             resources: string[];
+        };
+        /** DemoCapabilities */
+        DemoCapabilities: {
+            /** Uploads Enabled */
+            uploads_enabled: boolean;
+            /** Max Upload Bytes */
+            max_upload_bytes: number;
+            /** Max Event Rows */
+            max_event_rows: number;
+            /** Session Ttl Hours */
+            session_ttl_hours: number;
         };
         /**
          * DfgEdge
@@ -1336,6 +1364,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    capabilities_api_demo_capabilities_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoCapabilities"];
                 };
             };
         };

@@ -1,0 +1,58 @@
+import { test, expect } from "@playwright/test";
+
+test("public entry, case study, guided demo and dataset validation",async({page})=>{
+  await page.setViewportSize({width:1920,height:1080});
+  await page.goto("/");
+  await expect(page.getByRole("heading",{level:1})).toHaveText("Every port call.A clearer decision.");
+  await expect(page.locator(".console-showcase img")).toBeVisible();
+  await page.screenshot({path:"../DOCS/media/landing-desktop.png"});
+  await page.getByRole("link",{name:"Engineering story",exact:true}).click();
+  await expect(page.getByRole("heading",{level:1})).toContainText("evidence behind it");
+  await expect(page.getByText("0.8777",{exact:true})).toBeVisible();
+  await page.setViewportSize({width:390,height:844});
+  await page.goto("/");
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  await page.screenshot({path:"../DOCS/media/landing-mobile.png"});
+  await page.getByRole("link",{name:"Take the guided demo",exact:true}).click();
+  await expect(page.getByRole("region",{name:"Guided walkthrough"})).toBeVisible();
+  await page.getByRole("button",{name:"Next step",exact:true}).click();
+  await expect(page.getByRole("heading",{name:"Find the bottleneck",exact:true})).toBeVisible();
+  await page.getByRole("button",{name:"Close walkthrough"}).click();
+  await page.locator(".rail").getByRole("button",{name:"Data",exact:true}).click();
+  await page.locator(".dataset-list button").filter({hasText:"Khalifa"}).first().click();
+  await expect(page.getByRole("heading",{name:"Ready for exploration"})).toBeVisible();
+  await page.screenshot({path:"../DOCS/media/data-mobile.png"});
+  await page.getByRole("button",{name:"Use in operations console"}).click();
+  await expect(page.getByRole("heading",{name:"On the radar"})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
+test("CSV mapping creates a private immutable dataset and exposes fatal validation",async({page})=>{
+  await page.setViewportSize({width:1920,height:1080});
+  await page.goto("/console");
+  await page.locator(".rail").getByRole("button",{name:"Data",exact:true}).click();
+  const upload=page.getByLabel("Upload event log");
+  await expect(upload).toBeVisible();
+  const csv="case,stage,timestamp,vessel_type,loa,draft\nUPLOAD-1,Port call request submitted,2026-07-30T08:00:00+04:00,container,220,10\nUPLOAD-1,Documents submitted,2026-07-30T10:00:00+04:00,container,220,10\n";
+  await upload.setInputFiles({name:"browser-private.csv",mimeType:"text/csv",buffer:Buffer.from(csv)});
+  await expect(page.getByRole("heading",{name:"Confirm column mapping"})).toBeVisible();
+  await expect(page.getByLabel("Map case_id",{exact:true})).toHaveValue("case");
+  await expect(page.getByLabel("Map end_ts",{exact:true})).toHaveValue("timestamp");
+  await page.getByRole("button",{name:"Validate & save mapping"}).click();
+  await expect(page.getByRole("heading",{name:"Ready for exploration"})).toBeVisible();
+  const id=(await page.locator(".dataset-detail>code").textContent())!;
+  await page.screenshot({path:"../DOCS/media/data-workspace.png"});
+  const unauthorized=await page.request.get(`http://localhost:8000/api/datasets/${id}`);
+  expect(unauthorized.status()).toBe(404);
+  await page.getByRole("button",{name:"Use in operations console"}).click();
+  await expect(page.locator(".vessel-list")).toContainText("UPLOAD-1");
+  await expect(page.locator(".status-pill")).toHaveText("Private event log");
+  await page.locator(".rail").getByRole("button",{name:"Data",exact:true}).click();
+  await upload.setInputFiles({name:"invalid-time.csv",mimeType:"text/csv",buffer:Buffer.from("case,stage,timestamp\nBAD,Documents submitted,not-a-time\n")});
+  await page.getByRole("button",{name:"Validate & save mapping"}).click();
+  await expect(page.getByRole("heading",{name:"Validation needs attention"})).toBeVisible();
+  await expect(page.getByRole("button",{name:"Use in operations console"})).toHaveCount(0);
+  const secret=await page.evaluate(()=>sessionStorage.getItem("berthiq-session"));
+  const reset=await page.request.delete("http://localhost:8000/api/demo/session",{headers:{"X-Demo-Session":secret!}});
+  expect(reset.status()).toBe(204);
+});

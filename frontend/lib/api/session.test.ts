@@ -17,6 +17,14 @@ describe("private decision requests", () => {
     vi.unstubAllGlobals();
     vi.useRealTimers();
   });
+  it("lets the browser supply the multipart boundary for private uploads", async () => {
+    const fetch = vi.fn().mockResolvedValue(new Response("{}"));
+    vi.stubGlobal("fetch", fetch);
+    const body = new FormData(); body.append("file", new Blob(["case,stage,time"]), "sample.csv");
+    await sessionRequest("/api/datasets", "POST", body);
+    expect(fetch.mock.calls[0][1].body).toBe(body);
+    expect(fetch.mock.calls[0][1].headers["Content-Type"]).toBeUndefined();
+  });
   it("keeps the private token within the tab and includes it on requests", async () => {
     const fetch = vi.fn().mockResolvedValue(new Response("{}"));
     vi.stubGlobal("fetch", fetch);
