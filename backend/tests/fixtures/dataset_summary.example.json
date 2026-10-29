@@ -1,35 +1,45 @@
 {
-  "id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
-  "name": "Khalifa Port — Demo (6 months)",
+  "id": "866da630-2c3c-5c67-b061-e6f43fb8534d",
+  "name": "Khalifa Port - Built-in (6 months, synthetic)",
   "source": "builtin",
   "status": "ready",
   "port_config": "khalifa",
-  "event_count": 7043,
-  "case_count": 612,
-  "active_case_count": 24,
-  "time_range": ["2026-02-01T00:00:00+04:00", "2026-08-18T09:00:00+04:00"],
+  "event_count": 6539,
+  "case_count": 624,
+  "active_case_count": 26,
+  "time_range": [
+    "2026-02-01T00:00:00+04:00",
+    "2026-07-31T00:00:00+04:00"
+  ],
   "activities": [
-    "Pre-Arrival Notification",
-    "Anchorage Wait",
-    "Documentation Review",
-    "Customs & Port Clearance",
-    "Pilot Assignment",
-    "Berthing",
-    "Cargo Operations",
-    "Departure Clearance",
-    "Unberthing"
+    "Port call request submitted",
+    "Documents submitted",
+    "Completeness check",
+    "Authority review",
+    "Arrival plan confirmed",
+    "Berth planning",
+    "Berth assigned",
+    "Vessel arrives / anchorage wait",
+    "Berthed, cargo start"
   ],
   "resources": [
     "reviewer_amina",
     "reviewer_khalid",
     "reviewer_yousef",
+    "reviewer_fatima",
+    "reviewer_noura",
+    "planner_hassan",
+    "planner_layla",
     "pilot_omar",
     "pilot_saeed",
-    "planner_fatima",
+    "pilot_rashid",
     "KCT-1",
     "KCT-2",
     "KCT-3",
     "KCT-4",
-    "KCT-5"
+    "KCT-5",
+    "KBT-1",
+    "KGT-1",
+    "KGT-2"
   ]
 }

@@ -11,6 +11,7 @@ database ending in _test. Unreachable databases fail; they never silently skip.
 from __future__ import annotations
 
 import os
+import sys
 from collections.abc import Iterator
 from pathlib import Path
 
@@ -22,6 +23,19 @@ from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
+
+
+@pytest.fixture(scope="module")
+def reference():
+    from app.services.ingestion import port_config
+    from app.services.planning import build_input
+
+    sys.path.insert(0, str(BACKEND_DIR / "scripts"))
+    import generate_dataset as g
+
+    cfg = port_config()
+    generated = g.generate(cfg)
+    return build_input(list(generated.events), cfg, generated.window_end), cfg
 
 
 @pytest.fixture(scope="session")

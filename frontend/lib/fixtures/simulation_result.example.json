@@ -1,44 +1,1036 @@
 {
-  "run_id": "1002",
-  "scenario_id": "42",
-  "seed": 20260818,
-  "replications": 30,
+  "run_id": "2",
+  "scenario_id": "1",
+  "seed": 20260601,
+  "replications": 20,
   "baseline": [
-    { "name": "avg_waiting_time", "unit": "hours", "provenance": "simulated", "mean": 8.9, "std": 1.4, "p10": 7.2, "p50": 8.8, "p90": 10.7 },
-    { "name": "window_compliance", "unit": "percent", "provenance": "simulated", "mean": 71.0, "std": 4.2, "p10": 65.0, "p50": 71.0, "p90": 77.0 },
-    { "name": "berth_conflicts", "unit": "count", "provenance": "simulated", "mean": 1.0, "std": 0.6, "p10": 0.0, "p50": 1.0, "p90": 2.0 },
-    { "name": "reviewer_overtime", "unit": "hours", "provenance": "simulated", "mean": 4.1, "std": 1.1, "p10": 2.8, "p50": 4.0, "p90": 5.6 },
-    { "name": "workload_imbalance", "unit": "percent", "provenance": "simulated", "mean": 18.0, "std": 3.0, "p10": 14.0, "p50": 18.0, "p90": 22.0 }
+    {
+      "name": "avg_waiting_time",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 62.87400641025641,
+      "std": 6.193643109557176,
+      "p10": 56.636538461538464,
+      "p50": 60.549358974358974,
+      "p90": 70.2673076923077
+    },
+    {
+      "name": "window_compliance",
+      "unit": "percent",
+      "provenance": "simulated",
+      "mean": 0.0,
+      "std": 0.0,
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+    },
+    {
+      "name": "berth_conflicts",
+      "unit": "count",
+      "provenance": "simulated",
+      "mean": 0.0,
+      "std": 0.0,
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+    },
+    {
+      "name": "reviewer_overtime",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 0.0,
+      "std": 0.0,
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+    },
+    {
+      "name": "workload_imbalance",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 15.91,
+      "std": 7.282689521506918,
+      "p10": 4.616666666666666,
+      "p50": 18.1,
+      "p90": 23.283333333333335
+    },
+    {
+      "name": "reviewer_staffed_hours",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 252.0,
+      "std": 0.0,
+      "p10": 252.0,
+      "p50": 252.0,
+      "p90": 252.0
+    }
   ],
   "optimized": [
-    { "name": "avg_waiting_time", "unit": "hours", "provenance": "simulated", "mean": 5.8, "std": 1.2, "p10": 4.5, "p50": 5.7, "p90": 7.3 },
-    { "name": "window_compliance", "unit": "percent", "provenance": "simulated", "mean": 83.0, "std": 3.6, "p10": 78.0, "p50": 83.0, "p90": 88.0 },
-    { "name": "berth_conflicts", "unit": "count", "provenance": "simulated", "mean": 0.0, "std": 0.2, "p10": 0.0, "p50": 0.0, "p90": 0.0 },
-    { "name": "reviewer_overtime", "unit": "hours", "provenance": "simulated", "mean": 5.3, "std": 1.3, "p10": 3.8, "p50": 5.2, "p90": 7.0 },
-    { "name": "workload_imbalance", "unit": "percent", "provenance": "simulated", "mean": 21.0, "std": 3.4, "p10": 16.0, "p50": 21.0, "p90": 26.0 }
+    {
+      "name": "avg_waiting_time",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 45.06730769230769,
+      "std": 4.183798777905547,
+      "p10": 39.86538461538461,
+      "p50": 45.02820512820513,
+      "p90": 48.06346153846154
+    },
+    {
+      "name": "window_compliance",
+      "unit": "percent",
+      "provenance": "simulated",
+      "mean": 0.0,
+      "std": 0.0,
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+    },
+    {
+      "name": "berth_conflicts",
+      "unit": "count",
+      "provenance": "simulated",
+      "mean": 0.0,
+      "std": 0.0,
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+    },
+    {
+      "name": "reviewer_overtime",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 0.0,
+      "std": 0.0,
+      "p10": 0.0,
+      "p50": 0.0,
+      "p90": 0.0
+    },
+    {
+      "name": "workload_imbalance",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 13.9,
+      "std": 4.936755569759916,
+      "p10": 6.7,
+      "p50": 12.75,
+      "p90": 20.083333333333332
+    },
+    {
+      "name": "reviewer_staffed_hours",
+      "unit": "hours",
+      "provenance": "simulated",
+      "mean": 420.0,
+      "std": 0.0,
+      "p10": 420.0,
+      "p50": 420.0,
+      "p90": 420.0
+    }
   ],
   "headline": {
     "avg_waiting_time": [
-      { "value": 8.9, "unit": "hours", "provenance": "simulated" },
-      { "value": 5.8, "unit": "hours", "provenance": "simulated" }
+      {
+        "value": 62.87400641025641,
+        "unit": "hours",
+        "provenance": "simulated"
+      },
+      {
+        "value": 45.06730769230769,
+        "unit": "hours",
+        "provenance": "simulated"
+      }
     ],
     "window_compliance": [
-      { "value": 71.0, "unit": "percent", "provenance": "simulated" },
-      { "value": 83.0, "unit": "percent", "provenance": "simulated" }
+      {
+        "value": 0.0,
+        "unit": "percent",
+        "provenance": "simulated"
+      },
+      {
+        "value": 0.0,
+        "unit": "percent",
+        "provenance": "simulated"
+      }
     ],
     "berth_conflicts": [
-      { "value": 1.0, "unit": "count", "provenance": "simulated" },
-      { "value": 0.0, "unit": "count", "provenance": "simulated" }
+      {
+        "value": 0.0,
+        "unit": "count",
+        "provenance": "simulated"
+      },
+      {
+        "value": 0.0,
+        "unit": "count",
+        "provenance": "simulated"
+      }
     ]
   },
   "tradeoffs": {
     "reviewer_overtime": [
-      { "value": 4.1, "unit": "hours", "provenance": "simulated" },
-      { "value": 5.3, "unit": "hours", "provenance": "simulated" }
+      {
+        "value": 0.0,
+        "unit": "hours",
+        "provenance": "simulated"
+      },
+      {
+        "value": 0.0,
+        "unit": "hours",
+        "provenance": "simulated"
+      }
     ],
     "workload_imbalance": [
-      { "value": 18.0, "unit": "percent", "provenance": "simulated" },
-      { "value": 21.0, "unit": "percent", "provenance": "simulated" }
+      {
+        "value": 15.91,
+        "unit": "hours",
+        "provenance": "simulated"
+      },
+      {
+        "value": 13.9,
+        "unit": "hours",
+        "provenance": "simulated"
+      }
+    ],
+    "reviewer_staffed_hours": [
+      {
+        "value": 252.0,
+        "unit": "hours",
+        "provenance": "simulated"
+      },
+      {
+        "value": 420.0,
+        "unit": "hours",
+        "provenance": "simulated"
+      }
     ]
-  }
+  },
+  "replication_seeds": [
+    20260601,
+    20260602,
+    20260603,
+    20260604,
+    20260605,
+    20260606,
+    20260607,
+    20260608,
+    20260609,
+    20260610,
+    20260611,
+    20260612,
+    20260613,
+    20260614,
+    20260615,
+    20260616,
+    20260617,
+    20260618,
+    20260619,
+    20260620
+  ],
+  "samples": {
+    "baseline": {
+      "avg_waiting_time": [
+        57.03653846153846,
+        81.60192307692307,
+        54.71410256410256,
+        62.4974358974359,
+        58.90512820512821,
+        60.549358974358974,
+        59.651923076923076,
+        63.014102564102565,
+        56.636538461538464,
+        67.08076923076923,
+        56.6448717948718,
+        63.43589743589744,
+        59.16794871794872,
+        71.81282051282051,
+        70.2673076923077,
+        64.15576923076924,
+        59.205128205128204,
+        64.70961538461539,
+        59.92307692307692,
+        66.46987179487179
+      ],
+      "window_compliance": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "berth_conflicts": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reviewer_overtime": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "workload_imbalance": [
+        18.433333333333334,
+        4.616666666666666,
+        22.166666666666668,
+        8.65,
+        19.1,
+        21.95,
+        21.733333333333334,
+        24.65,
+        28.316666666666666,
+        9.966666666666667,
+        18.683333333333334,
+        21.95,
+        16.183333333333334,
+        9.516666666666667,
+        9.95,
+        23.283333333333335,
+        13.6,
+        2.216666666666667,
+        5.133333333333334,
+        18.1
+      ],
+      "reviewer_staffed_hours": [
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0,
+        252.0
+      ]
+    },
+    "optimized": {
+      "avg_waiting_time": [
+        42.840384615384615,
+        58.507051282051286,
+        39.146794871794874,
+        45.27884615384615,
+        42.623717948717946,
+        46.5224358974359,
+        45.02820512820513,
+        45.5224358974359,
+        39.86538461538461,
+        46.72692307692308,
+        42.71602564102564,
+        41.99294871794872,
+        48.06346153846154,
+        47.82371794871795,
+        47.312820512820515,
+        42.06474358974359,
+        41.89038461538462,
+        45.41602564102564,
+        41.896153846153844,
+        50.10769230769231
+      ],
+      "window_compliance": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "berth_conflicts": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "reviewer_overtime": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "workload_imbalance": [
+        9.866666666666667,
+        13.75,
+        8.716666666666667,
+        23.3,
+        16.216666666666665,
+        12.366666666666667,
+        15.5,
+        10.9,
+        12.75,
+        10.866666666666667,
+        11.983333333333333,
+        20.083333333333332,
+        23.383333333333333,
+        6.7,
+        18.016666666666666,
+        5.383333333333334,
+        17.55,
+        18.116666666666667,
+        9.266666666666667,
+        13.283333333333333
+      ],
+      "reviewer_staffed_hours": [
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0,
+        420.0
+      ]
+    }
+  },
+  "baseline_schedule": [
+    {
+      "vessel": "KHL-0595",
+      "berth": "KCT-1",
+      "start": "2026-07-31T12:23:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-07-31T20:38:00+04:00",
+      "cargo_start": "2026-07-31T14:52:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T10:23:00+04:00"
+    },
+    {
+      "vessel": "KHL-0599",
+      "berth": "KGT-1",
+      "start": "2026-07-31T06:38:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-07-31T17:22:00+04:00",
+      "cargo_start": "2026-07-31T09:17:00+04:00",
+      "review_start": "2026-07-31T00:00:00+04:00",
+      "review_end": "2026-07-31T04:38:00+04:00"
+    },
+    {
+      "vessel": "KHL-0600",
+      "berth": "KCT-2",
+      "start": "2026-07-31T12:27:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-07-31T22:51:00+04:00",
+      "cargo_start": "2026-07-31T15:13:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T10:27:00+04:00"
+    },
+    {
+      "vessel": "KHL-0602",
+      "berth": "KCT-1",
+      "start": "2026-07-31T21:43:00+04:00",
+      "reviewer": null,
+      "end": "2026-08-01T06:43:00+04:00",
+      "cargo_start": "2026-08-01T01:05:00+04:00",
+      "review_start": null,
+      "review_end": null
+    },
+    {
+      "vessel": "KHL-0603",
+      "berth": "KGT-2",
+      "start": "2026-08-01T14:58:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T23:33:00+04:00",
+      "cargo_start": "2026-08-01T18:26:00+04:00",
+      "review_start": "2026-07-31T10:23:00+04:00",
+      "review_end": "2026-08-01T12:58:00+04:00"
+    },
+    {
+      "vessel": "KHL-0604",
+      "berth": "KBT-1",
+      "start": "2026-07-31T17:07:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-01T03:30:00+04:00",
+      "cargo_start": "2026-07-31T20:34:00+04:00",
+      "review_start": "2026-07-31T10:27:00+04:00",
+      "review_end": "2026-07-31T15:07:00+04:00"
+    },
+    {
+      "vessel": "KHL-0605",
+      "berth": "KCT-2",
+      "start": "2026-08-01T12:09:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T21:17:00+04:00",
+      "cargo_start": "2026-08-01T14:58:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T10:09:00+04:00"
+    },
+    {
+      "vessel": "KHL-0606",
+      "berth": "KCT-3",
+      "start": "2026-08-01T12:54:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T00:47:00+04:00",
+      "cargo_start": "2026-08-01T16:07:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T10:54:00+04:00"
+    },
+    {
+      "vessel": "KHL-0607",
+      "berth": "KCT-4",
+      "start": "2026-08-01T06:26:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-01T18:04:00+04:00",
+      "cargo_start": "2026-08-01T09:45:00+04:00",
+      "review_start": "2026-07-31T18:00:00+04:00",
+      "review_end": "2026-08-01T04:26:00+04:00"
+    },
+    {
+      "vessel": "KHL-0608",
+      "berth": "KGT-1",
+      "start": "2026-08-01T03:40:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-01T14:58:00+04:00",
+      "cargo_start": "2026-08-01T06:07:00+04:00",
+      "review_start": "2026-07-31T21:50:00+04:00",
+      "review_end": "2026-08-01T01:11:00+04:00"
+    },
+    {
+      "vessel": "KHL-0609",
+      "berth": "KCT-1",
+      "start": "2026-08-02T07:13:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-02T15:37:00+04:00",
+      "cargo_start": "2026-08-02T09:58:00+04:00",
+      "review_start": "2026-08-01T18:00:00+04:00",
+      "review_end": "2026-08-01T21:27:00+04:00"
+    },
+    {
+      "vessel": "KHL-0610",
+      "berth": "KCT-2",
+      "start": "2026-08-03T00:56:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-03T11:29:00+04:00",
+      "cargo_start": "2026-08-03T03:18:00+04:00",
+      "review_start": "2026-08-01T12:58:00+04:00",
+      "review_end": "2026-08-02T16:26:00+04:00"
+    },
+    {
+      "vessel": "KHL-0611",
+      "berth": "KBT-1",
+      "start": "2026-08-01T17:17:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T01:39:00+04:00",
+      "cargo_start": "2026-08-01T20:40:00+04:00",
+      "review_start": "2026-08-01T10:54:00+04:00",
+      "review_end": "2026-08-01T15:17:00+04:00"
+    },
+    {
+      "vessel": "KHL-0612",
+      "berth": "KBT-1",
+      "start": "2026-08-02T12:34:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-02T22:47:00+04:00",
+      "cargo_start": "2026-08-02T15:01:00+04:00",
+      "review_start": "2026-08-02T06:00:00+04:00",
+      "review_end": "2026-08-02T10:34:00+04:00"
+    },
+    {
+      "vessel": "KHL-0613",
+      "berth": "KCT-1",
+      "start": "2026-08-01T19:53:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T07:13:00+04:00",
+      "cargo_start": "2026-08-01T22:52:00+04:00",
+      "review_start": "2026-08-01T15:17:00+04:00",
+      "review_end": "2026-08-01T17:53:00+04:00"
+    },
+    {
+      "vessel": "KHL-0614",
+      "berth": "KCT-3",
+      "start": "2026-08-02T16:11:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-03T00:48:00+04:00",
+      "cargo_start": "2026-08-02T19:20:00+04:00",
+      "review_start": "2026-08-02T10:34:00+04:00",
+      "review_end": "2026-08-02T14:11:00+04:00"
+    },
+    {
+      "vessel": "KHL-0615",
+      "berth": "KGT-1",
+      "start": "2026-08-02T12:43:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-03T00:14:00+04:00",
+      "cargo_start": "2026-08-02T15:57:00+04:00",
+      "review_start": "2026-08-02T06:00:00+04:00",
+      "review_end": "2026-08-02T10:43:00+04:00"
+    },
+    {
+      "vessel": "KHL-0616",
+      "berth": "KCT-2",
+      "start": "2026-08-02T04:09:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-02T13:55:00+04:00",
+      "cargo_start": "2026-08-02T07:36:00+04:00",
+      "review_start": "2026-08-01T21:27:00+04:00",
+      "review_end": "2026-08-02T02:09:00+04:00"
+    },
+    {
+      "vessel": "KHL-0617",
+      "berth": "KCT-1",
+      "start": "2026-08-02T15:37:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-03T02:09:00+04:00",
+      "cargo_start": "2026-08-02T18:26:00+04:00",
+      "review_start": "2026-08-02T02:09:00+04:00",
+      "review_end": "2026-08-02T05:20:00+04:00"
+    },
+    {
+      "vessel": "KHL-0618",
+      "berth": "KBT-1",
+      "start": "2026-08-03T00:04:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-03T10:16:00+04:00",
+      "cargo_start": "2026-08-03T03:05:00+04:00",
+      "review_start": "2026-08-02T18:00:00+04:00",
+      "review_end": "2026-08-02T22:04:00+04:00"
+    },
+    {
+      "vessel": "KHL-0619",
+      "berth": "KGT-1",
+      "start": "2026-08-03T11:59:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-03T21:07:00+04:00",
+      "cargo_start": "2026-08-03T15:23:00+04:00",
+      "review_start": "2026-08-03T06:00:00+04:00",
+      "review_end": "2026-08-03T09:59:00+04:00"
+    },
+    {
+      "vessel": "KHL-0620",
+      "berth": "KCT-2",
+      "start": "2026-08-02T15:58:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-03T00:56:00+04:00",
+      "cargo_start": "2026-08-02T18:43:00+04:00",
+      "review_start": "2026-08-02T10:43:00+04:00",
+      "review_end": "2026-08-02T13:58:00+04:00"
+    },
+    {
+      "vessel": "KHL-0621",
+      "berth": "KGT-2",
+      "start": "2026-08-03T17:47:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-04T04:05:00+04:00",
+      "cargo_start": "2026-08-03T20:22:00+04:00",
+      "review_start": "2026-08-03T09:59:00+04:00",
+      "review_end": "2026-08-03T15:47:00+04:00"
+    },
+    {
+      "vessel": "KHL-0622",
+      "berth": "KCT-1",
+      "start": "2026-08-03T02:09:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-03T10:16:00+04:00",
+      "cargo_start": "2026-08-03T04:39:00+04:00",
+      "review_start": "2026-08-02T13:58:00+04:00",
+      "review_end": "2026-08-02T17:15:00+04:00"
+    },
+    {
+      "vessel": "KHL-0623",
+      "berth": "KCT-3",
+      "start": "2026-08-04T19:46:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-05T03:57:00+04:00",
+      "cargo_start": "2026-08-04T22:19:00+04:00",
+      "review_start": "2026-08-04T06:00:00+04:00",
+      "review_end": "2026-08-04T17:46:00+04:00"
+    },
+    {
+      "vessel": "KHL-0624",
+      "berth": "KCT-4",
+      "start": "2026-08-03T11:13:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-03T21:04:00+04:00",
+      "cargo_start": "2026-08-03T14:34:00+04:00",
+      "review_start": "2026-08-03T06:00:00+04:00",
+      "review_end": "2026-08-03T09:13:00+04:00"
+    }
+  ],
+  "optimized_schedule": [
+    {
+      "vessel": "KHL-0595",
+      "berth": "KCT-1",
+      "start": "2026-07-31T12:23:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-07-31T20:38:00+04:00",
+      "cargo_start": "2026-07-31T14:52:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T10:23:00+04:00"
+    },
+    {
+      "vessel": "KHL-0599",
+      "berth": "KGT-1",
+      "start": "2026-07-31T06:38:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-07-31T17:22:00+04:00",
+      "cargo_start": "2026-07-31T09:17:00+04:00",
+      "review_start": "2026-07-31T00:00:00+04:00",
+      "review_end": "2026-07-31T04:38:00+04:00"
+    },
+    {
+      "vessel": "KHL-0600",
+      "berth": "KCT-2",
+      "start": "2026-07-31T12:27:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-07-31T22:51:00+04:00",
+      "cargo_start": "2026-07-31T15:13:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T10:27:00+04:00"
+    },
+    {
+      "vessel": "KHL-0602",
+      "berth": "KCT-1",
+      "start": "2026-07-31T21:43:00+04:00",
+      "reviewer": null,
+      "end": "2026-08-01T06:43:00+04:00",
+      "cargo_start": "2026-08-01T01:05:00+04:00",
+      "review_start": null,
+      "review_end": null
+    },
+    {
+      "vessel": "KHL-0603",
+      "berth": "KGT-2",
+      "start": "2026-08-01T15:12:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-01T23:47:00+04:00",
+      "cargo_start": "2026-08-01T18:40:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-08-01T13:12:00+04:00"
+    },
+    {
+      "vessel": "KHL-0604",
+      "berth": "KBT-1",
+      "start": "2026-07-31T14:43:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-01T01:06:00+04:00",
+      "cargo_start": "2026-07-31T18:10:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T10:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0605",
+      "berth": "KCT-2",
+      "start": "2026-07-31T22:51:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T07:59:00+04:00",
+      "cargo_start": "2026-08-01T01:40:00+04:00",
+      "review_start": "2026-07-31T10:23:00+04:00",
+      "review_end": "2026-07-31T14:32:00+04:00"
+    },
+    {
+      "vessel": "KHL-0606",
+      "berth": "KCT-3",
+      "start": "2026-07-31T17:21:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-01T05:14:00+04:00",
+      "cargo_start": "2026-07-31T20:34:00+04:00",
+      "review_start": "2026-07-31T10:27:00+04:00",
+      "review_end": "2026-07-31T15:21:00+04:00"
+    },
+    {
+      "vessel": "KHL-0607",
+      "berth": "KCT-4",
+      "start": "2026-08-02T02:18:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T13:56:00+04:00",
+      "cargo_start": "2026-08-02T05:37:00+04:00",
+      "review_start": "2026-07-31T10:27:00+04:00",
+      "review_end": "2026-08-01T16:24:00+04:00"
+    },
+    {
+      "vessel": "KHL-0608",
+      "berth": "KGT-1",
+      "start": "2026-07-31T21:26:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-01T08:44:00+04:00",
+      "cargo_start": "2026-07-31T23:53:00+04:00",
+      "review_start": "2026-07-31T10:40:00+04:00",
+      "review_end": "2026-07-31T14:01:00+04:00"
+    },
+    {
+      "vessel": "KHL-0609",
+      "berth": "KCT-1",
+      "start": "2026-08-01T07:36:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T16:00:00+04:00",
+      "cargo_start": "2026-08-01T10:21:00+04:00",
+      "review_start": "2026-07-31T14:32:00+04:00",
+      "review_end": "2026-07-31T17:59:00+04:00"
+    },
+    {
+      "vessel": "KHL-0610",
+      "berth": "KCT-3",
+      "start": "2026-08-02T16:03:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-03T02:36:00+04:00",
+      "cargo_start": "2026-08-02T18:25:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-02T14:03:00+04:00"
+    },
+    {
+      "vessel": "KHL-0611",
+      "berth": "KBT-1",
+      "start": "2026-08-01T12:23:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-01T20:45:00+04:00",
+      "cargo_start": "2026-08-01T15:46:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T10:23:00+04:00"
+    },
+    {
+      "vessel": "KHL-0612",
+      "berth": "KBT-1",
+      "start": "2026-08-01T20:45:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-02T06:58:00+04:00",
+      "cargo_start": "2026-08-01T23:12:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T10:34:00+04:00"
+    },
+    {
+      "vessel": "KHL-0613",
+      "berth": "KCT-2",
+      "start": "2026-08-01T07:59:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-01T19:19:00+04:00",
+      "cargo_start": "2026-08-01T10:58:00+04:00",
+      "review_start": "2026-07-31T18:00:00+04:00",
+      "review_end": "2026-07-31T20:36:00+04:00"
+    },
+    {
+      "vessel": "KHL-0614",
+      "berth": "KCT-4",
+      "start": "2026-08-01T04:26:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-01T13:03:00+04:00",
+      "cargo_start": "2026-08-01T07:35:00+04:00",
+      "review_start": "2026-07-31T21:50:00+04:00",
+      "review_end": "2026-08-01T01:27:00+04:00"
+    },
+    {
+      "vessel": "KHL-0615",
+      "berth": "KGT-1",
+      "start": "2026-08-02T00:43:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-02T12:14:00+04:00",
+      "cargo_start": "2026-08-02T03:57:00+04:00",
+      "review_start": "2026-08-01T18:00:00+04:00",
+      "review_end": "2026-08-01T22:43:00+04:00"
+    },
+    {
+      "vessel": "KHL-0616",
+      "berth": "KCT-3",
+      "start": "2026-08-01T12:42:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T22:28:00+04:00",
+      "cargo_start": "2026-08-01T16:09:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T10:42:00+04:00"
+    },
+    {
+      "vessel": "KHL-0617",
+      "berth": "KCT-4",
+      "start": "2026-08-01T15:46:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-02T02:18:00+04:00",
+      "cargo_start": "2026-08-01T18:35:00+04:00",
+      "review_start": "2026-08-01T10:24:00+04:00",
+      "review_end": "2026-08-01T13:35:00+04:00"
+    },
+    {
+      "vessel": "KHL-0618",
+      "berth": "KBT-1",
+      "start": "2026-08-02T12:04:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T22:16:00+04:00",
+      "cargo_start": "2026-08-02T15:05:00+04:00",
+      "review_start": "2026-08-02T06:00:00+04:00",
+      "review_end": "2026-08-02T10:04:00+04:00"
+    },
+    {
+      "vessel": "KHL-0619",
+      "berth": "KGT-2",
+      "start": "2026-08-01T23:47:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-02T08:55:00+04:00",
+      "cargo_start": "2026-08-02T03:11:00+04:00",
+      "review_start": "2026-08-01T10:34:00+04:00",
+      "review_end": "2026-08-01T14:33:00+04:00"
+    },
+    {
+      "vessel": "KHL-0620",
+      "berth": "KCT-5",
+      "start": "2026-08-01T16:09:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-02T01:07:00+04:00",
+      "cargo_start": "2026-08-01T18:54:00+04:00",
+      "review_start": "2026-08-01T10:42:00+04:00",
+      "review_end": "2026-08-01T13:57:00+04:00"
+    },
+    {
+      "vessel": "KHL-0621",
+      "berth": "KGT-1",
+      "start": "2026-08-02T13:48:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-03T00:06:00+04:00",
+      "cargo_start": "2026-08-02T16:23:00+04:00",
+      "review_start": "2026-08-02T06:00:00+04:00",
+      "review_end": "2026-08-02T11:48:00+04:00"
+    },
+    {
+      "vessel": "KHL-0622",
+      "berth": "KCT-1",
+      "start": "2026-08-02T15:21:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T23:28:00+04:00",
+      "cargo_start": "2026-08-02T17:51:00+04:00",
+      "review_start": "2026-08-02T10:04:00+04:00",
+      "review_end": "2026-08-02T13:21:00+04:00"
+    },
+    {
+      "vessel": "KHL-0623",
+      "berth": "KCT-2",
+      "start": "2026-08-02T19:46:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-03T03:57:00+04:00",
+      "cargo_start": "2026-08-02T22:19:00+04:00",
+      "review_start": "2026-08-02T06:00:00+04:00",
+      "review_end": "2026-08-02T17:46:00+04:00"
+    },
+    {
+      "vessel": "KHL-0624",
+      "berth": "KCT-3",
+      "start": "2026-08-01T22:28:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-02T08:19:00+04:00",
+      "cargo_start": "2026-08-02T01:49:00+04:00",
+      "review_start": "2026-08-01T13:57:00+04:00",
+      "review_end": "2026-08-01T17:10:00+04:00"
+    }
+  ],
+  "assumptions": [
+    "Active state uses observed event prefixes only; hidden ground truth is never read.",
+    "Unknown ETA, review, planning, pilot and occupancy durations use configured means.",
+    "Service windows not yet observed use request + mean travel + window tolerance.",
+    "Berth occupancy after recorded cargo start is assumed from the configured mean.",
+    "Berth occupation includes pilot approach and cargo service; targets apply to cargo start.",
+    "Review is non-preemptive within configured shifts; parallel review is not modeled.",
+    "Baseline preserves observed berth choices and configured reviewer capacity; missing choices are completed with FIFO. Closures apply to both sides.",
+    "Identical per-case random streams drive both plans, independent of execution order.",
+    "Review rework uses observable missing-document counts; up to three attempts.",
+    "Schedules show replication one; headline KPIs summarize every replication.",
+    "Resource queues prevent overlaps on both sides; zero conflicts may remain zero.",
+    "Variation intervals describe sampled outcomes, not confidence in real-world savings."
+  ]
 }

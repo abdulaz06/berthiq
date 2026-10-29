@@ -1,18 +1,20 @@
 {
-  "dataset_id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
-  "name": "Clear the KCT-3 overlap, protect priority reefer",
+  "dataset_id": "866da630-2c3c-5c67-b061-e6f43fb8534d",
+  "name": "Khalifa / five-reviewer capacity experiment",
   "constraints": {
-    "reviewer_count": 3,
-    "reviewer_shift_caps": { "day": 8, "night": 6 },
-    "locked_berths": { "MSC Shristi": "KCT-1" },
-    "allow_parallel_low_risk": true,
-    "priority_vessels": ["MSC Shristi", "CMA CGM Jaguar"]
+    "reviewer_count": 5,
+    "reviewer_shift_caps": null,
+    "locked_berths": null,
+    "allow_parallel_low_risk": false,
+    "priority_vessels": [],
+    "berth_closures": [],
+    "horizon_hours": 168
   },
   "objective_weights": {
     "waiting_time": 1.0,
-    "tardiness": 2.0,
-    "reviewer_overtime": 0.5,
-    "workload_imbalance": 0.5,
-    "plan_changes": 0.3
+    "tardiness": 4.0,
+    "reviewer_overtime": 2.0,
+    "workload_imbalance": 0.1,
+    "plan_changes": 30.0
   }
 }

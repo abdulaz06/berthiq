@@ -1,29 +1,84 @@
 {
   "kind": "recommendation",
-  "solver_status": "OPTIMAL",
-  "objective_value": 128.5,
+  "solver_status": "FEASIBLE",
+  "objective_value": 150158.0,
   "binding_constraints": [
     {
-      "kind": "berth_no_overlap",
-      "detail": "KCT-3 is double-booked by MV Ghantoot and CMA CGM Jaguar between 14:00 and 20:00 on 2026-08-18"
-    }
-  ],
-  "penalized_soft_constraints": [
+      "kind": "exactly_once",
+      "detail": "Independently verified on returned schedule."
+    },
     {
-      "kind": "plan_change",
-      "detail": "Reassigning MV Ghantoot from KCT-3 to KCT-5 changes the published berth plan"
+      "kind": "compatibility",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "arrival_readiness",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "approval_readiness",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "berth_no_overlap",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "pilot_capacity",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "locked_berths",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "horizon",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "reviewer_shifts",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "reviewer_no_overlap",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "reviewer_workload",
+      "detail": "Independently verified on returned schedule."
+    },
+    {
+      "kind": "durations",
+      "detail": "Independently verified on returned schedule."
     }
   ],
+  "penalized_soft_constraints": [],
   "top_factors": [],
   "baseline_deltas": {
-    "avg_waiting_time": { "value": -3.1, "unit": "hours", "provenance": "simulated" },
-    "window_compliance": { "value": 12.0, "unit": "percent", "provenance": "simulated" }
+    "no_change": {
+      "value": 0.0,
+      "unit": "weighted cost",
+      "provenance": "optimized"
+    },
+    "fifo": {
+      "value": 0.0,
+      "unit": "weighted cost",
+      "provenance": "optimized"
+    },
+    "greedy": {
+      "value": 0.0,
+      "unit": "weighted cost",
+      "provenance": "optimized"
+    }
   },
-  "simulation_seed": 20260818,
-  "replications": 30,
+  "simulation_seed": null,
+  "replications": null,
   "notes": [
-    "Moving MV Ghantoot from KCT-3 to KCT-5 clears the berth overlap",
-    "Simulated average waiting time falls by 3.1 hours",
-    "Simulated service-window compliance rises by 12 percentage points"
+    "Active state uses observed event prefixes only; hidden ground truth is never read.",
+    "Unknown ETA, review, planning, pilot and occupancy durations use configured means.",
+    "Service windows not yet observed use request + mean travel + window tolerance.",
+    "Berth occupancy after recorded cargo start is assumed from the configured mean.",
+    "Berth occupation includes pilot approach and cargo service; targets apply to cargo start.",
+    "Review is non-preemptive within configured shifts; parallel review is not modeled."
   ]
 }

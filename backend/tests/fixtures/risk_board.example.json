@@ -1,46 +1,786 @@
 {
-  "dataset_id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
-  "model_version": "risk-hgb-2026.08.1",
+  "dataset_id": "866da630-2c3c-5c67-b061-e6f43fb8534d",
+  "model_version": "risk-hgb-v1",
   "cases": [
     {
-      "case_id": "KHL-2026-0588",
+      "case_id": "KHL-0595",
       "vessel_type": "container",
-      "current_stage": "Documentation Review",
-      "miss_probability": 0.82,
-      "predicted_remaining_min": 640.0,
+      "current_stage": "Authority review",
+      "miss_probability": 0.9925,
+      "predicted_remaining_min": null,
       "top_factors": [
-        { "feature": "documentation_returns", "contribution": 0.34, "direction": "increases_risk" },
-        { "feature": "reviewer_queue_length", "contribution": 0.21, "direction": "increases_risk" },
-        { "feature": "loa_m", "contribution": 0.08, "direction": "increases_risk" },
-        { "feature": "hours_to_window_end", "contribution": -0.05, "direction": "decreases_risk" }
+        {
+          "feature": "current_stage",
+          "contribution": 2.2682,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9415,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
       ],
-      "service_window_end": "2026-08-18T22:00:00+04:00"
+      "service_window_end": null
     },
     {
-      "case_id": "KHL-2026-0601",
+      "case_id": "KHL-0599",
+      "vessel_type": "general",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.5954,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.4155,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.971,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6747,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4889,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0600",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.6086,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.4102,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -1.0054,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6376,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "active_cases",
+          "contribution": 0.5211,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0602",
+      "vessel_type": "container",
+      "current_stage": "Arrival plan confirmed",
+      "miss_probability": 0.4106,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.1122,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9127,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.5733,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "active_cases",
+          "contribution": 0.4526,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": "2026-07-31T07:30:20.047471+04:00"
+    },
+    {
+      "case_id": "KHL-0603",
+      "vessel_type": "general",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.594,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2835,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9531,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6959,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4889,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0604",
       "vessel_type": "bulk",
-      "current_stage": "Anchorage Wait",
-      "miss_probability": 0.47,
-      "predicted_remaining_min": 910.0,
+      "current_stage": "Completeness check",
+      "miss_probability": 0.8369,
+      "predicted_remaining_min": null,
       "top_factors": [
-        { "feature": "anchorage_wait_min", "contribution": 0.19, "direction": "increases_risk" },
-        { "feature": "weather_severity", "contribution": 0.14, "direction": "increases_risk" },
-        { "feature": "berth_availability", "contribution": -0.12, "direction": "decreases_risk" }
+        {
+          "feature": "current_stage",
+          "contribution": 2.257,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.913,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
       ],
-      "service_window_end": "2026-08-19T08:00:00+04:00"
+      "service_window_end": null
     },
     {
-      "case_id": "KHL-2026-0609",
+      "case_id": "KHL-0605",
       "vessel_type": "container",
-      "current_stage": "Cargo Operations",
-      "miss_probability": 0.13,
-      "predicted_remaining_min": 300.0,
+      "current_stage": "Completeness check",
+      "miss_probability": 0.5034,
+      "predicted_remaining_min": null,
       "top_factors": [
-        { "feature": "cargo_progress", "contribution": -0.22, "direction": "decreases_risk" },
-        { "feature": "crane_allocation", "contribution": -0.10, "direction": "decreases_risk" },
-        { "feature": "hours_to_window_end", "contribution": -0.07, "direction": "decreases_risk" }
+        {
+          "feature": "current_stage",
+          "contribution": 2.2575,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9487,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
       ],
-      "service_window_end": "2026-08-18T20:00:00+04:00"
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0606",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.529,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2575,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9487,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0607",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.5687,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2575,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9487,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0608",
+      "vessel_type": "general",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.2822,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2835,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9531,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.61,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0609",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.7621,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2575,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9487,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0610",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.6764,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2575,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9487,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0611",
+      "vessel_type": "bulk",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.7987,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.257,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.913,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0612",
+      "vessel_type": "bulk",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.6668,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2678,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9058,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0613",
+      "vessel_type": "container",
+      "current_stage": "Documents submitted",
+      "miss_probability": 0.8062,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2682,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9415,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0614",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.7501,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2682,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9415,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0615",
+      "vessel_type": "general",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.6494,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2942,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9459,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.61,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0616",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.7525,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2682,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9415,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0617",
+      "vessel_type": "container",
+      "current_stage": "Documents submitted",
+      "miss_probability": 0.7315,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2682,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9415,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0618",
+      "vessel_type": "bulk",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.8428,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2678,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9058,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0619",
+      "vessel_type": "roro",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.7933,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2682,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9423,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0620",
+      "vessel_type": "container",
+      "current_stage": "Completeness check",
+      "miss_probability": 0.8224,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.2682,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.9415,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.6039,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.4718,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0621",
+      "vessel_type": "roro",
+      "current_stage": "Port call request submitted",
+      "miss_probability": 0.8182,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.1796,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.8551,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.5713,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.5424,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0622",
+      "vessel_type": "container",
+      "current_stage": "Port call request submitted",
+      "miss_probability": 0.7685,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.1796,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.8543,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.5713,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.5424,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0623",
+      "vessel_type": "container",
+      "current_stage": "Port call request submitted",
+      "miss_probability": 0.822,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.1796,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.8543,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.5713,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.5424,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
+    },
+    {
+      "case_id": "KHL-0624",
+      "vessel_type": "container",
+      "current_stage": "Port call request submitted",
+      "miss_probability": 0.7793,
+      "predicted_remaining_min": null,
+      "top_factors": [
+        {
+          "feature": "current_stage",
+          "contribution": 2.1796,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "n_events",
+          "contribution": -0.8543,
+          "direction": "decreases_risk"
+        },
+        {
+          "feature": "reviewers_busy",
+          "contribution": 0.5713,
+          "direction": "increases_risk"
+        },
+        {
+          "feature": "loa",
+          "contribution": 0.5424,
+          "direction": "increases_risk"
+        }
+      ],
+      "service_window_end": null
     }
   ]
 }

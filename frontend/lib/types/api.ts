@@ -31,6 +31,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/ready": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ready */
+        get: operations["ready_api_ready_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/datasets/{dataset_id}/discover": {
         parameters: {
             query?: never;
@@ -123,7 +140,25 @@ export interface paths {
         /** List Datasets */
         get: operations["list_datasets_api_datasets_get"];
         put?: never;
-        post?: never;
+        /** Upload */
+        post: operations["upload_api_datasets_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/datasets/builtin/{name}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Builtin */
+        post: operations["builtin_api_datasets_builtin__name__post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -147,6 +182,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/datasets/{dataset_id}/suggested-mapping": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Mapping Preview */
+        get: operations["mapping_preview_api_datasets__dataset_id__suggested_mapping_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/datasets/{dataset_id}/mapping": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Apply Mapping */
+        post: operations["apply_mapping_api_datasets__dataset_id__mapping_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/datasets/{dataset_id}/validation": {
         parameters: {
             query?: never;
@@ -154,8 +223,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Validation */
-        get: operations["get_validation_api_datasets__dataset_id__validation_get"];
+        /** Validation */
+        get: operations["validation_api_datasets__dataset_id__validation_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -171,10 +240,62 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        /** List Scenarios */
+        get: operations["list_scenarios_api_scenarios_get"];
         put?: never;
         /** Create Scenario */
         post: operations["create_scenario_api_scenarios_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scenarios/{scenario_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Scenario */
+        get: operations["get_scenario_api_scenarios__scenario_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scenarios/{scenario_id}/optimize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Optimize */
+        post: operations["optimize_api_scenarios__scenario_id__optimize_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scenarios/{scenario_id}/simulate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Simulate */
+        post: operations["simulate_api_scenarios__scenario_id__simulate_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -188,8 +309,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Optimization */
-        get: operations["get_optimization_api_optimization__run_id__get"];
+        /** Optimization Result */
+        get: operations["optimization_result_api_optimization__run_id__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -205,8 +326,8 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Simulation */
-        get: operations["get_simulation_api_simulation__run_id__get"];
+        /** Simulation Result */
+        get: operations["simulation_result_api_simulation__run_id__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -224,6 +345,74 @@ export interface paths {
         };
         /** Get Job */
         get: operations["get_job_api_jobs__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/scenarios/{scenario_id}/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Export */
+        get: operations["export_api_scenarios__scenario_id__export_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/demo/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Reset */
+        delete: operations["reset_api_demo_session_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/ports/khalifa/geography": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Geography */
+        get: operations["geography_api_ports_khalifa_geography_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/datasets/{dataset_id}/operations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Operations */
+        get: operations["operations_api_datasets__dataset_id__operations_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -252,6 +441,37 @@ export interface components {
             start: string;
             /** Reviewer */
             reviewer?: string | null;
+            /** End */
+            end?: string | null;
+            /** Cargo Start */
+            cargo_start?: string | null;
+            /** Review Start */
+            review_start?: string | null;
+            /** Review End */
+            review_end?: string | null;
+        };
+        /** BerthClosure */
+        BerthClosure: {
+            /** Berth */
+            berth: string;
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+        };
+        /** Body_upload_api_datasets_post */
+        Body_upload_api_datasets_post: {
+            /**
+             * File
+             * Format: binary
+             */
+            file: string;
         };
         /**
          * Bottleneck
@@ -301,6 +521,37 @@ export interface components {
             top_factors: components["schemas"]["ShapFactor"][];
             /** Service Window End */
             service_window_end: string | null;
+        };
+        /**
+         * ColumnMapping
+         * @description Canonical field -> source column; attribute_map is source -> attribute.
+         */
+        ColumnMapping: {
+            /**
+             * Case Id
+             * @default
+             */
+            case_id: string;
+            /**
+             * Activity
+             * @default
+             */
+            activity: string;
+            /**
+             * End Ts
+             * @default
+             */
+            end_ts: string;
+            /** Start Ts */
+            start_ts?: string | null;
+            /** Resource Id */
+            resource_id?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Attribute Map */
+            attribute_map?: {
+                [key: string]: string;
+            };
         };
         /**
          * ConstraintRef
@@ -518,21 +769,100 @@ export interface components {
             unit: string;
             provenance: components["schemas"]["Provenance"];
         };
+        /** MappingPreview */
+        MappingPreview: {
+            /** Columns */
+            columns: string[];
+            suggested: components["schemas"]["ColumnMapping"];
+            /** Sample Rows */
+            sample_rows: {
+                [key: string]: string;
+            }[];
+        };
         /**
          * ObjectiveWeights
          * @description The five objective terms from PRODUCT_DEFINITION §15 (w1..w5).
          */
         ObjectiveWeights: {
-            /** Waiting Time */
+            /**
+             * Waiting Time
+             * @default 1
+             */
             waiting_time: number;
-            /** Tardiness */
+            /**
+             * Tardiness
+             * @default 4
+             */
             tardiness: number;
-            /** Reviewer Overtime */
+            /**
+             * Reviewer Overtime
+             * @default 2
+             */
             reviewer_overtime: number;
-            /** Workload Imbalance */
+            /**
+             * Workload Imbalance
+             * @default 0.1
+             */
             workload_imbalance: number;
-            /** Plan Changes */
+            /**
+             * Plan Changes
+             * @default 30
+             */
             plan_changes: number;
+        };
+        /** OperationalBerth */
+        OperationalBerth: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Terminal Type */
+            terminal_type: string;
+            /** Length M */
+            length_m: number;
+            /** Draft M */
+            draft_m: number;
+            /** Longitude */
+            longitude: number;
+            /** Latitude */
+            latitude: number;
+        };
+        /** OperationalEvent */
+        OperationalEvent: {
+            /** Case Id */
+            case_id: string;
+            /** Activity */
+            activity: string;
+            /** Start */
+            start: string | null;
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+            /** Resource */
+            resource: string | null;
+            /** Status */
+            status: string | null;
+        };
+        /** OperationalVessel */
+        OperationalVessel: {
+            /** Case Id */
+            case_id: string;
+            /** Vessel Type */
+            vessel_type: string;
+            /** Loa */
+            loa: number | null;
+            /** Draft */
+            draft: number | null;
+            /** Berth */
+            berth: string | null;
+            /** Service Window Start */
+            service_window_start: string | null;
+            /** Service Window End */
+            service_window_end: string | null;
+            /** Events */
+            events: components["schemas"]["OperationalEvent"][];
         };
         /**
          * OptimizationResult
@@ -547,7 +877,7 @@ export interface components {
              * Solver Status
              * @enum {string}
              */
-            solver_status: "OPTIMAL" | "FEASIBLE" | "INFEASIBLE";
+            solver_status: "OPTIMAL" | "FEASIBLE" | "INFEASIBLE" | "UNKNOWN";
             /** Objective Value */
             objective_value: number | null;
             /** Runtime Ms */
@@ -561,6 +891,55 @@ export interface components {
             narrative: string;
             /** Infeasibility */
             infeasibility?: components["schemas"]["ConstraintRef"][] | null;
+            /** Baselines */
+            baselines?: {
+                [key: string]: components["schemas"]["Assignment"][];
+            };
+            /** Baseline Objectives */
+            baseline_objectives?: {
+                [key: string]: number | null;
+            };
+            /** Constraint Checks */
+            constraint_checks?: {
+                [key: string]: boolean;
+            };
+            /** Objective Terms */
+            objective_terms?: {
+                [key: string]: number;
+            };
+            /** Assumptions */
+            assumptions?: string[];
+        };
+        /** PortOperations */
+        PortOperations: {
+            /** Dataset Id */
+            dataset_id: string;
+            /** Port Name */
+            port_name: string;
+            /**
+             * Clock Start
+             * Format: date-time
+             */
+            clock_start: string;
+            /**
+             * Clock End
+             * Format: date-time
+             */
+            clock_end: string;
+            /** Berths */
+            berths: components["schemas"]["OperationalBerth"][];
+            /** Vessels */
+            vessels: components["schemas"]["OperationalVessel"][];
+            /** Metrics */
+            metrics: {
+                [key: string]: components["schemas"]["KpiValue"];
+            };
+            /** Geography Disclosure */
+            geography_disclosure: string;
+            /** Operations Disclosure */
+            operations_disclosure: string;
+            /** Occupancy Assumption Minutes */
+            occupancy_assumption_minutes: number;
         };
         /**
          * ProcessModel
@@ -625,6 +1004,29 @@ export interface components {
              * @default []
              */
             priority_vessels: string[];
+            /** Berth Closures */
+            berth_closures?: components["schemas"]["BerthClosure"][];
+            /**
+             * Horizon Hours
+             * @default 168
+             */
+            horizon_hours: number;
+        };
+        /** ScenarioRecord */
+        ScenarioRecord: {
+            /** Id */
+            id: string;
+            spec: components["schemas"]["ScenarioSpec"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Expires At
+             * Format: date-time
+             */
+            expires_at: string;
         };
         /**
          * ScenarioSpec
@@ -635,8 +1037,8 @@ export interface components {
             dataset_id: string;
             /** Name */
             name: string;
-            constraints: components["schemas"]["ScenarioConstraints"];
-            objective_weights: components["schemas"]["ObjectiveWeights"];
+            constraints?: components["schemas"]["ScenarioConstraints"];
+            objective_weights?: components["schemas"]["ObjectiveWeights"];
         };
         /**
          * ShapFactor
@@ -652,6 +1054,21 @@ export interface components {
              * @enum {string}
              */
             direction: "increases_risk" | "decreases_risk";
+        };
+        /** SimulationRequest */
+        SimulationRequest: {
+            /** Optimization Run Id */
+            optimization_run_id: string;
+            /**
+             * Seed
+             * @default 20260601
+             */
+            seed: number;
+            /**
+             * Replications
+             * @default 20
+             */
+            replications: number;
         };
         /**
          * SimulationResult
@@ -684,6 +1101,20 @@ export interface components {
                     components["schemas"]["KpiValue"]
                 ];
             };
+            /** Replication Seeds */
+            replication_seeds?: number[];
+            /** Samples */
+            samples?: {
+                [key: string]: {
+                    [key: string]: number[];
+                };
+            };
+            /** Baseline Schedule */
+            baseline_schedule?: components["schemas"]["Assignment"][];
+            /** Optimized Schedule */
+            optimized_schedule?: components["schemas"]["Assignment"][];
+            /** Assumptions */
+            assumptions?: string[];
         };
         /** ValidationError */
         ValidationError: {
@@ -754,10 +1185,32 @@ export interface operations {
             };
         };
     };
-    discover_api_datasets__dataset_id__discover_post: {
+    ready_api_ready_get: {
         parameters: {
             query?: never;
             header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    discover_api_datasets__dataset_id__discover_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
                 dataset_id: string;
             };
@@ -788,7 +1241,9 @@ export interface operations {
     get_discovery_api_discovery__dataset_id__get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
                 dataset_id: string;
             };
@@ -819,7 +1274,9 @@ export interface operations {
     get_risk_api_datasets__dataset_id__risk_get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
                 dataset_id: string;
             };
@@ -853,7 +1310,9 @@ export interface operations {
                 /** @description Dataset the case belongs to */
                 dataset_id: string;
             };
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
                 case_id: string;
             };
@@ -884,7 +1343,9 @@ export interface operations {
     list_datasets_api_datasets_get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -899,12 +1360,89 @@ export interface operations {
                     "application/json": components["schemas"]["DatasetSummary"][];
                 };
             };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upload_api_datasets_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": components["schemas"]["Body_upload_api_datasets_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    builtin_api_datasets_builtin__name__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                name: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DatasetSummary"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
         };
     };
     get_dataset_api_datasets__dataset_id__get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
                 dataset_id: string;
             };
@@ -932,10 +1470,82 @@ export interface operations {
             };
         };
     };
-    get_validation_api_datasets__dataset_id__validation_get: {
+    mapping_preview_api_datasets__dataset_id__suggested_mapping_get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path: {
+                dataset_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MappingPreview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    apply_mapping_api_datasets__dataset_id__mapping_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path: {
+                dataset_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ColumnMapping"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DataQualityReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    validation_api_datasets__dataset_id__validation_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
                 dataset_id: string;
             };
@@ -963,10 +1573,43 @@ export interface operations {
             };
         };
     };
+    list_scenarios_api_scenarios_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioRecord"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_scenario_api_scenarios_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path?: never;
             cookie?: never;
         };
@@ -977,7 +1620,73 @@ export interface operations {
         };
         responses: {
             /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioRecord"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_scenario_api_scenarios__scenario_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path: {
+                scenario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
             200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioRecord"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    optimize_api_scenarios__scenario_id__optimize_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path: {
+                scenario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            202: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -996,12 +1705,51 @@ export interface operations {
             };
         };
     };
-    get_optimization_api_optimization__run_id__get: {
+    simulate_api_scenarios__scenario_id__simulate_post: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
-                run_id: string;
+                scenario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SimulationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobStatus"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    optimization_result_api_optimization__run_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path: {
+                run_id: number;
             };
             cookie?: never;
         };
@@ -1027,12 +1775,14 @@ export interface operations {
             };
         };
     };
-    get_simulation_api_simulation__run_id__get: {
+    simulation_result_api_simulation__run_id__get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
-                run_id: string;
+                run_id: number;
             };
             cookie?: never;
         };
@@ -1061,7 +1811,9 @@ export interface operations {
     get_job_api_jobs__job_id__get: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
             path: {
                 job_id: string;
             };
@@ -1076,6 +1828,121 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["JobStatus"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    export_api_scenarios__scenario_id__export_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path: {
+                scenario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_api_demo_session_delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    geography_api_ports_khalifa_geography_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    operations_api_datasets__dataset_id__operations_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-demo-session"?: string | null;
+            };
+            path: {
+                dataset_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PortOperations"];
                 };
             };
             /** @description Validation Error */

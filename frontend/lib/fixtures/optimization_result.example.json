@@ -1,50 +1,1178 @@
 {
-  "run_id": "1001",
-  "scenario_id": "42",
-  "solver_status": "OPTIMAL",
-  "objective_value": 128.5,
-  "runtime_ms": 2140,
+  "run_id": "1",
+  "scenario_id": "1",
+  "solver_status": "FEASIBLE",
+  "objective_value": 150158.0,
+  "runtime_ms": 0,
   "assignments": [
-    { "vessel": "MSC Shristi", "berth": "KCT-1", "start": "2026-08-18T13:00:00+04:00", "reviewer": "reviewer_amina" },
-    { "vessel": "CMA CGM Jaguar", "berth": "KCT-3", "start": "2026-08-18T14:00:00+04:00", "reviewer": "reviewer_khalid" },
-    { "vessel": "MV Ghantoot", "berth": "KCT-5", "start": "2026-08-18T14:30:00+04:00", "reviewer": "reviewer_yousef" },
-    { "vessel": "Maersk Kensington", "berth": "KCT-2", "start": "2026-08-18T18:00:00+04:00", "reviewer": "reviewer_amina" }
+    {
+      "vessel": "KHL-0595",
+      "berth": "KCT-1",
+      "start": "2026-07-31T11:50:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-07-31T21:43:00+04:00",
+      "cargo_start": "2026-07-31T14:43:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0599",
+      "berth": "KGT-1",
+      "start": "2026-07-31T05:50:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-07-31T15:43:00+04:00",
+      "cargo_start": "2026-07-31T08:43:00+04:00",
+      "review_start": "2026-07-31T00:00:00+04:00",
+      "review_end": "2026-07-31T03:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0600",
+      "berth": "KCT-2",
+      "start": "2026-07-31T11:50:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-07-31T21:43:00+04:00",
+      "cargo_start": "2026-07-31T14:43:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0602",
+      "berth": "KCT-1",
+      "start": "2026-07-31T21:43:00+04:00",
+      "reviewer": null,
+      "end": "2026-08-01T07:36:00+04:00",
+      "cargo_start": "2026-08-01T00:36:00+04:00",
+      "review_start": null,
+      "review_end": null
+    },
+    {
+      "vessel": "KHL-0603",
+      "berth": "KGT-2",
+      "start": "2026-07-31T11:50:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-07-31T21:43:00+04:00",
+      "cargo_start": "2026-07-31T14:43:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0604",
+      "berth": "KBT-1",
+      "start": "2026-07-31T14:43:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-01T00:36:00+04:00",
+      "cargo_start": "2026-07-31T17:36:00+04:00",
+      "review_start": "2026-07-31T06:00:00+04:00",
+      "review_end": "2026-07-31T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0605",
+      "berth": "KCT-2",
+      "start": "2026-07-31T21:43:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T07:36:00+04:00",
+      "cargo_start": "2026-08-01T00:36:00+04:00",
+      "review_start": "2026-07-31T09:50:00+04:00",
+      "review_end": "2026-07-31T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0606",
+      "berth": "KCT-3",
+      "start": "2026-07-31T15:40:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-01T01:33:00+04:00",
+      "cargo_start": "2026-07-31T18:33:00+04:00",
+      "review_start": "2026-07-31T09:50:00+04:00",
+      "review_end": "2026-07-31T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0607",
+      "berth": "KCT-4",
+      "start": "2026-07-31T18:33:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-01T04:26:00+04:00",
+      "cargo_start": "2026-07-31T21:26:00+04:00",
+      "review_start": "2026-07-31T09:50:00+04:00",
+      "review_end": "2026-07-31T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0608",
+      "berth": "KGT-1",
+      "start": "2026-07-31T21:26:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-01T07:19:00+04:00",
+      "cargo_start": "2026-08-01T00:19:00+04:00",
+      "review_start": "2026-07-31T09:50:00+04:00",
+      "review_end": "2026-07-31T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0609",
+      "berth": "KCT-1",
+      "start": "2026-08-01T07:36:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T17:29:00+04:00",
+      "cargo_start": "2026-08-01T10:29:00+04:00",
+      "review_start": "2026-07-31T13:40:00+04:00",
+      "review_end": "2026-07-31T17:30:00+04:00"
+    },
+    {
+      "vessel": "KHL-0610",
+      "berth": "KCT-3",
+      "start": "2026-08-01T01:33:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-01T11:26:00+04:00",
+      "cargo_start": "2026-08-01T04:26:00+04:00",
+      "review_start": "2026-07-31T13:40:00+04:00",
+      "review_end": "2026-07-31T17:30:00+04:00"
+    },
+    {
+      "vessel": "KHL-0611",
+      "berth": "KBT-1",
+      "start": "2026-08-01T00:36:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-01T10:29:00+04:00",
+      "cargo_start": "2026-08-01T03:29:00+04:00",
+      "review_start": "2026-07-31T13:40:00+04:00",
+      "review_end": "2026-07-31T17:30:00+04:00"
+    },
+    {
+      "vessel": "KHL-0612",
+      "berth": "KBT-1",
+      "start": "2026-08-01T10:29:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-01T20:22:00+04:00",
+      "cargo_start": "2026-08-01T13:22:00+04:00",
+      "review_start": "2026-07-31T13:40:00+04:00",
+      "review_end": "2026-07-31T17:30:00+04:00"
+    },
+    {
+      "vessel": "KHL-0613",
+      "berth": "KCT-2",
+      "start": "2026-08-01T07:36:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-01T17:29:00+04:00",
+      "cargo_start": "2026-08-01T10:29:00+04:00",
+      "review_start": "2026-07-31T18:00:00+04:00",
+      "review_end": "2026-07-31T21:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0614",
+      "berth": "KCT-4",
+      "start": "2026-08-01T04:26:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-01T14:19:00+04:00",
+      "cargo_start": "2026-08-01T07:19:00+04:00",
+      "review_start": "2026-07-31T21:50:00+04:00",
+      "review_end": "2026-08-01T01:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0615",
+      "berth": "KGT-1",
+      "start": "2026-08-01T07:30:00+04:00",
+      "reviewer": "reviewer_noura",
+      "end": "2026-08-01T17:23:00+04:00",
+      "cargo_start": "2026-08-01T10:23:00+04:00",
+      "review_start": "2026-08-01T01:40:00+04:00",
+      "review_end": "2026-08-01T05:30:00+04:00"
+    },
+    {
+      "vessel": "KHL-0616",
+      "berth": "KCT-3",
+      "start": "2026-08-01T11:50:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-01T21:43:00+04:00",
+      "cargo_start": "2026-08-01T14:43:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0617",
+      "berth": "KCT-4",
+      "start": "2026-08-01T14:19:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-02T00:12:00+04:00",
+      "cargo_start": "2026-08-01T17:12:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0618",
+      "berth": "KBT-1",
+      "start": "2026-08-01T20:22:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T06:15:00+04:00",
+      "cargo_start": "2026-08-01T23:15:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0619",
+      "berth": "KGT-2",
+      "start": "2026-08-01T11:50:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-01T21:43:00+04:00",
+      "cargo_start": "2026-08-01T14:43:00+04:00",
+      "review_start": "2026-08-01T06:00:00+04:00",
+      "review_end": "2026-08-01T09:50:00+04:00"
+    },
+    {
+      "vessel": "KHL-0620",
+      "berth": "KCT-5",
+      "start": "2026-08-01T15:40:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-02T01:33:00+04:00",
+      "cargo_start": "2026-08-01T18:33:00+04:00",
+      "review_start": "2026-08-01T09:50:00+04:00",
+      "review_end": "2026-08-01T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0621",
+      "berth": "KGT-1",
+      "start": "2026-08-01T17:23:00+04:00",
+      "reviewer": "reviewer_yousef",
+      "end": "2026-08-02T03:16:00+04:00",
+      "cargo_start": "2026-08-01T20:16:00+04:00",
+      "review_start": "2026-08-01T09:50:00+04:00",
+      "review_end": "2026-08-01T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0622",
+      "berth": "KCT-1",
+      "start": "2026-08-01T18:33:00+04:00",
+      "reviewer": "reviewer_khalid",
+      "end": "2026-08-02T04:26:00+04:00",
+      "cargo_start": "2026-08-01T21:26:00+04:00",
+      "review_start": "2026-08-01T09:50:00+04:00",
+      "review_end": "2026-08-01T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0623",
+      "berth": "KCT-2",
+      "start": "2026-08-01T20:16:00+04:00",
+      "reviewer": "reviewer_fatima",
+      "end": "2026-08-02T06:09:00+04:00",
+      "cargo_start": "2026-08-01T23:09:00+04:00",
+      "review_start": "2026-08-01T09:50:00+04:00",
+      "review_end": "2026-08-01T13:40:00+04:00"
+    },
+    {
+      "vessel": "KHL-0624",
+      "berth": "KCT-3",
+      "start": "2026-08-01T21:43:00+04:00",
+      "reviewer": "reviewer_amina",
+      "end": "2026-08-02T07:36:00+04:00",
+      "cargo_start": "2026-08-02T00:36:00+04:00",
+      "review_start": "2026-08-01T13:40:00+04:00",
+      "review_end": "2026-08-01T17:30:00+04:00"
+    }
   ],
-  "changed_decisions": [
-    { "vessel": "MV Ghantoot", "berth": "KCT-5", "start": "2026-08-18T14:30:00+04:00", "reviewer": "reviewer_yousef" }
-  ],
+  "changed_decisions": [],
   "evidence": {
     "kind": "recommendation",
-    "solver_status": "OPTIMAL",
-    "objective_value": 128.5,
+    "solver_status": "FEASIBLE",
+    "objective_value": 150158.0,
     "binding_constraints": [
       {
-        "kind": "berth_no_overlap",
-        "detail": "KCT-3 was double-booked by MV Ghantoot and CMA CGM Jaguar between 14:00 and 20:00"
+        "kind": "exactly_once",
+        "detail": "Independently verified on returned schedule."
       },
       {
-        "kind": "draft_limit",
-        "detail": "MV Ghantoot draft 14.2 m fits KCT-5 (depth 16.0 m) but not KCT-4 (depth 13.5 m)"
-      }
-    ],
-    "penalized_soft_constraints": [
+        "kind": "compatibility",
+        "detail": "Independently verified on returned schedule."
+      },
       {
-        "kind": "plan_change",
-        "detail": "Reassigning MV Ghantoot from KCT-3 to KCT-5 changes the published berth plan"
+        "kind": "arrival_readiness",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "approval_readiness",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "berth_no_overlap",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "pilot_capacity",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "locked_berths",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "horizon",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "reviewer_shifts",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "reviewer_no_overlap",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "reviewer_workload",
+        "detail": "Independently verified on returned schedule."
+      },
+      {
+        "kind": "durations",
+        "detail": "Independently verified on returned schedule."
       }
     ],
+    "penalized_soft_constraints": [],
     "top_factors": [],
     "baseline_deltas": {
-      "avg_waiting_time": { "value": -3.1, "unit": "hours", "provenance": "optimized" },
-      "berth_conflicts": { "value": -1.0, "unit": "count", "provenance": "optimized" }
+      "no_change": {
+        "value": 0.0,
+        "unit": "weighted cost",
+        "provenance": "optimized"
+      },
+      "fifo": {
+        "value": 0.0,
+        "unit": "weighted cost",
+        "provenance": "optimized"
+      },
+      "greedy": {
+        "value": 0.0,
+        "unit": "weighted cost",
+        "provenance": "optimized"
+      }
     },
     "simulation_seed": null,
     "replications": null,
     "notes": [
-      "Moving MV Ghantoot from KCT-3 to KCT-5 clears the only berth overlap",
-      "Solver reaches OPTIMAL in 2.14 seconds"
+      "Active state uses observed event prefixes only; hidden ground truth is never read.",
+      "Unknown ETA, review, planning, pilot and occupancy durations use configured means.",
+      "Service windows not yet observed use request + mean travel + window tolerance.",
+      "Berth occupancy after recorded cargo start is assumed from the configured mean.",
+      "Berth occupation includes pilot approach and cargo service; targets apply to cargo start.",
+      "Review is non-preemptive within configured shifts; parallel review is not modeled."
     ]
   },
-  "narrative": "Moving MV Ghantoot from Berth KCT-3 to KCT-5 clears a berth overlap and lowers average waiting time by 3.1 hours, changing one decision in the published plan.",
-  "infeasibility": null
+  "narrative": "FEASIBLE: weighted objective 150158.00. All returned hard constraints passed independent verification. Negative baseline deltas mean lower cost.",
+  "infeasibility": null,
+  "baselines": {
+    "no_change": [
+      {
+        "vessel": "KHL-0595",
+        "berth": "KCT-1",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0599",
+        "berth": "KGT-1",
+        "start": "2026-07-31T05:50:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-07-31T15:43:00+04:00",
+        "cargo_start": "2026-07-31T08:43:00+04:00",
+        "review_start": "2026-07-31T00:00:00+04:00",
+        "review_end": "2026-07-31T03:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0600",
+        "berth": "KCT-2",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0602",
+        "berth": "KCT-1",
+        "start": "2026-07-31T21:43:00+04:00",
+        "reviewer": null,
+        "end": "2026-08-01T07:36:00+04:00",
+        "cargo_start": "2026-08-01T00:36:00+04:00",
+        "review_start": null,
+        "review_end": null
+      },
+      {
+        "vessel": "KHL-0603",
+        "berth": "KGT-2",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0604",
+        "berth": "KBT-1",
+        "start": "2026-07-31T14:43:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T00:36:00+04:00",
+        "cargo_start": "2026-07-31T17:36:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0605",
+        "berth": "KCT-2",
+        "start": "2026-07-31T21:43:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T07:36:00+04:00",
+        "cargo_start": "2026-08-01T00:36:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0606",
+        "berth": "KCT-3",
+        "start": "2026-07-31T15:40:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-01T01:33:00+04:00",
+        "cargo_start": "2026-07-31T18:33:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0607",
+        "berth": "KCT-4",
+        "start": "2026-07-31T18:33:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-01T04:26:00+04:00",
+        "cargo_start": "2026-07-31T21:26:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0608",
+        "berth": "KGT-1",
+        "start": "2026-07-31T21:26:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T07:19:00+04:00",
+        "cargo_start": "2026-08-01T00:19:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0609",
+        "berth": "KCT-1",
+        "start": "2026-08-01T07:36:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T17:29:00+04:00",
+        "cargo_start": "2026-08-01T10:29:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0610",
+        "berth": "KCT-3",
+        "start": "2026-08-01T01:33:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-01T11:26:00+04:00",
+        "cargo_start": "2026-08-01T04:26:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0611",
+        "berth": "KBT-1",
+        "start": "2026-08-01T00:36:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-01T10:29:00+04:00",
+        "cargo_start": "2026-08-01T03:29:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0612",
+        "berth": "KBT-1",
+        "start": "2026-08-01T10:29:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T20:22:00+04:00",
+        "cargo_start": "2026-08-01T13:22:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0613",
+        "berth": "KCT-2",
+        "start": "2026-08-01T07:36:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T17:29:00+04:00",
+        "cargo_start": "2026-08-01T10:29:00+04:00",
+        "review_start": "2026-07-31T18:00:00+04:00",
+        "review_end": "2026-07-31T21:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0614",
+        "berth": "KCT-4",
+        "start": "2026-08-01T04:26:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T14:19:00+04:00",
+        "cargo_start": "2026-08-01T07:19:00+04:00",
+        "review_start": "2026-07-31T21:50:00+04:00",
+        "review_end": "2026-08-01T01:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0615",
+        "berth": "KGT-1",
+        "start": "2026-08-01T07:30:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T17:23:00+04:00",
+        "cargo_start": "2026-08-01T10:23:00+04:00",
+        "review_start": "2026-08-01T01:40:00+04:00",
+        "review_end": "2026-08-01T05:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0616",
+        "berth": "KCT-3",
+        "start": "2026-08-01T11:50:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T21:43:00+04:00",
+        "cargo_start": "2026-08-01T14:43:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0617",
+        "berth": "KCT-4",
+        "start": "2026-08-01T14:19:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-02T00:12:00+04:00",
+        "cargo_start": "2026-08-01T17:12:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0618",
+        "berth": "KBT-1",
+        "start": "2026-08-01T20:22:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-02T06:15:00+04:00",
+        "cargo_start": "2026-08-01T23:15:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0619",
+        "berth": "KGT-2",
+        "start": "2026-08-01T11:50:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T21:43:00+04:00",
+        "cargo_start": "2026-08-01T14:43:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0620",
+        "berth": "KCT-5",
+        "start": "2026-08-01T15:40:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-02T01:33:00+04:00",
+        "cargo_start": "2026-08-01T18:33:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0621",
+        "berth": "KGT-1",
+        "start": "2026-08-01T17:23:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-02T03:16:00+04:00",
+        "cargo_start": "2026-08-01T20:16:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0622",
+        "berth": "KCT-1",
+        "start": "2026-08-01T18:33:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-02T04:26:00+04:00",
+        "cargo_start": "2026-08-01T21:26:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0623",
+        "berth": "KCT-2",
+        "start": "2026-08-01T20:16:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-02T06:09:00+04:00",
+        "cargo_start": "2026-08-01T23:09:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0624",
+        "berth": "KCT-3",
+        "start": "2026-08-01T21:43:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-02T07:36:00+04:00",
+        "cargo_start": "2026-08-02T00:36:00+04:00",
+        "review_start": "2026-08-01T13:40:00+04:00",
+        "review_end": "2026-08-01T17:30:00+04:00"
+      }
+    ],
+    "fifo": [
+      {
+        "vessel": "KHL-0595",
+        "berth": "KCT-1",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0599",
+        "berth": "KGT-1",
+        "start": "2026-07-31T05:50:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-07-31T15:43:00+04:00",
+        "cargo_start": "2026-07-31T08:43:00+04:00",
+        "review_start": "2026-07-31T00:00:00+04:00",
+        "review_end": "2026-07-31T03:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0600",
+        "berth": "KCT-2",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0602",
+        "berth": "KCT-1",
+        "start": "2026-07-31T21:43:00+04:00",
+        "reviewer": null,
+        "end": "2026-08-01T07:36:00+04:00",
+        "cargo_start": "2026-08-01T00:36:00+04:00",
+        "review_start": null,
+        "review_end": null
+      },
+      {
+        "vessel": "KHL-0603",
+        "berth": "KGT-2",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0604",
+        "berth": "KBT-1",
+        "start": "2026-07-31T14:43:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T00:36:00+04:00",
+        "cargo_start": "2026-07-31T17:36:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0605",
+        "berth": "KCT-2",
+        "start": "2026-07-31T21:43:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T07:36:00+04:00",
+        "cargo_start": "2026-08-01T00:36:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0606",
+        "berth": "KCT-3",
+        "start": "2026-07-31T15:40:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-01T01:33:00+04:00",
+        "cargo_start": "2026-07-31T18:33:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0607",
+        "berth": "KCT-4",
+        "start": "2026-07-31T18:33:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-01T04:26:00+04:00",
+        "cargo_start": "2026-07-31T21:26:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0608",
+        "berth": "KGT-1",
+        "start": "2026-07-31T21:26:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T07:19:00+04:00",
+        "cargo_start": "2026-08-01T00:19:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0609",
+        "berth": "KCT-1",
+        "start": "2026-08-01T07:36:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T17:29:00+04:00",
+        "cargo_start": "2026-08-01T10:29:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0610",
+        "berth": "KCT-3",
+        "start": "2026-08-01T01:33:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-01T11:26:00+04:00",
+        "cargo_start": "2026-08-01T04:26:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0611",
+        "berth": "KBT-1",
+        "start": "2026-08-01T00:36:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-01T10:29:00+04:00",
+        "cargo_start": "2026-08-01T03:29:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0612",
+        "berth": "KBT-1",
+        "start": "2026-08-01T10:29:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T20:22:00+04:00",
+        "cargo_start": "2026-08-01T13:22:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0613",
+        "berth": "KCT-2",
+        "start": "2026-08-01T07:36:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T17:29:00+04:00",
+        "cargo_start": "2026-08-01T10:29:00+04:00",
+        "review_start": "2026-07-31T18:00:00+04:00",
+        "review_end": "2026-07-31T21:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0614",
+        "berth": "KCT-4",
+        "start": "2026-08-01T04:26:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T14:19:00+04:00",
+        "cargo_start": "2026-08-01T07:19:00+04:00",
+        "review_start": "2026-07-31T21:50:00+04:00",
+        "review_end": "2026-08-01T01:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0615",
+        "berth": "KGT-1",
+        "start": "2026-08-01T07:30:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T17:23:00+04:00",
+        "cargo_start": "2026-08-01T10:23:00+04:00",
+        "review_start": "2026-08-01T01:40:00+04:00",
+        "review_end": "2026-08-01T05:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0616",
+        "berth": "KCT-3",
+        "start": "2026-08-01T11:50:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T21:43:00+04:00",
+        "cargo_start": "2026-08-01T14:43:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0617",
+        "berth": "KCT-4",
+        "start": "2026-08-01T14:19:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-02T00:12:00+04:00",
+        "cargo_start": "2026-08-01T17:12:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0618",
+        "berth": "KBT-1",
+        "start": "2026-08-01T20:22:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-02T06:15:00+04:00",
+        "cargo_start": "2026-08-01T23:15:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0619",
+        "berth": "KGT-2",
+        "start": "2026-08-01T11:50:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T21:43:00+04:00",
+        "cargo_start": "2026-08-01T14:43:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0620",
+        "berth": "KCT-5",
+        "start": "2026-08-01T15:40:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-02T01:33:00+04:00",
+        "cargo_start": "2026-08-01T18:33:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0621",
+        "berth": "KGT-1",
+        "start": "2026-08-01T17:23:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-02T03:16:00+04:00",
+        "cargo_start": "2026-08-01T20:16:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0622",
+        "berth": "KCT-1",
+        "start": "2026-08-01T18:33:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-02T04:26:00+04:00",
+        "cargo_start": "2026-08-01T21:26:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0623",
+        "berth": "KCT-2",
+        "start": "2026-08-01T20:16:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-02T06:09:00+04:00",
+        "cargo_start": "2026-08-01T23:09:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0624",
+        "berth": "KCT-3",
+        "start": "2026-08-01T21:43:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-02T07:36:00+04:00",
+        "cargo_start": "2026-08-02T00:36:00+04:00",
+        "review_start": "2026-08-01T13:40:00+04:00",
+        "review_end": "2026-08-01T17:30:00+04:00"
+      }
+    ],
+    "greedy": [
+      {
+        "vessel": "KHL-0595",
+        "berth": "KCT-1",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0599",
+        "berth": "KGT-1",
+        "start": "2026-07-31T05:50:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-07-31T15:43:00+04:00",
+        "cargo_start": "2026-07-31T08:43:00+04:00",
+        "review_start": "2026-07-31T00:00:00+04:00",
+        "review_end": "2026-07-31T03:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0600",
+        "berth": "KCT-2",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0602",
+        "berth": "KCT-1",
+        "start": "2026-07-31T21:43:00+04:00",
+        "reviewer": null,
+        "end": "2026-08-01T07:36:00+04:00",
+        "cargo_start": "2026-08-01T00:36:00+04:00",
+        "review_start": null,
+        "review_end": null
+      },
+      {
+        "vessel": "KHL-0603",
+        "berth": "KGT-2",
+        "start": "2026-07-31T11:50:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-07-31T21:43:00+04:00",
+        "cargo_start": "2026-07-31T14:43:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0604",
+        "berth": "KBT-1",
+        "start": "2026-07-31T14:43:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T00:36:00+04:00",
+        "cargo_start": "2026-07-31T17:36:00+04:00",
+        "review_start": "2026-07-31T06:00:00+04:00",
+        "review_end": "2026-07-31T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0605",
+        "berth": "KCT-2",
+        "start": "2026-07-31T21:43:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T07:36:00+04:00",
+        "cargo_start": "2026-08-01T00:36:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0606",
+        "berth": "KCT-3",
+        "start": "2026-07-31T15:40:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-01T01:33:00+04:00",
+        "cargo_start": "2026-07-31T18:33:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0607",
+        "berth": "KCT-4",
+        "start": "2026-07-31T18:33:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-01T04:26:00+04:00",
+        "cargo_start": "2026-07-31T21:26:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0608",
+        "berth": "KGT-1",
+        "start": "2026-07-31T21:26:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T07:19:00+04:00",
+        "cargo_start": "2026-08-01T00:19:00+04:00",
+        "review_start": "2026-07-31T09:50:00+04:00",
+        "review_end": "2026-07-31T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0609",
+        "berth": "KCT-1",
+        "start": "2026-08-01T07:36:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T17:29:00+04:00",
+        "cargo_start": "2026-08-01T10:29:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0610",
+        "berth": "KCT-3",
+        "start": "2026-08-01T01:33:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-01T11:26:00+04:00",
+        "cargo_start": "2026-08-01T04:26:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0611",
+        "berth": "KBT-1",
+        "start": "2026-08-01T00:36:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-01T10:29:00+04:00",
+        "cargo_start": "2026-08-01T03:29:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0612",
+        "berth": "KBT-1",
+        "start": "2026-08-01T10:29:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T20:22:00+04:00",
+        "cargo_start": "2026-08-01T13:22:00+04:00",
+        "review_start": "2026-07-31T13:40:00+04:00",
+        "review_end": "2026-07-31T17:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0613",
+        "berth": "KCT-2",
+        "start": "2026-08-01T07:36:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T17:29:00+04:00",
+        "cargo_start": "2026-08-01T10:29:00+04:00",
+        "review_start": "2026-07-31T18:00:00+04:00",
+        "review_end": "2026-07-31T21:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0614",
+        "berth": "KCT-4",
+        "start": "2026-08-01T04:26:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T14:19:00+04:00",
+        "cargo_start": "2026-08-01T07:19:00+04:00",
+        "review_start": "2026-07-31T21:50:00+04:00",
+        "review_end": "2026-08-01T01:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0615",
+        "berth": "KGT-1",
+        "start": "2026-08-01T07:30:00+04:00",
+        "reviewer": "reviewer_noura",
+        "end": "2026-08-01T17:23:00+04:00",
+        "cargo_start": "2026-08-01T10:23:00+04:00",
+        "review_start": "2026-08-01T01:40:00+04:00",
+        "review_end": "2026-08-01T05:30:00+04:00"
+      },
+      {
+        "vessel": "KHL-0616",
+        "berth": "KCT-3",
+        "start": "2026-08-01T11:50:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-01T21:43:00+04:00",
+        "cargo_start": "2026-08-01T14:43:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0617",
+        "berth": "KCT-4",
+        "start": "2026-08-01T14:19:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-02T00:12:00+04:00",
+        "cargo_start": "2026-08-01T17:12:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0618",
+        "berth": "KBT-1",
+        "start": "2026-08-01T20:22:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-02T06:15:00+04:00",
+        "cargo_start": "2026-08-01T23:15:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0619",
+        "berth": "KGT-2",
+        "start": "2026-08-01T11:50:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-01T21:43:00+04:00",
+        "cargo_start": "2026-08-01T14:43:00+04:00",
+        "review_start": "2026-08-01T06:00:00+04:00",
+        "review_end": "2026-08-01T09:50:00+04:00"
+      },
+      {
+        "vessel": "KHL-0620",
+        "berth": "KCT-5",
+        "start": "2026-08-01T15:40:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-02T01:33:00+04:00",
+        "cargo_start": "2026-08-01T18:33:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0621",
+        "berth": "KGT-1",
+        "start": "2026-08-01T17:23:00+04:00",
+        "reviewer": "reviewer_fatima",
+        "end": "2026-08-02T03:16:00+04:00",
+        "cargo_start": "2026-08-01T20:16:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0622",
+        "berth": "KCT-1",
+        "start": "2026-08-01T18:33:00+04:00",
+        "reviewer": "reviewer_khalid",
+        "end": "2026-08-02T04:26:00+04:00",
+        "cargo_start": "2026-08-01T21:26:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0623",
+        "berth": "KCT-2",
+        "start": "2026-08-01T20:16:00+04:00",
+        "reviewer": "reviewer_yousef",
+        "end": "2026-08-02T06:09:00+04:00",
+        "cargo_start": "2026-08-01T23:09:00+04:00",
+        "review_start": "2026-08-01T09:50:00+04:00",
+        "review_end": "2026-08-01T13:40:00+04:00"
+      },
+      {
+        "vessel": "KHL-0624",
+        "berth": "KCT-3",
+        "start": "2026-08-01T21:43:00+04:00",
+        "reviewer": "reviewer_amina",
+        "end": "2026-08-02T07:36:00+04:00",
+        "cargo_start": "2026-08-02T00:36:00+04:00",
+        "review_start": "2026-08-01T13:40:00+04:00",
+        "review_end": "2026-08-01T17:30:00+04:00"
+      }
+    ]
+  },
+  "baseline_objectives": {
+    "no_change": 150158.0,
+    "fifo": 150158.0,
+    "greedy": 150158.0
+  },
+  "constraint_checks": {
+    "exactly_once": true,
+    "compatibility": true,
+    "arrival_readiness": true,
+    "approval_readiness": true,
+    "berth_no_overlap": true,
+    "pilot_capacity": true,
+    "locked_berths": true,
+    "horizon": true,
+    "reviewer_shifts": true,
+    "reviewer_no_overlap": true,
+    "reviewer_workload": true,
+    "durations": true
+  },
+  "objective_terms": {
+    "waiting_time": 52448.0,
+    "tardiness": 24416.0,
+    "reviewer_overtime": 0.0,
+    "workload_imbalance": 460.0,
+    "plan_changes": 0.0
+  },
+  "assumptions": [
+    "Active state uses observed event prefixes only; hidden ground truth is never read.",
+    "Unknown ETA, review, planning, pilot and occupancy durations use configured means.",
+    "Service windows not yet observed use request + mean travel + window tolerance.",
+    "Berth occupancy after recorded cargo start is assumed from the configured mean.",
+    "Berth occupation includes pilot approach and cargo service; targets apply to cargo start.",
+    "Review is non-preemptive within configured shifts; parallel review is not modeled."
+  ]
 }

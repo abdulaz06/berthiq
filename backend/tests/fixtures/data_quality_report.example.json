@@ -1,35 +1,19 @@
 {
-  "dataset_id": "3f2c1e88-9a4b-4c2e-8b21-0d7e5a9f1c34",
-  "total_events": 7043,
-  "total_cases": 612,
+  "dataset_id": "866da630-2c3c-5c67-b061-e6f43fb8534d",
+  "total_events": 6539,
+  "total_cases": 624,
   "issues": [
     {
       "severity": "warning",
-      "code": "duplicate_event",
-      "message": "9 events share a (case_id, activity, end_ts) key and were de-duplicated.",
-      "count": 9,
-      "sample_rows": [142, 143, 588]
-    },
-    {
-      "severity": "warning",
-      "code": "impossible_order",
-      "message": "Cargo Operations recorded before Berthing in 3 cases.",
-      "count": 3,
-      "sample_rows": [2201, 4517, 6890]
-    },
-    {
-      "severity": "warning",
-      "code": "unknown_resource",
-      "message": "2 events reference a resource not in the port roster.",
-      "count": 2,
-      "sample_rows": [3310, 5024]
-    },
-    {
-      "severity": "info",
       "code": "single_event_case",
-      "message": "5 cases contain only one event; kept but not analyzable as a flow.",
-      "count": 5,
-      "sample_rows": [77, 903, 1544, 4102, 6771]
+      "message": "Case has only one observed event.",
+      "count": 4,
+      "sample_rows": [
+        6537,
+        6538,
+        6539,
+        6540
+      ]
     }
   ],
   "is_blocking": false
