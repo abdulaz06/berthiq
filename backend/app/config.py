@@ -6,6 +6,7 @@ environment and an optional per-machine `.env` at the repo root (gitignored).
 
 from __future__ import annotations
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -27,6 +28,7 @@ class Settings(BaseSettings):
     APP_VERSION: str = "0.1.0"
     ENABLE_UPLOADS: bool = False
     DEMO_TTL_HOURS: int = 24
+    JOB_TIMEOUT_SECONDS: int = Field(default=90, ge=1, le=120)
 
     # Native local Postgres. Overridden per-machine via `.env` (see .env.example).
     DATABASE_URL: str = "postgresql+psycopg2://postgres:CHANGE_ME@localhost:5432/berthiq"

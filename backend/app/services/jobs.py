@@ -22,7 +22,7 @@ from app.schemas.scenarios import (
     SimulationRequest,
     SimulationResult,
 )
-from app.services import optimization, simulation
+from app.services import compute
 from app.services.ingestion import port_config
 from app.services.planning import PlanningInput, Vessel, build_input
 
@@ -109,11 +109,17 @@ def execute(job_id: uuid.UUID, bind: Any, request: dict[str, Any] | None) -> Non
                 scenario = db.get(ScenarioRow, job.scenario_id)
                 if not scenario:
                     raise ValueError("Scenario expired before the job started.")
-                spec = ScenarioSpec.model_validate(scenario.spec)
-                data, cfg = restore(scenario.snapshot)
+                payload = {
+                    "spec": scenario.spec,
+                    "snapshot": scenario.snapshot,
+                    "kind": job.job_type.value,
+                    "request": request,
+                }
                 result: OptimizationResult | SimulationResult
                 if job.job_type == JobType.optimization:
-                    result = optimization.solve(data, cfg, spec)
+                    result = OptimizationResult.model_validate(
+                        compute.calculate(payload, settings.JOB_TIMEOUT_SECONDS)
+                    )
                 else:
                     sim_request = SimulationRequest.model_validate(request)
                     previous = db.get(AnalysisRun, int(sim_request.optimization_run_id))
@@ -123,8 +129,10 @@ def execute(job_id: uuid.UUID, bind: Any, request: dict[str, Any] | None) -> Non
                         or previous.kind != "optimization"
                     ):
                         raise ValueError("Optimization run does not belong to this scenario.")
-                    optimized = OptimizationResult.model_validate(previous.payload)
-                    result = simulation.compare(data, cfg, spec, optimized, sim_request)
+                    payload["optimized"] = previous.payload
+                    result = SimulationResult.model_validate(
+                        compute.calculate(payload, settings.JOB_TIMEOUT_SECONDS)
+                    )
                 run = AnalysisRun(scenario_id=scenario.id, kind=job.job_type.value, payload={})
                 db.add(run)
                 db.flush()
@@ -143,7 +151,7 @@ def execute(job_id: uuid.UUID, bind: Any, request: dict[str, Any] | None) -> Non
                     job.status = JobStatus.failed
                     job.error = (
                         str(exc)
-                        if isinstance(exc, ValueError)
+                        if isinstance(exc, ValueError | compute.ComputeTimeout)
                         else "Computation failed; retry or reset this scenario."
                     )
                     db.commit()

@@ -208,8 +208,15 @@ export default function CaseStudy() {
             <li>
               <strong>Controlled assumptions.</strong> Missing arrival and
               service information uses configured assumptions. Resource rules,
-              demand, rework and weather are simplified. Historical simulator
-              calibration remains an open validation task.
+              demand, rework and weather are simplified. An eight-cutoff
+              synthetic historical backtest produced seven forecastable windows
+              and one incompatible historical berth assignment. Timing error
+              ranged from 0.02 to 9.30 hours; interval coverage was
+              inconsistent. The simulator supports controlled comparisons, not
+              calibrated arrival forecasts.{" "}
+              <a href="https://github.com/abdulaz06/berthiq/blob/main/DOCS/SIMULATOR_VALIDATION.md">
+                Read the complete validation and limitations.
+              </a>
             </li>
             <li>
               <strong>Feasible is not optimal.</strong> A bounded solve may

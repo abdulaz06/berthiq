@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import time
 from collections import OrderedDict, deque
 
@@ -10,6 +11,8 @@ from starlette.types import ASGIApp, Receive, Scope, Send
 
 
 class DemoLimits:
+    BODY_TIMEOUT_SECONDS = 15
+
     def __init__(self, app: ASGIApp) -> None:
         self.app = app
         self.clients: OrderedDict[str, deque[float]] = OrderedDict()
@@ -36,8 +39,17 @@ class DemoLimits:
                 return
             hits.append(now)
             body = bytearray()
+            deadline = time.monotonic() + self.BODY_TIMEOUT_SECONDS
             while True:
-                message = await receive()
+                try:
+                    message = await asyncio.wait_for(
+                        receive(), timeout=max(0, deadline - time.monotonic())
+                    )
+                except TimeoutError:
+                    await JSONResponse({"detail": "Request body timed out."}, status_code=408)(
+                        scope, receive, send
+                    )
+                    return
                 if message["type"] == "http.disconnect":
                     return
                 body.extend(message.get("body", b""))

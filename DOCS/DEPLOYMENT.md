@@ -69,6 +69,17 @@ API concurrency is bounded to 64, keep-alive to five seconds. Apply proxy body
 and request-rate limits too, especially to expensive read endpoints. Uploads
 remain disabled unless deliberately enabled for a bounded demonstration.
 
+Optimization/simulation run in at most two subprocesses. `JOB_TIMEOUT_SECONDS`
+defaults to 90 (allowed range 1–120); the supervisor kills and reaps an overdue
+child before releasing its slot. A child watchdog expires five seconds later if
+the supervisor was abruptly killed. Configure the host to terminate the entire
+service process group on shutdown and allow a graceful drain of at least 125
+seconds. Pending/running durable jobs become failed on restart and can be retried;
+successful results are preserved. Numerical functions retain seeded deterministic
+behavior; timeout handling never invents a partial result. Request-body reception
+is limited to 15 seconds and 6 MiB before parsing; uploaded files to 5 MiB,
+50,000 rows, 64 columns and 30 MiB expanded XLSX content.
+
 The current public demo uses random per-tab owner tokens, not user authentication.
 Private data is accessible to anyone holding its token. Use synthetic/non-sensitive
 uploads only. Scenarios expire after 24 hours; scenario/run/session quotas and
@@ -83,7 +94,9 @@ visible in the app and provide the exact deployed source revision, dependency
 licenses and any modifications. Before publication, settle a compatible project
 license with the contributors; the repository currently does not grant a project
 license. No commercial PM4Py license has been purchased. This licensing decision
-remains a public-launch gate, not a completed deployment step.
+remains a public-launch gate, not a completed deployment step. Abdul explicitly
+chose to keep licensing pending for this sprint; no project license is added and
+Shravani's consent is not assumed. Do not publicly deploy while this is pending.
 
 Retain OpenFreeMap/OpenStreetMap attribution and the approximate-berth and
 synthetic-operation disclosures. Vessel motion is simulated, with a schematic
