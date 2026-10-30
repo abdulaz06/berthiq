@@ -191,8 +191,17 @@ export default function ScenarioStudio({
       setPriorities(spec.constraints?.priority_vessels ?? []);
       const savedClosure = spec.constraints?.berth_closures?.[0];
       setClosure(savedClosure?.berth ?? "");
-      setClosureHours(savedClosure ? (Date.parse(savedClosure.end)-Date.parse(savedClosure.start))/3600000 : 12);
-      setReplayMode(payload.runs.some(r=>r.kind === "simulation") ? "simulation" : "plan");
+      setClosureHours(
+        savedClosure
+          ? (Date.parse(savedClosure.end) - Date.parse(savedClosure.start)) /
+              3600000
+          : 12,
+      );
+      setReplayMode(
+        payload.runs.some((r) => r.kind === "simulation")
+          ? "simulation"
+          : "plan",
+      );
       setOptimization(
         ([...payload.runs].reverse().find((r) => r.kind === "optimization")
           ?.result as OptimizationResult) ?? null,
@@ -767,7 +776,8 @@ export default function ScenarioStudio({
                   <p className="form-hint">
                     No-change baseline retains the original staffing; the
                     proposal uses the saved scenario. Dots show means; whiskers
-                    show p10–p90.
+                    show p10–p90 simulation variability, not calibrated arrival
+                    confidence or measured savings.
                   </p>
                   <div className="distribution-charts">
                     {simulation.baseline.map((b) => {

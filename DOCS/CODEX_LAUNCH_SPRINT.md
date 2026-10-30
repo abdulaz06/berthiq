@@ -1,6 +1,6 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Current branch: `codex/production-readiness`.
+Active since 2026-10-28 (America/Chicago). Current branch: `codex/validation-resilience`.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -152,7 +152,7 @@ private CSV upload/mapping/use, denied anonymous access and fatal timestamp hand
 1920x1080 and 390x844 screenshots inspected in DOCS/media. Final metadata check and
 milestone commit/CI are next. Existing `.env.example` deletion remains unstaged.
 
-## Production runtime and dependency security — in verification
+## Production runtime and dependency security — merged (#9)
 
 PR #8 verified green and squash-merged as `bd2c6b1`. Preserved the user's local
 configuration, repaired Python 3.12 venv and unrelated `.env.example` deletion.
@@ -176,12 +176,43 @@ Desktop console and mobile simulation screenshots inspected: layout preserved;
 mobile SVG labels remain a refinement candidate. Added release/idempotent-seed
 tests: 87 backend tests now pass with no skips; Ruff/mypy and pip check pass. Final browser rerun and CI remain before merging this milestone.
 
+## Historical validation and reliability — final verification
+
+PR #9 merged with all six CI checks green as `01990f6`. The interrupted work was
+preserved on `codex/validation-resilience`; `.env.example` deletion stays excluded.
+
+Eight-cutoff historical backtest is reproducible from the frozen generator.
+Seven windows (22 call/cutoff observations) produce forecasts; one fails because
+KHL-0487's historical KBT-1 assignment violates the current terminal policy.
+No constraints were weakened and neither the generator nor model was replaced.
+Timing MAE ranges 0.02–9.30h; p10–p90 coverage varies 0–100% on tiny samples.
+Investigation traces underestimation to simplified rework and overestimation to
+unobservable in-flight review. These are conditional simulation ranges, not
+calibrated arrival forecasts. Full per-case data and limitations are recorded in
+SIMULATOR_VALIDATION.json/.md; tests poison future events and reproduce the report.
+
+Optimization/simulation now execute in bounded subprocesses with a 90s default
+hard timeout, sanitized failures, cleanup-before-slot-release and an independent
+child watchdog. Recovery preserves completed jobs and fails interrupted ones.
+Upload parsing rejects oversized/expanded ZIPs, forged worksheet dimensions,
+XML entities, malformed CSV, NULs, non-finite JSON and excessive nesting. Request
+body reception has a 15s deadline. Added process timeout/crash, capacity recovery,
+restart, slow-body, parser and historical evaluation regression tests.
+
+README rewritten with architecture diagram, feature walkthrough, actual screenshots,
+setup, model/decision evidence and deployment limitations. Case study reflects the
+backtest. Mobile distribution labels enlarged after inspecting the 390x844 render.
+Previous full verification: 106 backend tests, no skips; mypy 43 files, Ruff,
+17 frontend tests, lint/typecheck/provenance/build and 7 real browser tests pass.
+Final rerun after watchdog addition also passed: 106 backend tests and all seven browser tests. Both dependency audits report no known vulnerabilities. CI remains before merging.
+
 ## Exact next action
 
-Finish runtime milestone checks, commit/push/open PR and merge only with green CI.
-Then implement hard background-job timeouts, restart/resource and hostile-upload
-tests, offline historical simulator validation, README/case-study update and final
-responsive accessibility/visual refinement. Project licensing requires contributor
-decision before public launch (PM4Py AGPL dependency; no project LICENSE yet).
-No public deployment exists. Hosting credentials/payment are only needed at provisioning.
-Read-only Caravan reference clone: Windows temp `berthiq-caravan-reference`.
+Commit/push the verified validation milestone, open PR and merge after green CI.
+Then finish automated accessibility checks, keyboard interaction review, final
+1920x1080/390x844 screenshot review and deployment-preparation acceptance.
+Licensing stays pending at the user's explicit direction; do not add AGPL,
+assume Shravani's consent, repeat the licensing question, or publicly deploy.
+No public hosting is provisioned or verified. Preserve local .env, existing DB,
+and the unrelated .env.example deletion. Read-only Caravan reference clone is
+in Windows temp `berthiq-caravan-reference`.

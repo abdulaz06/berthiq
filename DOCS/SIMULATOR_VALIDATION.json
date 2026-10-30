@@ -1,0 +1,349 @@
+{
+  "method": "Frozen prefix forecasts scored against held-out generator cargo starts",
+  "generator_seed": 20260601,
+  "replications_per_cutoff": 20,
+  "simulation_seed_start": 20260601,
+  "horizon_hours": 168,
+  "known_generator_bottleneck": {
+    "stage": "Authority review",
+    "cause": "reviewer_overload",
+    "total_delay_minutes_by_cause": {
+      "missing_docs": 216471.90000000026,
+      "reviewer_overload": 372999.10000000003,
+      "berth_conflict": 55590.79999999999,
+      "weather": 6355.500000000007
+    }
+  },
+  "windows": [
+    {
+      "cutoff": "2026-06-05T00:00:00+04:00",
+      "prefix_events": 4585,
+      "latest_input": "2026-06-04T23:50:49.430205+04:00",
+      "failed_replications": [],
+      "scored_cases": 6,
+      "censored_or_failed_cases": [],
+      "mae_hours": 9.30371521,
+      "bias_hours": -6.3656153598148135,
+      "p10_p90_coverage": 0.6666666666666666,
+      "deterministic_plan_mae_hours": 10.81405878611111,
+      "cases": [
+        {
+          "case_id": "KHL-0421",
+          "historical_hours": 10.742169721111111,
+          "simulated_p50_hours": 15.625,
+          "simulated_p10_hours": 14.4,
+          "simulated_p90_hours": 49.766666666666666,
+          "error_hours": 4.882830278888889,
+          "covered": false,
+          "deterministic_error_hours": 3.974496945555556
+        },
+        {
+          "case_id": "KHL-0422",
+          "historical_hours": 15.723707746944443,
+          "simulated_p50_hours": 9.475,
+          "simulated_p10_hours": 8.333333333333334,
+          "simulated_p90_hours": 27.433333333333334,
+          "error_hours": -6.248707746944444,
+          "covered": true,
+          "deterministic_error_hours": -7.0070410802777765
+        },
+        {
+          "case_id": "KHL-0423",
+          "historical_hours": 43.14989731833333,
+          "simulated_p50_hours": 14.975000000000001,
+          "simulated_p10_hours": 14.266666666666667,
+          "simulated_p90_hours": 38.86666666666667,
+          "error_hours": -28.17489731833333,
+          "covered": false,
+          "deterministic_error_hours": -28.433230651666662
+        },
+        {
+          "case_id": "KHL-0424",
+          "historical_hours": 27.510674603055556,
+          "simulated_p50_hours": 19.983333333333334,
+          "simulated_p10_hours": 18.133333333333333,
+          "simulated_p90_hours": 62.46666666666667,
+          "error_hours": -7.527341269722221,
+          "covered": true,
+          "deterministic_error_hours": -8.960674603055555
+        },
+        {
+          "case_id": "KHL-0425",
+          "historical_hours": 24.31537870777778,
+          "simulated_p50_hours": 19.258333333333333,
+          "simulated_p10_hours": 18.133333333333333,
+          "simulated_p90_hours": 38.61666666666667,
+          "error_hours": -5.057045374444446,
+          "covered": true,
+          "deterministic_error_hours": -5.765378707777778
+        },
+        {
+          "case_id": "KHL-0426",
+          "historical_hours": 35.343530728333334,
+          "simulated_p50_hours": 39.275000000000006,
+          "simulated_p10_hours": 24.616666666666667,
+          "simulated_p90_hours": 48.75,
+          "error_hours": 3.9314692716666713,
+          "covered": true,
+          "deterministic_error_hours": -10.743530728333333
+        }
+      ]
+    },
+    {
+      "cutoff": "2026-06-12T00:00:00+04:00",
+      "prefix_events": 4878,
+      "latest_input": "2026-06-11T22:18:27.555120+04:00",
+      "failed_replications": [],
+      "scored_cases": 2,
+      "censored_or_failed_cases": [],
+      "mae_hours": 2.0148997036111114,
+      "bias_hours": 0.2572905905555565,
+      "p10_p90_coverage": 0.5,
+      "deterministic_plan_mae_hours": 2.7357330369444437,
+      "cases": [
+        {
+          "case_id": "KHL-0450",
+          "historical_hours": 2.652809705833333,
+          "simulated_p50_hours": 4.925000000000001,
+          "simulated_p10_hours": 4.366666666666666,
+          "simulated_p90_hours": 5.383333333333334,
+          "error_hours": 2.2721902941666676,
+          "covered": false,
+          "deterministic_error_hours": 2.2305236275000007
+        },
+        {
+          "case_id": "KHL-0451",
+          "historical_hours": 17.957609113055554,
+          "simulated_p50_hours": 16.2,
+          "simulated_p10_hours": 14.25,
+          "simulated_p90_hours": 38.86666666666667,
+          "error_hours": -1.7576091130555547,
+          "covered": true,
+          "deterministic_error_hours": -3.240942446388887
+        }
+      ]
+    },
+    {
+      "cutoff": "2026-06-19T00:00:00+04:00",
+      "prefix_events": 5072,
+      "latest_input": "2026-06-18T16:25:30.033160+04:00",
+      "failed_replications": [],
+      "scored_cases": 1,
+      "censored_or_failed_cases": [],
+      "mae_hours": 7.883664270000002,
+      "bias_hours": 7.883664270000002,
+      "p10_p90_coverage": 0,
+      "deterministic_plan_mae_hours": 6.500330936666668,
+      "cases": [
+        {
+          "case_id": "KHL-0467",
+          "historical_hours": 8.216335729999999,
+          "simulated_p50_hours": 16.1,
+          "simulated_p10_hours": 14.3,
+          "simulated_p90_hours": 36.733333333333334,
+          "error_hours": 7.883664270000002,
+          "covered": false,
+          "deterministic_error_hours": 6.500330936666668
+        }
+      ]
+    },
+    {
+      "cutoff": "2026-06-26T00:00:00+04:00",
+      "forecast_failure": "Historical prefix has no feasible no-change plan. Historical berth incompatible with current rules: ['KHL-0487']"
+    },
+    {
+      "cutoff": "2026-07-03T00:00:00+04:00",
+      "prefix_events": 5548,
+      "latest_input": "2026-07-02T23:48:35.898165+04:00",
+      "failed_replications": [],
+      "scored_cases": 4,
+      "censored_or_failed_cases": [],
+      "mae_hours": 7.377088580833335,
+      "bias_hours": -3.8107432790277795,
+      "p10_p90_coverage": 0,
+      "deterministic_plan_mae_hours": 7.008338580833334,
+      "cases": [
+        {
+          "case_id": "KHL-0510",
+          "historical_hours": 9.911473153611112,
+          "simulated_p50_hours": 16.116666666666667,
+          "simulated_p10_hours": 14.25,
+          "simulated_p90_hours": 39.483333333333334,
+          "error_hours": 6.205193513055555,
+          "covered": false,
+          "deterministic_error_hours": 4.8051935130555545
+        },
+        {
+          "case_id": "KHL-0511",
+          "historical_hours": 4.0178794575,
+          "simulated_p50_hours": 2.708333333333333,
+          "simulated_p10_hours": 2.3666666666666667,
+          "simulated_p90_hours": 3.3,
+          "error_hours": -1.3095461241666673,
+          "covered": false,
+          "deterministic_error_hours": -1.1512127908333336
+        },
+        {
+          "case_id": "KHL-0512",
+          "historical_hours": 3.930836242777778,
+          "simulated_p50_hours": 4.858333333333333,
+          "simulated_p10_hours": 4.4,
+          "simulated_p90_hours": 5.166666666666667,
+          "error_hours": 0.9274970905555553,
+          "covered": false,
+          "deterministic_error_hours": 0.9524970905555556
+        },
+        {
+          "case_id": "KHL-0513",
+          "historical_hours": 35.84111759555556,
+          "simulated_p50_hours": 14.774999999999999,
+          "simulated_p10_hours": 14.266666666666667,
+          "simulated_p90_hours": 20.583333333333332,
+          "error_hours": -21.06611759555556,
+          "covered": false,
+          "deterministic_error_hours": -21.12445092888889
+        }
+      ]
+    },
+    {
+      "cutoff": "2026-07-10T00:00:00+04:00",
+      "prefix_events": 5778,
+      "latest_input": "2026-07-09T23:37:06.636350+04:00",
+      "failed_replications": [],
+      "scored_cases": 3,
+      "censored_or_failed_cases": [],
+      "mae_hours": 2.243593507407408,
+      "bias_hours": -0.2952732655555564,
+      "p10_p90_coverage": 0,
+      "deterministic_plan_mae_hours": 2.3463712851851852,
+      "cases": [
+        {
+          "case_id": "KHL-0534",
+          "historical_hours": 2.316507183888889,
+          "simulated_p50_hours": 3.1166666666666667,
+          "simulated_p10_hours": 2.4166666666666665,
+          "simulated_p90_hours": 3.4166666666666665,
+          "error_hours": 0.8001594827777776,
+          "covered": false,
+          "deterministic_error_hours": 0.6501594827777777
+        },
+        {
+          "case_id": "KHL-0535",
+          "historical_hours": 3.20267912,
+          "simulated_p50_hours": 5.324999999999999,
+          "simulated_p10_hours": 4.933333333333334,
+          "simulated_p90_hours": 5.816666666666666,
+          "error_hours": 2.1223208799999993,
+          "covered": false,
+          "deterministic_error_hours": 2.1639875466666663
+        },
+        {
+          "case_id": "KHL-0536",
+          "historical_hours": 17.074966826111112,
+          "simulated_p50_hours": 13.266666666666666,
+          "simulated_p10_hours": 12.8,
+          "simulated_p90_hours": 15.016666666666667,
+          "error_hours": -3.808300159444446,
+          "covered": false,
+          "deterministic_error_hours": -4.224966826111112
+        }
+      ]
+    },
+    {
+      "cutoff": "2026-07-17T00:00:00+04:00",
+      "prefix_events": 5994,
+      "latest_input": "2026-07-16T23:15:17.927287+04:00",
+      "failed_replications": [],
+      "scored_cases": 2,
+      "censored_or_failed_cases": [],
+      "mae_hours": 0.018344603611111232,
+      "bias_hours": 0.018344603611111232,
+      "p10_p90_coverage": 1,
+      "deterministic_plan_mae_hours": 0.4691553963888886,
+      "cases": [
+        {
+          "case_id": "KHL-0555",
+          "historical_hours": 9.06634733611111,
+          "simulated_p50_hours": 9.091666666666667,
+          "simulated_p10_hours": 8.483333333333333,
+          "simulated_p90_hours": 27.083333333333332,
+          "error_hours": 0.025319330555555908,
+          "covered": true,
+          "deterministic_error_hours": -0.3496806694444441
+        },
+        {
+          "case_id": "KHL-0556",
+          "historical_hours": 15.30529679,
+          "simulated_p50_hours": 15.316666666666666,
+          "simulated_p10_hours": 14.65,
+          "simulated_p90_hours": 21.383333333333333,
+          "error_hours": 0.011369876666666556,
+          "covered": true,
+          "deterministic_error_hours": -0.5886301233333331
+        }
+      ]
+    },
+    {
+      "cutoff": "2026-07-24T00:00:00+04:00",
+      "prefix_events": 6216,
+      "latest_input": "2026-07-23T23:44:42.972581+04:00",
+      "failed_replications": [],
+      "scored_cases": 4,
+      "censored_or_failed_cases": [],
+      "mae_hours": 5.4574977320833336,
+      "bias_hours": 1.0808092988888882,
+      "p10_p90_coverage": 0.25,
+      "deterministic_plan_mae_hours": 4.9991643987500005,
+      "cases": [
+        {
+          "case_id": "KHL-0575",
+          "historical_hours": 11.68048084138889,
+          "simulated_p50_hours": 9.133333333333333,
+          "simulated_p10_hours": 8.45,
+          "simulated_p90_hours": 24.466666666666665,
+          "error_hours": -2.5471475080555575,
+          "covered": true,
+          "deterministic_error_hours": -2.9638141747222235
+        },
+        {
+          "case_id": "KHL-0576",
+          "historical_hours": 8.989562691666666,
+          "simulated_p50_hours": 2.783333333333333,
+          "simulated_p10_hours": 2.4833333333333334,
+          "simulated_p90_hours": 3.35,
+          "error_hours": -6.206229358333333,
+          "covered": false,
+          "deterministic_error_hours": -6.106229358333334
+        },
+        {
+          "case_id": "KHL-0577",
+          "historical_hours": 5.769264219722222,
+          "simulated_p50_hours": 15.441666666666666,
+          "simulated_p10_hours": 14.566666666666666,
+          "simulated_p90_hours": 38.5,
+          "error_hours": 9.672402446944444,
+          "covered": false,
+          "deterministic_error_hours": 8.947402446944444
+        },
+        {
+          "case_id": "KHL-0578",
+          "historical_hours": 12.737455051666666,
+          "simulated_p50_hours": 16.141666666666666,
+          "simulated_p10_hours": 14.25,
+          "simulated_p90_hours": 38.55,
+          "error_hours": 3.4042116149999995,
+          "covered": false,
+          "deterministic_error_hours": 1.9792116150000005
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Synthetic retrospective backtest; not external validation or real-world savings.",
+    "No parameters fitted or tuned on held-out completions or hidden generator state.",
+    "Historical generator dispatch differs from the forecast no-change planner.",
+    "Intervals describe simulator variability, not calibrated predictive confidence.",
+    "Repeated vessels across cutoffs are correlated; windows are reported separately.",
+    "This checks baseline timing, not causal validity of staffing counterfactuals."
+  ]
+}

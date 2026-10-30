@@ -129,7 +129,7 @@ def test_bad_requests_do_not_become_successes(api):
 
 def test_worker_failure_and_restart_recovery(api, session, monkeypatch):
     from app.db import Job, JobStatus, JobType
-    from app.services import jobs, optimization
+    from app.services import compute, jobs
 
     client, did, headers = api
     sid = client.post(
@@ -144,10 +144,23 @@ def test_worker_failure_and_restart_recovery(api, session, monkeypatch):
     def fail(*args):
         raise ValueError("Controlled computation failure")
 
-    monkeypatch.setattr(optimization, "solve", fail)
+    monkeypatch.setattr(compute, "calculate", fail)
     job = client.post(f"/api/scenarios/{sid}/optimize", headers=headers).json()
     got = client.get(f"/api/jobs/{job['id']}", headers=headers).json()
     assert got["status"] == "failed" and "Controlled" in got["error"]
+
+    def timeout(*args):
+        raise compute.ComputeTimeout("Computation exceeded its time limit.")
+
+    monkeypatch.setattr(compute, "calculate", timeout)
+    timed = client.post(f"/api/scenarios/{sid}/optimize", headers=headers).json()
+    timed_status = client.get(f"/api/jobs/{timed['id']}", headers=headers).json()
+    assert timed_status["status"] == "failed" and "time limit" in timed_status["error"]
+    # Both exception paths returned their slots, rather than permanently exhausting capacity.
+    assert jobs.CAPACITY.acquire(blocking=False)
+    assert jobs.CAPACITY.acquire(blocking=False)
+    jobs.CAPACITY.release()
+    jobs.CAPACITY.release()
     interrupted = Job(job_type=JobType.optimization, status=JobStatus.running)
     session.add(interrupted)
     session.commit()

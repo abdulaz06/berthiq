@@ -5,14 +5,18 @@ from __future__ import annotations
 import csv
 import io
 import json
+import math
 import uuid
 import zipfile
 from collections import Counter, defaultdict
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, Literal
+from xml.etree.ElementTree import ParseError
 
 import sqlalchemy as sa
+from defusedxml.common import DefusedXmlException
+from lxml.etree import XMLSyntaxError
 from sqlalchemy.orm import Session
 
 from app.db.models import Case, CaseOutcome, Dataset, DatasetSource, DatasetStatus, Event
@@ -43,7 +47,7 @@ def parse_upload(content: bytes, filename: str) -> list[dict[str, str]]:
     workbook = None
     if extension == ".csv":
         try:
-            matrix = csv.reader(io.StringIO(content.decode("utf-8-sig")))
+            matrix = csv.reader(io.StringIO(content.decode("utf-8-sig")), strict=True)
         except UnicodeError as exc:
             raise ValueError("CSV must use UTF-8 encoding.") from exc
     elif extension == ".xlsx":
@@ -56,9 +60,28 @@ def parse_upload(content: bytes, filename: str) -> list[dict[str, str]]:
                     or sum(item.file_size for item in archive.infolist()) > 30 * 1024 * 1024
                 ):
                     raise ValueError("Workbook expands beyond the safe parsing limit.")
-            workbook = load_workbook(io.BytesIO(content), read_only=True, data_only=True)
-            matrix = workbook.active.iter_rows(values_only=True)
-        except (zipfile.BadZipFile, KeyError, OSError) as exc:
+            workbook = load_workbook(
+                io.BytesIO(content), read_only=True, data_only=True, keep_links=False
+            )
+            sheet = workbook.active
+            if (
+                sheet is None
+                or (sheet.max_column or 0) > MAX_COLUMNS
+                or (sheet.max_row or 0) > MAX_ROWS + 1
+            ):
+                workbook.close()
+                raise ValueError("Workbook dimensions exceed the row/column limits.")
+            matrix = sheet.iter_rows(values_only=True)
+        except (
+            zipfile.BadZipFile,
+            KeyError,
+            OSError,
+            ParseError,
+            XMLSyntaxError,
+            DefusedXmlException,
+        ) as exc:
+            if workbook:
+                workbook.close()
             raise ValueError("The uploaded file is not a readable XLSX workbook.") from exc
     else:
         raise ValueError("Choose a CSV or XLSX file.")
@@ -80,13 +103,15 @@ def parse_upload(content: bytes, filename: str) -> list[dict[str, str]]:
             }
             if any(len(v) > 10_000 for v in row.values()):
                 raise ValueError("A cell exceeds the 10,000 character limit.")
+            if any("\x00" in v for v in row.values()):
+                raise ValueError("Cells must not contain NUL characters.")
             if any(row.values()):
                 rows.append({h: row.get(h, "") for h in headers})
         if not rows:
             raise ValueError("The file contains no event rows.")
         return rows
-    except csv.Error as exc:
-        raise ValueError("CSV parsing failed; check quoting and column delimiters.") from exc
+    except (csv.Error, ParseError, XMLSyntaxError, DefusedXmlException) as exc:
+        raise ValueError("File parsing failed; check its format and cell contents.") from exc
     finally:
         if workbook:
             workbook.close()
@@ -135,6 +160,24 @@ def timestamp(value: Any) -> datetime | None:
         return None
     result = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
     return result.replace(tzinfo=UTC) if result.tzinfo is None else result
+
+
+def safe_attributes(value: dict[str, Any]) -> None:
+    """Bound nested JSON before it reaches PostgreSQL or evidence serialization."""
+    pending: list[tuple[Any, int]] = [(value, 0)]
+    while pending:
+        item, depth = pending.pop()
+        if depth > 16:
+            raise ValueError("Attribute JSON exceeds the nesting limit.")
+        if isinstance(item, dict):
+            pending.extend((v, depth + 1) for v in item.values())
+            pending.extend((k, depth + 1) for k in item)
+        elif isinstance(item, list):
+            pending.extend((v, depth + 1) for v in item)
+        elif isinstance(item, float) and not math.isfinite(item):
+            raise ValueError("Non-finite JSON number.")
+        elif isinstance(item, str) and "\x00" in item:
+            raise ValueError("NUL character in JSON.")
 
 
 def normalize(
@@ -201,6 +244,7 @@ def normalize(
                     parsed = json.loads(value)
                     if not isinstance(parsed, dict):
                         raise ValueError()
+                    safe_attributes(parsed)
                     attrs.update(parsed)
                 else:
                     attrs[key] = value
@@ -212,7 +256,7 @@ def normalize(
             for key in ("eta", "ata", "service_window_start", "service_window_end"):
                 if key in attrs:
                     timestamp(attrs[key])
-        except (ValueError, TypeError):
+        except (ValueError, TypeError, RecursionError):
             issue(
                 "invalid_attribute", "fatal", "Invalid maritime number, timestamp or JSON.", index
             )

@@ -11,7 +11,7 @@ export default function DistributionCompare({
 }) {
   const max =
     Math.max(before.p90, after.p90, before.mean, after.mean, 1) * 1.12;
-  const x = (v: number) => 100 + (v / max) * 290;
+  const x = (v: number) => 90 + (v / max) * 205;
   return (
     <article className="distribution-chart">
       <div className="metric-label">
@@ -19,7 +19,7 @@ export default function DistributionCompare({
         <ProvenanceBadge provenance="simulated" />
       </div>
       <svg
-        viewBox="0 0 430 100"
+        viewBox="0 0 320 110"
         role="img"
         aria-label={`${before.name}: no-change mean ${before.mean.toFixed(2)}, proposed mean ${after.mean.toFixed(2)} ${before.unit}. Lines show p10 to p90.`}
       >
@@ -28,10 +28,10 @@ export default function DistributionCompare({
           const color = i ? "#71d6c4" : "#8cabbc";
           return (
             <g key={i}>
-              <text x="0" y={y + 4} fill="#99aebc" fontSize="11">
+              <text x="0" y={y + 4} fill="#b1c2cd" fontSize="14">
                 {i ? "Proposed" : "No change"}
               </text>
-              <line x1="100" x2="390" y1={y} y2={y} stroke="#2a3e49" />
+              <line x1="90" x2="295" y1={y} y2={y} stroke="#2a3e49" />
               <line
                 x1={x(d.p10)}
                 x2={x(d.p90)}
@@ -56,20 +56,20 @@ export default function DistributionCompare({
               />
               <circle cx={x(d.mean)} cy={y} r="5" fill={color} />
               <text
-                x={Math.min(390, x(d.mean) + 10)}
+                x={Math.min(280, x(d.mean) + 7)}
                 y={y - 10}
                 fill={color}
-                fontSize="11"
+                fontSize="14"
               >
                 {d.mean.toFixed(1)}
               </text>
             </g>
           );
         })}
-        <text x="100" y="98" fill="#78929e" fontSize="9">
+        <text x="90" y="106" fill="#9cb2be" fontSize="12">
           0
         </text>
-        <text x="390" y="98" textAnchor="end" fill="#78929e" fontSize="9">
+        <text x="295" y="106" textAnchor="end" fill="#9cb2be" fontSize="12">
           {max.toFixed(1)} {before.unit}
         </text>
       </svg>
