@@ -69,3 +69,19 @@ def test_deep_json_and_nonfinite_numbers_are_fatal_validation():
         events, report = normalize([row], suggest_mapping(list(row)), "test")
         assert not events and report.is_blocking
         assert "invalid_attribute" in {issue.code for issue in report.issues}
+
+
+def test_nul_header_is_rejected_before_persistence():
+    with pytest.raises(ValueError, match="Column names"):
+        parse_upload(b"case\x00id,activity,end_ts\nC1,Start,2026-01-01", "bad.csv")
+
+
+def test_lone_unicode_surrogate_is_fatal_before_jsonb_persistence():
+    row = {
+        "case_id": "C1",
+        "activity": "Start",
+        "end_ts": "2026-01-01",
+        "attributes": '{"note":"\\ud800"}',
+    }
+    events, report = normalize([row], suggest_mapping(list(row)), "test")
+    assert not events and report.is_blocking

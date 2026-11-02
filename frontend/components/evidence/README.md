@@ -1,4 +1,6 @@
 # evidence/
 
-Renders an EvidenceRecord (binding constraints, SHAP factors, baseline deltas)
-behind each recommendation and risk. Built alongside M1-13. Placeholder for now.
+Scenario Studio renders solver evidence, independent constraint checks, baseline
+comparisons and assumptions, and exports the private input/result snapshot.
+The console's vessel panel renders risk-model SHAP factors. Deterministic templates
+phrase evidence; no runtime LLM supplies outcomes or metrics.

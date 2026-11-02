@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+import os
+import socket
+import subprocess
 import sys
+import time
 from pathlib import Path
 
+import httpx
 import pytest
 import sqlalchemy as sa
 from alembic import command
@@ -53,5 +58,38 @@ def test_release_migrations_seed_and_preflight(db_engine, alembic_cfg, monkeypat
             generator.generate(generator.load_port_config("khalifa")), replace=False
         )
         serve.preflight()
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        env = {**os.environ, "PORT": str(port), "CORS_ORIGINS": '["https://demo.example"]'}
+        with subprocess.Popen(
+            [sys.executable, "scripts/serve.py"],
+            cwd=Path(__file__).resolve().parents[1],
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        ) as child:
+            try:
+                deadline = time.monotonic() + 45
+                with httpx.Client(base_url=f"http://127.0.0.1:{port}", trust_env=False) as client:
+                    while True:
+                        try:
+                            ready = client.get("/api/ready")
+                            if ready.status_code == 200:
+                                break
+                        except httpx.TransportError:
+                            pass
+                        assert child.poll() is None, "Production server exited during startup"
+                        assert time.monotonic() < deadline, "Production readiness timed out"
+                        time.sleep(0.1)
+                    allowed = client.get("/api/health", headers={"Origin": "https://demo.example"})
+                    denied = client.get(
+                        "/api/health", headers={"Origin": "https://untrusted.example"}
+                    )
+                    assert allowed.headers["access-control-allow-origin"] == "https://demo.example"
+                    assert "access-control-allow-origin" not in denied.headers
+            finally:
+                child.terminate()
+                child.wait(timeout=10)
     finally:
         command.downgrade(alembic_cfg, "base")

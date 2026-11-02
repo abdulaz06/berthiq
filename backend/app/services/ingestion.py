@@ -91,6 +91,8 @@ def parse_upload(content: bytes, filename: str) -> list[dict[str, str]]:
             raise ValueError("A header row with 1–64 nonempty column names is required.")
         if len(headers) != len(set(headers)):
             raise ValueError("Column names must be unique.")
+        if any("\x00" in h or len(h) > 10_000 for h in headers):
+            raise ValueError("Column names must be bounded text without NUL characters.")
         rows: list[dict[str, str]] = []
         for values in matrix:
             if len(rows) >= MAX_ROWS:
@@ -176,8 +178,10 @@ def safe_attributes(value: dict[str, Any]) -> None:
             pending.extend((v, depth + 1) for v in item)
         elif isinstance(item, float) and not math.isfinite(item):
             raise ValueError("Non-finite JSON number.")
-        elif isinstance(item, str) and "\x00" in item:
-            raise ValueError("NUL character in JSON.")
+        elif isinstance(item, str):
+            item.encode("utf-8")  # Reject lone surrogate escapes before PostgreSQL JSONB.
+            if "\x00" in item:
+                raise ValueError("NUL character in JSON.")
 
 
 def normalize(

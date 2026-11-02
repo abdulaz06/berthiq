@@ -81,7 +81,7 @@
 .rail-end {
   margin-top: auto;
   font: 10px/1.6 monospace;
-  color: #526875;
+  color: #8a9ca9;
   letter-spacing: 0.12em;
   text-align: center;
 }
@@ -944,3 +944,4 @@
     animation: none !important;
   }
 }
+.harbor .maplibregl-ctrl-attrib a { text-decoration: underline; text-underline-offset: 2px; }

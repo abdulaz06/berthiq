@@ -83,5 +83,8 @@ the same `.next` directory concurrently. Install Chromium once with
 Use `just types` after changing backend contracts; never edit generated types.
 Update the backend lock deliberately with:
 `python -m uv pip compile backend/pyproject.toml --extra dev --universal --python-version 3.12 --output-file backend/requirements.lock`.
-Audits are `npm --prefix frontend audit` and `python -m pip_audit` inside the venv.
+Audits are `npm --prefix frontend run audit:security`,
+`npm --prefix frontend audit --omit=dev --audit-level=low` and
+`python -m pip_audit` inside the venv. The full-tree npm policy has one narrowly
+reviewed legacy development-tool exception; see DEPENDENCY_SECURITY.md.
 Lock updates still require the complete test suite and model metric checks.

@@ -14,7 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "e2e": "playwright test",
-    "golden": "playwright test -c playwright.console.config.ts"
+    "golden": "playwright test -c playwright.console.config.ts",
+    "audit:security": "node scripts/audit-security.mjs"
   },
   "dependencies": {
     "@xyflow/react": "^12.12.0",
@@ -25,6 +26,7 @@
     "react-dom": "^19.3.1"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.49.1",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
@@ -44,5 +46,8 @@
   },
   "engines": {
     "node": ">=24"
+  },
+  "overrides": {
+    "minimatch@^10.2.2": "11.0.4"
   }
 }

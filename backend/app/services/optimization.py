@@ -286,7 +286,9 @@ def solve(data: PlanningInput, cfg: dict[str, Any], spec: ScenarioSpec) -> Optim
                             picked, int(rid == a.reviewer and lo <= hint_start < hint_end <= hi)
                         )
     solver = cp_model.CpSolver()
-    solver.parameters.max_time_in_seconds = 10
+    # A wall-clock cutoff can return different incumbents under CPU contention.
+    # Bound numerical search by deterministic work; the subprocess supervisor
+    # enforces elapsed-time limits by failing the job, never publishing a partial plan.
     solver.parameters.max_deterministic_time = 1
     solver.parameters.num_search_workers = 1
     solver.parameters.random_seed = int(cfg["seed"])

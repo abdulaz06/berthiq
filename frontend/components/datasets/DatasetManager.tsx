@@ -156,7 +156,7 @@ export default function DatasetManager({
       <div className="analysis-header">
         <div>
           <span className="eyebrow">KNOW WHAT YOU ARE WORKING WITH</span>
-          <h2>Data workspace</h2>
+          <h2>Datasets &amp; validation</h2>
           <p>Inspect the reference dataset or validate a private event log.</p>
         </div>
         <ProvenanceBadge provenance="observed" />
