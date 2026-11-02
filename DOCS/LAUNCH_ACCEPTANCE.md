@@ -54,7 +54,9 @@ do not replace manual assistive-technology testing or constitute WCAG certificat
 - **Demo scope:** a single API instance and per-tab tokens, not enterprise identity,
   multi-replica workers, confidential-upload hosting or live AIS.
 
-After the final PR is green and merged, the next consequential step is the owner's
-licensing/hosting decision. Do not redeploy or change licensing to satisfy a checkbox.
+All non-blocked implementation criteria are complete. Final delivery is recorded
+in [PR #11](https://github.com/abdulaz06/berthiq/pull/11); the implementation passed
+all six push/PR CI checks. The next consequential step is the owner's
+licensing/hosting decision. Do not deploy or change licensing to satisfy a checkbox.
 Research calibration and broader assistive-technology testing can be undertaken
 separately without changing the honesty of the current portfolio demonstration.

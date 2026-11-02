@@ -1,6 +1,8 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Current branch: `codex/portfolio-finish`.
+Active since 2026-10-28 (America/Chicago). Non-blocked implementation and acceptance
+completed November 2, 2026. Final milestone: [PR #11](https://github.com/abdulaz06/berthiq/pull/11)
+from `codex/portfolio-finish`; GitHub records its final merge and main CI status.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -210,7 +212,7 @@ Previous full verification: 106 backend tests, no skips; mypy 43 files, Ruff,
 17 frontend tests, lint/typecheck/provenance/build and 7 real browser tests pass.
 Final rerun after watchdog addition also passed: 106 backend tests and all seven browser tests. Both dependency audits reported no known vulnerabilities. All six GitHub CI checks passed before #10 was merged.
 
-## Portfolio, accessibility and deployment acceptance — final verification
+## Portfolio, accessibility and deployment acceptance — complete
 
 PR #10 merged with all checks green as `83ec2d0`. Historical limitations and the
 bounded worker/upload implementation are backed up on main. Licensing remains
@@ -258,13 +260,26 @@ keyboard focus restoration, discovery through private export, infeasible locks,
 tile failure and private upload/mapping. Screenshots inspected at 1920x1080 and
 390x844. Security audit evidence and its exact exception are recorded above.
 
-## Exact next action
+GitHub verified implementation commit `b40044f9486c52f58bc26c28738f00dae6960b37`:
+all six push/PR checks passed, including both real PostgreSQL browser runs.
+Evidence: [PR CI](https://github.com/abdulaz06/berthiq/actions/runs/41412222242)
+and [branch CI](https://github.com/abdulaz06/berthiq/actions/runs/41412185203).
+This final tracker update is documentation-only; its PR revision must also pass
+CI before automatic squash merge, followed by the main-branch CI check.
 
-Implementation and local acceptance are complete. Commit/push
-`codex/portfolio-finish`, open its milestone PR, repair any CI failures, squash-merge
-only after green checks, then confirm main CI. No non-blocked implementation
-requirement remains; the acceptance matrix is in LAUNCH_ACCEPTANCE.md. Do not
-publicly deploy or reopen the licensing question. Licensing and eventual
-hosting/live-URL acceptance remain intentionally unresolved. Calibration/external
-validation are documented research limitations. Preserve local .env, existing DB,
-repaired venv and the unrelated .env.example deletion.
+## Completion and exact next action
+
+No non-blocked implementation requirement remains; the acceptance matrix is in
+LAUNCH_ACCEPTANCE.md. The application is ready for local portfolio demonstration
+and prepared for persistent hosting, not publicly deployed. Run `just doctor`
+then `just dev` and open `http://localhost:3000`; `/console?tour=1` starts the
+guided walkthrough. On a fresh configured database use `just migrate` and
+`just seed` first. Existing data and configuration are preserved.
+
+There is no further autonomous deployment action authorized. Do not reopen the
+licensing question or publicly deploy. The owner may later resolve contributor
+licensing and authorize hosting; only then perform the live-URL, HTTPS/proxy,
+backup-restore and host-limit acceptance in DEPLOYMENT.md. Calibration/external
+validation, broader assistive-technology testing and enterprise identity/scaling
+remain documented limitations, not incomplete claims. Preserve local .env,
+existing DB, repaired venv and the unrelated .env.example deletion.
