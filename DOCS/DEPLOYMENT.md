@@ -5,6 +5,17 @@ a Next.js frontend, one persistent Python API process and PostgreSQL. Do not pla
 FastAPI's background computation in an ephemeral request-only/serverless function.
 No hosting plan has been purchased or provisioned.
 
+Example Linux service units are in `deploy/berthiq-api.service` and
+`deploy/berthiq-web.service`. They have not been installed or exercised under
+systemd on this Windows development host. Adapt the checkout/runtime paths,
+create the unprivileged service account and frontend cache directory, and supply
+the API's private environment file outside Git. Migrate/seed during a drained
+release, then enable services only after licensing and hosting are authorized.
+The examples use process-group shutdown and memory/task ceilings; tune limits
+using measured load on the eventual host. The PostgreSQL service remains separate.
+Keep API port 8000 private/firewalled behind the HTTPS proxy. No unit provisions
+a machine, buys a plan, opens a firewall or creates a database.
+
 ## Frontend
 
 Build from `frontend/` using Node 24:

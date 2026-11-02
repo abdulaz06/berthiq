@@ -1,5 +1,6 @@
 # risk-board/
 
-Sortable active-call table (miss probability, current stage, top factors,
-window), each probability shown with a ProvenanceBadge. Built in M1-08.
-Placeholder for now.
+The risk board is integrated in `app/console/page.tsx`: calls ranked by predicted
+window-miss probability, search, stage, vessel selection and SHAP details. Each
+probability carries a ProvenanceBadge. Risk uses the latest observed prefix and
+is explicitly fixed while operational events replay.

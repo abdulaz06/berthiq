@@ -1,5 +1,7 @@
 # BerthIQ
 
+[![CI](https://github.com/abdulaz06/berthiq/actions/workflows/ci.yml/badge.svg)](https://github.com/abdulaz06/berthiq/actions/workflows/ci.yml)
+
 **Port operations intelligence, from event log to an inspectable decision.**
 
 BerthIQ reconstructs port-call processes, identifies operational bottlenecks,
@@ -15,6 +17,7 @@ coordinates. No live AIS, employer data, or measured real-world savings.**
 [Setup](DOCS/SETUP.md) · [Deployment](DOCS/DEPLOYMENT.md) ·
 [Decision engine](DOCS/DECISION_ENGINE.md) ·
 [Historical validation](DOCS/SIMULATOR_VALIDATION.md) ·
+[Acceptance record](DOCS/LAUNCH_ACCEPTANCE.md) ·
 [Sprint evidence](DOCS/CODEX_LAUNCH_SPRINT.md)
 
 ## Walk through the application
@@ -153,6 +156,14 @@ for the real Playwright journey. Browser tests cover private uploads/mappings,
 fatal validation, discovery, risk, optimization, matched simulation, evidence
 export/reload, an infeasible constraint, tile fallback and desktop/mobile use.
 Screenshots are in `DOCS/media`; failing traces are CI artifacts.
+Automated axe checks cover WCAG A/AA rules on public and console views at both
+target sizes, alongside a mobile keyboard journey. These checks support
+accessibility review; they are not a claim of complete WCAG certification.
+
+Run `npm --prefix frontend run audit:security` for the full dependency policy and
+`npm --prefix frontend audit --omit=dev --audit-level=low` for runtime packages.
+The [security review](DOCS/DEPENDENCY_SECURITY.md) documents one exact advisory
+exception for legacy development tooling; the raw full npm audit is not clean.
 
 ## Public hosting status
 

@@ -41,7 +41,7 @@ export default function Home() {
           Enter console <ArrowUpRight size={16} />
         </Link>
       </header>
-      <section className="public-hero" id="main-content">
+      <section className="public-hero" id="main-content" tabIndex={-1}>
         <div className="hero-grid">
           <div>
             <div className="public-eyebrow">

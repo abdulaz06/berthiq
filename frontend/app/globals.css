@@ -9,3 +9,16 @@
 body {
   @apply bg-slate-50 text-slate-900 antialiased;
 }
+
+.skip-link {
+  position: absolute;
+  left: 20px;
+  top: -100px;
+  background: #74d8c6;
+  color: #10232b;
+  padding: 15px;
+  z-index: 100;
+}
+.skip-link:focus {
+  top: 12px;
+}

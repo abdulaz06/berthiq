@@ -1,6 +1,8 @@
 # Codex portfolio launch sprint
 
-Active since 2026-10-28 (America/Chicago). Current branch: `codex/validation-resilience`.
+Active since 2026-10-28 (America/Chicago). Non-blocked implementation and acceptance
+completed November 2, 2026. Final milestone: [PR #11](https://github.com/abdulaz06/berthiq/pull/11)
+from `codex/portfolio-finish`; GitHub records its final merge and main CI status.
 User brief: full BerthIQ takeover, functional decision loop, premium maritime
 desktop/mobile console, public-demo readiness. Historical scope deferrals no
 longer apply. Do not mark a feature complete without executable evidence.
@@ -25,12 +27,12 @@ longer apply. Do not mark a feature complete without executable evidence.
 | --- | --- |
 | A: instructions, branch, audit | Complete; PR #4 merged after all CI checks passed |
 | B: ingestion and validation | CSV/XLSX, mapping, validation, immutable persistence; tested |
-| B: optimizer, simulation, evidence | Joint reviewer/berth CP-SAT + matched SimPy; tested; historical simulator validation remains |
+| B: optimizer, simulation, evidence | Joint reviewer/berth CP-SAT + matched SimPy; historical backtest and limitations merged in #10 |
 | B: scenarios, jobs, exports, map API | Durable jobs/results, snapshots, session scope, quotas, TTL, export, replay API; tested |
 | C: design system, landing, navigation | Public landing, case study, guided demo and responsive maritime console merged in #8 |
 | D: map, selection, event playback | MapLibre, OSM basemap/fallback, vessel/berth selection, prefix-safe replay, mobile detail sheet |
 | E: process, risk, studio, comparisons | Complete real journey merged in #7; tested against PostgreSQL |
-| F: integrated E2E, CI, hosting, assets | Seven real browser tests in CI; screenshots committed; deployment preparation underway, no verified hosting |
+| F: integrated E2E, CI, hosting, assets | Nine real browser tests including accessibility; refreshed screenshots and deployment instructions; no public hosting authorized |
 
 ## Architecture decisions
 
@@ -91,10 +93,14 @@ images (dark immersive maps, polished panels, dedicated mobile composition).
 
 ## Known gaps / external dependencies
 
-No verified public deployment. Hosting credentials may be needed after repository
-work is complete. Operational berth coordinates remain approximate; geography uses attributed OpenFreeMap/OSM. Desktop and mobile browser inspection completed for the console milestone. PM4Py distribution licensing needs an
-accurate source disclosure for the public deployment (historical comment assumed
-an internal-only application).
+Public deployment is explicitly prohibited for this sprint. Licensing remains
+pending by the user's decision: PM4Py licensing and the absence of a project
+license block public launch; no contributor consent is assumed. Deployment
+configuration is prepared, but live URLs, host-specific limits and backup restore
+cannot be accepted without an authorized environment. Operational berth coordinates
+remain approximate; geography uses attributed OpenFreeMap/OSM. Historical timing
+intervals are not calibrated forecasts. See LAUNCH_ACCEPTANCE.md for the final
+evidence matrix and clearly separated research and hosting limitations.
 
 ## Frontend milestone — 2026-10-29
 
@@ -176,7 +182,7 @@ Desktop console and mobile simulation screenshots inspected: layout preserved;
 mobile SVG labels remain a refinement candidate. Added release/idempotent-seed
 tests: 87 backend tests now pass with no skips; Ruff/mypy and pip check pass. Final browser rerun and CI remain before merging this milestone.
 
-## Historical validation and reliability — final verification
+## Historical validation and reliability — merged (#10)
 
 PR #9 merged with all six CI checks green as `01990f6`. The interrupted work was
 preserved on `codex/validation-resilience`; `.env.example` deletion stays excluded.
@@ -204,15 +210,76 @@ setup, model/decision evidence and deployment limitations. Case study reflects t
 backtest. Mobile distribution labels enlarged after inspecting the 390x844 render.
 Previous full verification: 106 backend tests, no skips; mypy 43 files, Ruff,
 17 frontend tests, lint/typecheck/provenance/build and 7 real browser tests pass.
-Final rerun after watchdog addition also passed: 106 backend tests and all seven browser tests. Both dependency audits report no known vulnerabilities. CI remains before merging.
+Final rerun after watchdog addition also passed: 106 backend tests and all seven browser tests. Both dependency audits reported no known vulnerabilities. All six GitHub CI checks passed before #10 was merged.
 
-## Exact next action
+## Portfolio, accessibility and deployment acceptance — complete
 
-Commit/push the verified validation milestone, open PR and merge after green CI.
-Then finish automated accessibility checks, keyboard interaction review, final
-1920x1080/390x844 screenshot review and deployment-preparation acceptance.
-Licensing stays pending at the user's explicit direction; do not add AGPL,
-assume Shravani's consent, repeat the licensing question, or publicly deploy.
-No public hosting is provisioned or verified. Preserve local .env, existing DB,
-and the unrelated .env.example deletion. Read-only Caravan reference clone is
-in Windows temp `berthiq-caravan-reference`.
+PR #10 merged with all checks green as `83ec2d0`. Historical limitations and the
+bounded worker/upload implementation are backed up on main. Licensing remains
+pending by explicit user decision; no license added or public deployment attempted.
+
+Automated axe WCAG A/AA scans now cover the landing, case study and every console
+view at 1920x1080 and 390x844. Fixed secondary text contrast and attribution link
+styling. Added workspace/case-study skip links, Escape dismissal and detail focus
+restoration, including preserving keyboard focus when MapLibre rebuilds markers.
+Real keyboard regression covers mobile skip, vessel selection, close/restore and
+guided-tour dismissal. Nine Playwright tests passed together, including the full
+real decision loop. Mobile chart labels and data-section hierarchy are refined.
+
+Architecture documentation now matches implemented services, subprocess lifecycle,
+custom charts and approximate geography. Component READMEs point to real code;
+product screenshots refreshed. Added illustrative systemd units with explicit
+paths, non-root execution, memory/task bounds and process-group shutdown; these
+are examples, not an installed Linux deployment. Production test starts the real
+serve.py on an ephemeral local port against migrated/seeded disposable PostgreSQL,
+checks readiness and exact-origin CORS, then terminates the owned server.
+
+November 2 final regression found and repaired a genuine determinism defect:
+CP-SAT's ten-second wall cutoff could publish different incumbents under CPU
+contention. Search now uses only deterministic effort; the external job deadline
+still kills overdue processes and publishes failure. The repeatability regression
+also asserts the solver configuration. Recomputed reference objective and all
+20-replication headline metrics are unchanged. Two additional hostile-upload
+checks reject NUL headers and lone Unicode surrogate JSON before persistence.
+
+The new minimatch advisory GHSA-g3hv-75wg-m249 was published to GitHub's database
+after the earlier clean audit. Modern minimatch is pinned to patched 11.0.4.
+Legacy dev-only 3.1.5/5.1.9 copies lack the vulnerable preprocessing implementation;
+the full-tree audit policy documents a narrow exception with fail-closed tests.
+Raw full npm audit is not clean. Runtime npm and Python audits have no findings.
+See DEPENDENCY_SECURITY.md; no forced ESLint downgrade or blanket suppression.
+
+Final local verification on November 2: `ruff check app scripts tests` passed;
+`mypy app` passed (43 files); `python scripts/test_backend.py -q` passed all 108
+tests against isolated PostgreSQL, zero skips (82.67s). This includes migrations,
+insert-only seed, real production startup, readiness and CORS. `just doctor`
+verified Python 3.12.10 native imports and the saved model. Frontend lint,
+TypeScript, 21 unit tests, provenance and production build passed. All nine
+PostgreSQL-backed Playwright tests passed, including desktop/mobile axe scans,
+keyboard focus restoration, discovery through private export, infeasible locks,
+tile failure and private upload/mapping. Screenshots inspected at 1920x1080 and
+390x844. Security audit evidence and its exact exception are recorded above.
+
+GitHub verified implementation commit `b40044f9486c52f58bc26c28738f00dae6960b37`:
+all six push/PR checks passed, including both real PostgreSQL browser runs.
+Evidence: [PR CI](https://github.com/abdulaz06/berthiq/actions/runs/41412222242)
+and [branch CI](https://github.com/abdulaz06/berthiq/actions/runs/41412185203).
+This final tracker update is documentation-only; its PR revision must also pass
+CI before automatic squash merge, followed by the main-branch CI check.
+
+## Completion and exact next action
+
+No non-blocked implementation requirement remains; the acceptance matrix is in
+LAUNCH_ACCEPTANCE.md. The application is ready for local portfolio demonstration
+and prepared for persistent hosting, not publicly deployed. Run `just doctor`
+then `just dev` and open `http://localhost:3000`; `/console?tour=1` starts the
+guided walkthrough. On a fresh configured database use `just migrate` and
+`just seed` first. Existing data and configuration are preserved.
+
+There is no further autonomous deployment action authorized. Do not reopen the
+licensing question or publicly deploy. The owner may later resolve contributor
+licensing and authorize hosting; only then perform the live-URL, HTTPS/proxy,
+backup-restore and host-limit acceptance in DEPLOYMENT.md. Calibration/external
+validation, broader assistive-technology testing and enterprise identity/scaling
+remain documented limitations, not incomplete claims. Preserve local .env,
+existing DB, repaired venv and the unrelated .env.example deletion.

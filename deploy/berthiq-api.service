@@ -1,0 +1,26 @@
+# Example for a contributor-owned Linux host; not installed or deployed by Codex.
+[Unit]
+Description=BerthIQ persistent API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=berthiq
+WorkingDirectory=/srv/berthiq/backend
+EnvironmentFile=/etc/berthiq/api.env
+Environment=PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
+ExecStart=/srv/berthiq/backend/.venv/bin/python scripts/serve.py
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=125
+KillMode=control-group
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+MemoryMax=2G
+TasksMax=128
+
+[Install]
+WantedBy=multi-user.target

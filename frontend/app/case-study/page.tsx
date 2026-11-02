@@ -13,6 +13,9 @@ export const metadata = {
 export default function CaseStudy() {
   return (
     <main className="public-site story">
+      <a className="skip-link" href="#case-study-content">
+        Skip to case study
+      </a>
       <header className="public-header">
         <Link className="public-brand" href="/">
           <Waves />
@@ -28,7 +31,7 @@ export default function CaseStudy() {
           <ArrowUpRight size={16} />
         </Link>
       </header>
-      <article>
+      <article id="case-study-content" tabIndex={-1}>
         <section className="story-hero">
           <span className="public-eyebrow">
             ENGINEERING CASE STUDY / BERTHIQ

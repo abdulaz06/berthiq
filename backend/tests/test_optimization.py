@@ -28,7 +28,6 @@ def test_reference_is_feasible_and_independently_verified(reference):
         ).values()
     )
     assert result.objective_value <= result.baseline_objectives["fifo"]
-    assert result.runtime_ms < 12_000
 
 
 def test_incompatible_lock_is_infeasible(reference):
@@ -63,7 +62,18 @@ def test_completed_future_events_do_not_enter_input(reference):
     assert original == truncated
 
 
-def test_verifier_rejects_tampered_schedule_and_solver_is_repeatable(reference):
+def test_verifier_rejects_tampered_schedule_and_solver_is_repeatable(reference, monkeypatch):
+    from ortools.sat.python import cp_model
+
+    original = cp_model.CpSolver.solve
+
+    def deterministic_solve(self, model, *args, **kwargs):
+        assert self.parameters.max_time_in_seconds == float("inf")
+        assert self.parameters.max_deterministic_time == 1
+        assert self.parameters.num_search_workers == 1
+        return original(self, model, *args, **kwargs)
+
+    monkeypatch.setattr(cp_model.CpSolver, "solve", deterministic_solve)
     data, cfg = reference
     spec = ScenarioSpec(dataset_id="reference", name="Repeatable")
     one, two = solve(data, cfg, spec), solve(data, cfg, spec)

@@ -43,6 +43,12 @@ working implementations and contribution history.
 `just setup`, `just dev`, `just migrate`, `just seed`, `just train`, `just types`,
 `just test`, `just golden`. On Windows the Python runtime is
 `backend/.venv/Scripts/python.exe`; on macOS/Linux use `.venv/bin/python`.
+Use Python 3.12, Node 24 and the committed dependency locks. `just doctor` checks
+native imports and model compatibility; do not recreate a working venv. `just seed`
+is insert-if-missing. Production uses one API process and two bounded computation
+subprocess slots; do not increase worker/replica count without redesigning ownership.
+Licensing is explicitly pending: do not add a project license, assume contributor
+consent, ask the licensing question again, or publicly deploy during this sprint.
 
 Required checks: backend `ruff check app scripts tests`, `mypy app`, full pytest
 against disposable PostgreSQL; frontend `npm run lint`, `npm run typecheck`,

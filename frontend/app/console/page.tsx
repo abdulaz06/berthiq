@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Anchor,
   Database,
@@ -65,6 +65,37 @@ export default function ConsolePage() {
   const [showRisk, setShowRisk] = useState(true);
   const [attempt, setAttempt] = useState(0);
   const [tour, setTour] = useState<number | null>(null);
+  const detailClose = useRef<HTMLButtonElement>(null);
+  const detailTrigger = useRef<HTMLElement | null>(null);
+  const closeDetails = useCallback(() => {
+    setSelected(null);
+    setBerth(null);
+    const trigger = detailTrigger.current;
+    const label = trigger?.getAttribute("aria-label");
+    const target = trigger?.isConnected
+      ? trigger
+      : label
+        ? document.querySelector<HTMLElement>(
+            `button[aria-label="${CSS.escape(label)}"]`,
+          )
+        : null;
+    target?.focus({ preventScroll: true });
+  }, []);
+  useEffect(() => {
+    if (selected || berth) detailClose.current?.focus({ preventScroll: true });
+  }, [selected, berth]);
+  useEffect(() => {
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      if (selected || berth) closeDetails();
+      else if (tour !== null) {
+        setTour(null);
+        document.querySelector<HTMLButtonElement>(".tour-trigger")?.focus();
+      }
+    };
+    document.addEventListener("keydown", escape);
+    return () => document.removeEventListener("keydown", escape);
+  }, [selected, berth, tour, closeDetails]);
   useEffect(() => {
     if (new URLSearchParams(window.location.search).has("tour")) setTour(0);
   }, []);
@@ -170,10 +201,18 @@ export default function ConsolePage() {
     if (data && clock >= Date.parse(data.clock_end)) setPlaying(false);
   }, [clock, data]);
   const selectVessel = useCallback((id: string) => {
+    detailTrigger.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
     setSelected(id);
     setBerth(null);
   }, []);
   const selectBerth = useCallback((id: string) => {
+    detailTrigger.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
     setBerth(id);
     setSelected(null);
   }, []);
@@ -219,6 +258,9 @@ export default function ConsolePage() {
     .sort((a, b) => b.miss_probability - a.miss_probability);
   return (
     <main className={`harbor ${focus ? "focus-mode" : ""}`}>
+      <a className="skip-link" href="#workspace-heading">
+        Skip to workspace
+      </a>
       <nav className="rail" aria-label="Workspace navigation">
         <Link href="/" className="brand-mark" aria-label="BerthIQ home">
           <Waves />
@@ -301,7 +343,7 @@ export default function ConsolePage() {
         <div className="workspace-title">
           <div>
             <span className="eyebrow">THE HARBOR, IN CONTEXT</span>
-            <h1>
+            <h1 id="workspace-heading" tabIndex={-1}>
               {view === "port"
                 ? "Port control"
                 : view === "risk"
@@ -646,7 +688,8 @@ export default function ConsolePage() {
                         <button
                           className="icon-button"
                           aria-label="Close vessel details"
-                          onClick={() => setSelected(null)}
+                          ref={detailClose}
+                          onClick={closeDetails}
                         >
                           <X size={18} />
                         </button>
@@ -754,7 +797,8 @@ export default function ConsolePage() {
                         <button
                           className="icon-button"
                           aria-label="Close berth details"
-                          onClick={() => setBerth(null)}
+                          ref={detailClose}
+                          onClick={closeDetails}
                         >
                           <X size={18} />
                         </button>

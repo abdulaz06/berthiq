@@ -84,6 +84,7 @@ export default function PortMap({
 }) {
   const host = useRef<HTMLDivElement>(null);
   const map = useRef<maplibregl.Map | null>(null);
+  const focusedMarker = useRef<string | null>(null);
   const [schematic, setSchematic] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
   useEffect(() => {
@@ -210,7 +211,24 @@ export default function PortMap({
         new maplibregl.Marker({ element: el }).setLngLat(point).addTo(instance),
       );
     });
-    return () => markers.forEach((m) => m.remove());
+    if (focusedMarker.current) {
+      const marker = markers.find(
+        (m) =>
+          m.getElement().getAttribute("aria-label") === focusedMarker.current,
+      );
+      (marker?.getElement() ?? instance.getCanvas()).focus({
+        preventScroll: true,
+      });
+      focusedMarker.current = null;
+    }
+    return () => {
+      const focused = markers.find(
+        (m) => m.getElement() === document.activeElement,
+      );
+      focusedMarker.current =
+        focused?.getElement().getAttribute("aria-label") ?? null;
+      markers.forEach((m) => m.remove());
+    };
   }, [data, clock, risk, selected, onSelect, onBerth, showRisk, plan]);
   function toggleContext() {
     const instance = map.current;
@@ -255,7 +273,9 @@ export default function PortMap({
             ? simulatedPlan
               ? "Simulated berth occupancy · first replication"
               : "Planned berth occupancy · not a simulated trajectory"
-            : data.operations_disclosure.startsWith("Uploaded") ? "Uploaded port call" : "Synthetic vessel"}
+            : data.operations_disclosure.startsWith("Uploaded")
+              ? "Uploaded port call"
+              : "Synthetic vessel"}
         </span>
         {showRisk && (
           <span>

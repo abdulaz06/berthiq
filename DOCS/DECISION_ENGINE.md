@@ -25,10 +25,13 @@ service-window target; the planning horizon is a hard limit.
 Weights apply to waiting minutes, priority-weighted tardiness minutes, reviewer
 overtime minutes, reviewer workload range in minutes and changed berth decisions.
 Weights are rounded to hundredths for the integer objective. One solver worker,
-fixed seed, deterministic effort budget and a ten-second wall-time ceiling bound
-execution. Independent verification recomputes every hard constraint from output
-timestamps; it does not trust CP-SAT variables. A timeout without an incumbent is
-UNKNOWN. General infeasibility text does not claim a minimal unsatisfiable core.
+fixed seed and deterministic effort budget bound numerical search. The process
+supervisor enforces elapsed time by failing overdue jobs; a wall-clock cutoff
+inside CP-SAT would publish different incumbents under CPU contention and is
+deliberately disabled. Independent verification recomputes every hard constraint
+from output timestamps; it does not trust CP-SAT variables. Exhausted search
+without an incumbent is UNKNOWN. General infeasibility text does not claim a
+minimal unsatisfiable core.
 
 FIFO, greedy-deadline and preserved-berth baselines fill unspecified decisions with
 feasible schedules. Objective comparisons use the same scenario constraints and
@@ -47,8 +50,10 @@ zero berth conflicts. No artificial improvement is added.
 Results report all replication samples, mean/std/p10/p50/p90, three headline KPIs,
 staffed reviewer hours, overtime and workload imbalance. Example replay schedules
 are explicitly replication one. They are not the distribution mean. All result
-KPIs have `simulated` provenance. Full historical simulator calibration against
-generator ground truth remains an outstanding launch task.
+KPIs have `simulated` provenance. The eight-cutoff historical backtest and its
+under-coverage/compatibility findings are documented in `SIMULATOR_VALIDATION.md`.
+Calibration and external validation remain research limitations; p10–p90 bands
+describe simulation variability, not arrival confidence or measured savings.
 
 ## Persistence and public demo
 
@@ -57,8 +62,10 @@ upload owners and the job/scenario FK. `analysis_runs.kind` separates optimizati
 and simulation; each JSONB payload validates against its own contract. This is a
 deliberate simplification of the original two-result-table proposal.
 
-Use one Uvicorn worker. Two bounded in-process background slots execute work with
-fresh SQLAlchemy sessions. Jobs/results survive requests; startup marks interrupted
+Use one Uvicorn worker. Two bounded supervisor slots use fresh SQLAlchemy sessions
+and isolated computation subprocesses. A 90-second default deadline kills/reaps an
+overdue worker before releasing capacity; a child watchdog guards supervisor loss.
+Jobs/results survive requests; startup marks interrupted
 jobs failed. No Redis or Celery. Scenarios are private to a randomly generated
 UUID-v4 session token, expire in 24 hours, and have row/run quotas. Canonical built-in
 data cannot be mutated via HTTP. Uploads default off (`ENABLE_UPLOADS=false`).
