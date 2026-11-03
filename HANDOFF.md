@@ -18,6 +18,19 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-11-03 — Claude Code (for Abdul) — showcase/product sprint
+**Task(s):** Product takeover — see `DOCS/SHOWCASE_SPRINT.md` (direction, milestones, evidence).
+**Branch:** `claude/product-takeover` → PR #12 (squash-merge when CI is green).
+**Did:** Event-timed replay motion (no teleporting), per-call "why it waited" journey,
+guided investigation driving the real solver/simulator, templated verdict, Q-flag
+identity, new landing + case study + README, 60 fps showcase film/GIF/stills with
+reproducible scripts in `frontend/scripts/media/`. Replay window 48 h → 1 week;
+schematic berth coordinates re-traced (backend `operations.py`, no schema change).
+**State:** Local: 108 pytest, 38 vitest, 11/11 Playwright, lint/type/provenance/build green.
+**Next step:** Confirm PR #12 CI green and merge. Licensing/deployment stay blocked.
+**Gotchas:** Media scripts need a production build on :3000 + API on :8000 and an
+ffmpeg with libx264 (`FFMPEG=`). On Windows, kill stale `next start` PIDs before restarting.
+
 ## 2026-08-25 — Abdul — M1-07 risk endpoint (inference + SHAP)
 **Task(s):** M1-07 (risk endpoint — serve predictions).
 **Branch:** task/M1-07-risk-endpoint → squash-merged to main (PR #3, branch deleted).
