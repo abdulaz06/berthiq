@@ -1,0 +1,1 @@
+BerthIQ: "Why is this ship waiting?" Replay a week at Khalifa Port, see what held each ship, and test a fix before the port changes anything. Shown with the harbor map, a simulated verdict of 62.9 to 45.1 hours, and 17 of 26 open calls predicted at risk.

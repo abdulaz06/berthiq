@@ -1,0 +1,22 @@
+{
+  "harbor": {
+    "width": 1700,
+    "height": 800
+  },
+  "harbor-0592": {
+    "width": 1700,
+    "height": 800,
+    "ship": {
+      "x": 0.36,
+      "y": 0.78
+    }
+  },
+  "verdict": {
+    "width": 2140,
+    "height": 660
+  },
+  "why": {
+    "width": 1234,
+    "height": 968
+  }
+}

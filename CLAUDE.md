@@ -14,6 +14,10 @@ Full spec: `docs/PRODUCT_DEFINITION.md`. Architecture: `docs/ARCHITECTURE.md`. C
 
 ## Current phase (read first)
 
+**Status: deployed.** Frontend https://berth-iq.vercel.app (Vercel), API on one Arm64
+Azure VM (Caddy → FastAPI → PostgreSQL 16). Setup, update procedure and acceptance
+record: `DOCS/DEPLOYMENT.md`.
+
 The active work is the showcase/product sprint tracked in `DOCS/SHOWCASE_SPRINT.md`:
 creative direction, completed milestones, verification evidence and the **exact next
 action**. If the owner types "Continue", resume from that file — do not restart. The

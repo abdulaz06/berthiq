@@ -1,0 +1,197 @@
+/* BerthIQ graphics kit: the app's own tokens (app/site.css), fonts (app/layout.tsx)
+   and components (Q-flag mark, dark ProvenanceBadge pill), for cards rendered by
+   render-cards.mjs. Text sizes are chosen to stay legible when a card is shown
+   300 px wide. */
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders:opsz,wght@10..72,700..900&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=block");
+
+:root {
+  --ocean: #0a1219;
+  --deep: #070e14;
+  --panel: #0f1a23;
+  --line: #20323e;
+  --ink: #edf2f4;
+  --soft: #c3d0d7;
+  --muted: #8ea2ae;
+  --signal: #f2c230;
+  --teal: #71d6c4;
+  --predicted: #d97706;
+  --simulated: #0284c7;
+  --display: "Big Shoulders", sans-serif;
+  --sans: "IBM Plex Sans", sans-serif;
+  --mono: "IBM Plex Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+body {
+  background: var(--ocean);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The card itself: ink with a teal glow behind the UI and a signal-yellow rule. */
+.canvas {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 55% 70% at 78% 38%, rgba(113, 214, 196, 0.13), transparent 70%),
+    radial-gradient(ellipse 45% 55% at 0% 100%, rgba(242, 194, 48, 0.09), transparent 70%),
+    linear-gradient(160deg, #0d1821 0%, var(--ocean) 55%, var(--deep) 100%);
+}
+.canvas::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 8px;
+  background: var(--signal);
+}
+
+/* Brand lock-up: the Q flag (a ship awaiting clearance) and the wordmark. */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font: 800 38px/1 var(--display);
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+.brand b {
+  color: var(--signal);
+}
+.brand svg {
+  width: 1.05em;
+  height: 1.05em;
+  color: var(--ink);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font: 600 16px/1 var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+.eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 12px;
+  background: var(--signal);
+  border-radius: 1px;
+}
+
+h1 {
+  font: 800 92px/0.9 var(--display);
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+  color: var(--ink);
+}
+h1 em,
+.signal {
+  font-style: normal;
+  color: var(--signal);
+}
+.sub {
+  font: 400 21px/1.42 var(--sans);
+  color: var(--soft);
+}
+.footline {
+  font: 500 13px/1.3 var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.url {
+  font: 600 22px/1 var(--mono);
+  color: var(--ink);
+  letter-spacing: 0.01em;
+}
+
+/* Real UI, framed like the app's own panels and tilted slightly. */
+.shot {
+  position: absolute;
+  border: 1px solid #2a404c;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--panel);
+  box-shadow:
+    0 50px 90px -30px rgba(0, 0, 0, 0.85),
+    0 18px 40px -18px rgba(0, 0, 0, 0.6);
+}
+.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* A window onto part of a crop: set --w (image width as a share of the frame),
+   --x / --y (offset) and the frame's aspect-ratio. */
+.shot.window {
+  aspect-ratio: var(--ratio);
+}
+.shot.window img {
+  position: absolute;
+  width: var(--w, 100%);
+  max-width: none;
+  left: var(--x, 0);
+  top: var(--y, 0);
+}
+
+/* The dark ProvenanceBadge pill used on the public pages. */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border: 1px solid #34505b;
+  border-radius: 999px;
+  background: #14242e;
+  color: #d3dde2;
+  font: 500 14px/1.2 var(--sans);
+  white-space: nowrap;
+}
+.pill i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.pill.predicted i {
+  background: var(--predicted);
+}
+.pill.simulated i {
+  background: var(--simulated);
+}
+.pill.observed i {
+  background: #64748b;
+}
+
+/* A floating fact, like the app's KPI tiles. */
+.chip {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border: 1px solid #35505c;
+  border-radius: 14px;
+  background: rgba(15, 26, 35, 0.96);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.8);
+}
+.chip strong {
+  font: 800 46px/0.85 var(--display);
+  color: var(--signal);
+}
+.chip span {
+  font: 500 17px/1.25 var(--sans);
+  color: var(--ink);
+}

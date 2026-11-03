@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="brand.css" />
+<style>
+  /* 40 px safe margin on every side: GitHub crops and rounds the preview. */
+  .copy { position: absolute; left: 72px; top: 72px; width: 540px; }
+  .copy .eyebrow { margin-top: 56px; }
+  .copy h1 { margin-top: 20px; font-size: 96px; }
+  .copy .sub { margin-top: 22px; width: 500px; }
+  .url { position: absolute; left: 72px; bottom: 96px; }
+  .footline { position: absolute; left: 72px; bottom: 58px; }
+  .harbor { left: 650px; top: 64px; width: 560px; --ratio: 1122 / 720; --w: 151.5%; --x: -28%; --y: -6.5%; transform: rotate(-3deg); }
+  .verdict { left: 680px; top: 418px; width: 520px; --ratio: 1327 / 356; --w: 161%; transform: rotate(2deg); }
+</style>
+</head>
+<body>
+<main class="canvas">
+  <div class="copy">
+    <span class="brand" data-fit>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3.5v25" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M9.5 5h17.5v13H9.5z" fill="#f2c230"/><path d="M5 28.5h6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>Berth<b>IQ</b></span>
+    </span>
+    <div><span class="eyebrow" data-fit>Port-call decision support</span></div>
+    <h1 data-fit>Why is this<br />ship <em>waiting?</em></h1>
+    <p class="sub" data-fit>Process mining, a risk model, CP-SAT scheduling and matched simulation on one week at Khalifa Port.</p>
+  </div>
+  <p class="url" data-fit>berth-iq.vercel.app</p>
+  <figure class="shot window harbor"><img src="crops/harbor.webp" alt="" /></figure>
+  <figure class="shot window verdict"><img src="crops/verdict.webp" alt="" /></figure>
+  <p class="footline" data-fit>Synthetic operations on real port geography · map © OpenStreetMap</p>
+</main>
+</body>
+</html>

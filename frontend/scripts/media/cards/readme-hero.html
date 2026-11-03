@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="brand.css" />
+<style>
+  .copy { position: absolute; left: 88px; top: 72px; width: 700px; }
+  .copy .eyebrow { margin-top: 80px; font-size: 18px; }
+  .copy h1 { margin-top: 24px; font-size: 128px; }
+  .copy .sub { margin-top: 28px; width: 620px; font-size: 25px; }
+  .cta { display: inline-flex; margin-top: 34px; align-items: center; gap: 14px; padding: 16px 26px; border-radius: 999px; background: var(--signal); color: #10161c; font: 600 22px/1 var(--sans); }
+  .cta small { font: 500 18px/1 var(--mono); }
+  .footline { position: absolute; left: 88px; bottom: 40px; font-size: 15px; }
+  .harbor { left: 820px; top: 48px; width: 720px; --ratio: 1122 / 720; --w: 151.5%; --x: -28%; --y: -6.5%; transform: rotate(-3deg); }
+  .verdict { left: 870px; top: 528px; width: 660px; --ratio: 1327 / 356; --w: 161%; transform: rotate(2deg); }
+  .risk { left: 1140px; top: 440px; transform: rotate(-2deg); }
+</style>
+</head>
+<body>
+<main class="canvas">
+  <div class="copy">
+    <span class="brand" data-fit>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3.5v25" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M9.5 5h17.5v13H9.5z" fill="#f2c230"/><path d="M5 28.5h6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>Berth<b>IQ</b></span>
+    </span>
+    <div><span class="eyebrow" data-fit>Port-call decision support</span></div>
+    <h1 data-fit>Why is this<br />ship <em>waiting?</em></h1>
+    <p class="sub" data-fit>Replay a week at Khalifa Port, see what held each ship, and test a fix before the port changes anything.</p>
+    <span class="cta" data-fit>Open the live app <small>berth-iq.vercel.app →</small></span>
+  </div>
+  <figure class="shot window harbor"><img src="crops/harbor.webp" alt="" /></figure>
+  <figure class="shot window verdict"><img src="crops/verdict.webp" alt="" /></figure>
+  <div class="chip risk" data-fit><strong>17 of 26</strong><span>open calls<br />at risk</span><span class="pill predicted"><i></i>Predicted</span></div>
+  <p class="footline" data-fit>Synthetic operations on real port geography · map © OpenStreetMap</p>
+</main>
+</body>
+</html>

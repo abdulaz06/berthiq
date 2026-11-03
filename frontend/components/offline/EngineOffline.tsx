@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight, Play, RotateCw } from "lucide-react";
+import { RotateCw } from "lucide-react";
 import { QFlagMark } from "@/components/brand/QFlagMark";
 
-export const FILM_URL = "https://github.com/abdulaz06/berthiq/blob/main/media/berthiq-showcase.mp4";
+export const TOUR_PREVIEW = "/media/tour-preview.webp";
+export const TOUR_STILL = "/media/tour-preview-still.webp";
 
 /** Shown when the API cannot be reached: the story stays available without it. */
 export function EngineOffline({ onRetry }: { onRetry: () => void }) {
@@ -13,14 +14,23 @@ export function EngineOffline({ onRetry }: { onRetry: () => void }) {
       <QFlagMark size={40} />
       <h2 id="engine-offline-title">The live engine is offline right now</h2>
       <p>
-        The solver, simulator and risk model run on a small server that isn’t answering at the moment. The
-        whole investigation is still here to watch or read.
+        The solver, simulator and risk model run on a small server that isn’t answering at the moment. Here is
+        the start of the tour, and the whole investigation is still here to read.
       </p>
+      <picture className="engine-offline-preview">
+        {/* Reduced motion gets the first frame, not the loop. */}
+        <source media="(prefers-reduced-motion: reduce)" srcSet={TOUR_STILL} />
+        <img
+          src={TOUR_PREVIEW}
+          width={1280}
+          height={720}
+          loading="lazy"
+          decoding="async"
+          alt="The BerthIQ tour: one ship waited 43 hours at anchor while its paperwork was sent back three times."
+        />
+      </picture>
       <div className="engine-offline-actions">
-        <a className="primary" href={FILM_URL} target="_blank" rel="noreferrer">
-          <Play size={15} /> Watch the 60-second film <ArrowUpRight size={13} />
-        </a>
-        <Link className="secondary" href="/case-study">
+        <Link className="primary" href="/case-study">
           Read the engineering story
         </Link>
         <button type="button" className="text-button" onClick={onRetry}>

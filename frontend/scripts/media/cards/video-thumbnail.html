@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="brand.css" />
+<style>
+  .brand { position: absolute; left: 64px; top: 56px; font-size: 44px; }
+  h1 { position: absolute; left: 64px; top: 150px; font-size: 156px; line-height: 0.86; }
+  .tour { position: absolute; left: 64px; bottom: 78px; display: inline-flex; align-items: center; gap: 14px; padding: 12px 24px 12px 12px; border-radius: 999px; background: var(--signal); color: #10161c; font: 600 26px/1 var(--mono); letter-spacing: 0.08em; }
+  .tour svg { width: 44px; height: 44px; }
+  .harbor { left: 650px; top: 90px; width: 640px; --ratio: 1122 / 720; --w: 151.5%; --x: -28%; --y: -6.5%; transform: rotate(-3deg); }
+  .footline { position: absolute; left: 64px; bottom: 32px; }
+</style>
+</head>
+<body>
+<main class="canvas">
+  <span class="brand" data-fit>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3.5v25" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M9.5 5h17.5v13H9.5z" fill="#f2c230"/><path d="M5 28.5h6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>Berth<b>IQ</b></span>
+    </span>
+  <h1 data-fit>Why is<br />this ship<br /><em>waiting?</em></h1>
+  <figure class="shot window harbor"><img src="crops/harbor.webp" alt="" /></figure>
+  <span class="tour" data-fit><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="22" fill="#10161c"/><path d="M17.5 13.5v17l13.5-8.5z" fill="#f2c230"/></svg>60-SECOND TOUR</span>
+  <p class="footline" data-fit>Synthetic operations on real port geography · map © OpenStreetMap</p>
+</main>
+</body>
+</html>

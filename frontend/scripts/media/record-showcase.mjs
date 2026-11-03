@@ -1,10 +1,11 @@
 // Records BerthIQ's showcase film: a ~75-second 16:9 walkthrough at a
 // genuine, constant 60 fps, 1920×1080 — the story of one waiting ship, told
 // through the real application (real replay, real solver, real simulator).
-//   media/berthiq-showcase.mp4        1920×1080, H.264 High, 60 fps
-//   media/berthiq-showcase-thumb.jpg  the title frame
-//   media/berthiq-showcase-poster.jpg the verdict frame
+//   media/berthiq-showcase.mp4        1920×1080, H.264 High, 60 fps (local only, gitignored)
+//   media/berthiq-showcase-thumb.jpg  the title frame (local only, gitignored)
+//   media/berthiq-showcase-poster.jpg the verdict frame (local only, gitignored)
 //   media/berthiq-showcase.gif        an 11-second, 800-px README loop
+// make-tour-preview.mjs then cuts the site's WebP preview from the local film.
 // Frames come from a virtual clock (lib/frame-capture.mjs), so nothing
 // depends on this machine's speed; solver and simulator waits happen off
 // camera. Record against a production build so no dev overlay appears:

@@ -49,3 +49,8 @@ test-results/
 frontend/.media-work/
 frontend/.audit.tmp.mjs
 frontend/scripts/media/.probe.tmp.mjs
+
+# The showcase film and its stills stay local (the film will be published on YouTube).
+media/*.mp4
+media/berthiq-showcase-thumb.jpg
+media/berthiq-showcase-poster.jpg

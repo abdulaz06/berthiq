@@ -44,9 +44,9 @@ do not replace manual assistive-technology testing or constitute WCAG certificat
 - **Licensing:** resolved. PM4Py was replaced by a pure-Python topology with
   byte-identical results; the repository is source-available, all rights reserved
   (`LICENSE`), and CI rejects GPL/AGPL runtime dependencies (`THIRD_PARTY_NOTICES.md`).
-- **Public hosting:** prepared (Vercel + Docker Compose on one Arm64 VM, see
-  DEPLOYMENT.md) but not yet provisioned. HTTPS, backup restore and live-URL
-  acceptance still have to be checked at the real URLs.
+- **Public hosting:** resolved. Deployed on 2026-11-03 (commit `0bd3047`): Vercel
+  at https://berth-iq.vercel.app and Docker Compose on one Azure Arm64 VM. The
+  acceptance record is in DEPLOYMENT.md.
 - **Model scope:** synthetic data only. Timing intervals under-cover historical
   outcomes; one historical berth conflicts with current terminal policy. No
   calibrated arrival forecast, external validation or real-world saving is claimed.
