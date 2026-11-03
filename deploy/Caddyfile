@@ -1,0 +1,18 @@
+# Public API edge. Caddy obtains and renews the TLS certificate for API_DOMAIN.
+{$API_DOMAIN} {
+	# Uploads are capped at 5 MB by the API; reject anything larger at the edge.
+	request_body {
+		max_size 6MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		-Server
+	}
+
+	reverse_proxy api:8000
+}

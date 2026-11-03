@@ -57,6 +57,9 @@ jobs:
           pip install --no-deps -e ".[dev]"
       - name: Dependency audit
         run: pip-audit --progress-spinner off
+      # Fails on any GPL/AGPL runtime dependency (Python closure + npm lock).
+      - name: Runtime license policy
+        run: python scripts/third_party_notices.py --check
       - name: ruff
         run: ruff check .
       - name: mypy
@@ -178,3 +181,26 @@ jobs:
             frontend/test-results
             DOCS/media
           retention-days: 7
+
+  image:
+    name: api image (linux/arm64)
+    # Native Arm runner (free for public repositories). For a private repository
+    # without Arm runners, switch to ubuntu-latest + docker/setup-qemu-action.
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build backend/Dockerfile for linux/arm64
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          platforms: linux/arm64
+          load: true
+          tags: berthiq-api:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Image runs as non-root and loads the committed model
+        run: |
+          test "$(docker run --rm berthiq-api:ci id -u)" != "0"
+          docker run --rm berthiq-api:ci python scripts/doctor.py

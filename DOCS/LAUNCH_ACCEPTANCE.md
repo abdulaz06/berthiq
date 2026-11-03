@@ -41,13 +41,12 @@ do not replace manual assistive-technology testing or constitute WCAG certificat
 
 ## Deliberately unresolved
 
-- **Licensing:** Abdul chose to keep licensing pending. PM4Py's AGPL dependency and
-  the absence of a project license remain an explicit public-launch blocker.
-  Shravani's consent is not assumed; no project license is added.
-- **Public hosting:** prohibited for this sprint. No provider, payment or live URL
-  has been provisioned or verified. HTTPS, proxy limits, backup restore, host-level
-  memory/process limits and live-URL acceptance await an authorized environment.
-  The systemd examples are not validated on this Windows host.
+- **Licensing:** resolved. PM4Py was replaced by a pure-Python topology with
+  byte-identical results; the repository is source-available, all rights reserved
+  (`LICENSE`), and CI rejects GPL/AGPL runtime dependencies (`THIRD_PARTY_NOTICES.md`).
+- **Public hosting:** prepared (Vercel + Docker Compose on one Arm64 VM, see
+  DEPLOYMENT.md) but not yet provisioned. HTTPS, backup restore and live-URL
+  acceptance still have to be checked at the real URLs.
 - **Model scope:** synthetic data only. Timing intervals under-cover historical
   outcomes; one historical berth conflicts with current terminal policy. No
   calibrated arrival forecast, external validation or real-world saving is claimed.

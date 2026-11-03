@@ -117,9 +117,10 @@ seeded API with `ENABLE_UPLOADS=true`:
 ## Exact next action
 
 Sprint complete: PR #12 merged to `main` as `6f92680` with all six CI checks green.
-Nothing further is queued in this sprint. Still blocked on the owners: a project
-license (PM4Py is AGPL-3.0), Shravani's consent, and any public deployment or
-upload of the showcase media. Re-recording the film needs an ffmpeg with libx264
+Follow-up (public-deployment prep): PM4Py replaced by pure-Python discovery,
+LICENSE (all rights reserved) and third-party notices added, production containers
+and docs in `deploy/` and `DOCS/DEPLOYMENT.md`. Provisioning the hosts and verifying
+the real URLs is the owners' step. Re-recording the film needs an ffmpeg with libx264
 (`FFMPEG=...`). Gotcha on Windows: stop stale `next start` processes by PID before
 restarting (port 3000 can stay held); the API must run on :8000 and the frontend on
 :3000 (CORS).

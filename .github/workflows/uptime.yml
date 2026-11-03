@@ -1,0 +1,39 @@
+name: Uptime
+
+# Probes the public deployment. Set repository variables (Settings → Secrets and
+# variables → Actions → Variables):
+#   FRONTEND_URL  e.g. https://berthiq.vercel.app
+#   API_URL       e.g. https://api.example.com   (no trailing slash)
+# Skips cleanly until both are set.
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      FRONTEND_URL: ${{ vars.FRONTEND_URL }}
+      API_URL: ${{ vars.API_URL }}
+    steps:
+      - name: Check frontend and API readiness
+        run: |
+          if [ -z "$FRONTEND_URL" ] || [ -z "$API_URL" ]; then
+            echo "::notice::FRONTEND_URL / API_URL repository variables are not set; skipping."
+            exit 0
+          fi
+          fail=0
+          for url in "$FRONTEND_URL" "$API_URL/api/ready"; do
+            code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 --retry 2 --retry-delay 10 "$url" || echo 000)
+            echo "$url -> $code"
+            if [ "$code" != "200" ]; then
+              echo "::error::$url returned $code"
+              fail=1
+            fi
+          done
+          exit $fail

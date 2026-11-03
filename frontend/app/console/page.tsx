@@ -21,6 +21,8 @@ import {
   X,
 } from "lucide-react";
 import { sessionRequest } from "@/lib/api/session";
+import { getHealth } from "@/lib/api/health";
+import { EngineOffline } from "@/components/offline/EngineOffline";
 import DatasetManager from "@/components/datasets/DatasetManager";
 import type { DatasetSummary } from "@/lib/api/contracts";
 import { portTime, vesselState, type Operations, type Risk } from "@/lib/operations";
@@ -84,6 +86,7 @@ export default function ConsolePage() {
   const [data, setData] = useState<Operations | null>(null);
   const [risk, setRisk] = useState<Risk | null>(null);
   const [error, setError] = useState("");
+  const [offline, setOffline] = useState(false);
   const [riskError, setRiskError] = useState("");
   const [clock, setClock] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -136,6 +139,8 @@ export default function ConsolePage() {
   const synthetic = datasets.find((d) => d.id === dataset)?.source !== "uploaded";
   useEffect(() => {
     let active = true;
+    setOffline(false);
+    getHealth().catch(() => active && setOffline(true));
     sessionRequest<DatasetSummary[]>("/api/datasets")
       .then((list) => {
         if (!active) return;
@@ -144,7 +149,7 @@ export default function ConsolePage() {
         setDataset(ready[0]?.id ?? "");
         if (!ready.length) setError("No ready datasets are available. The server needs its demo seed.");
       })
-      .catch(() => active && setError("The operations server is unavailable. Retry in a moment."));
+      .catch(() => active && setOffline(true));
     return () => {
       active = false;
     };
@@ -165,7 +170,7 @@ export default function ConsolePage() {
         setSelected(null);
         setBerth(null);
       })
-      .catch(() => active && setError("Operational data could not be loaded. Retry the connection."));
+      .catch(() => active && setOffline(true));
     sessionRequest<Risk>(`/api/datasets/${dataset}/risk`)
       .then((result) => active && setRisk(result))
       .catch(() => active && setRiskError("Risk model unavailable. Operational replay remains available."));
@@ -464,7 +469,9 @@ export default function ConsolePage() {
             onClose={() => setStory(null)}
           />
         )}
-        {error ? (
+        {offline ? (
+          <EngineOffline onRetry={() => setAttempt((a) => a + 1)} />
+        ) : error ? (
           <section className="connection-state" role="alert">
             <Anchor size={40} />
             <h2>Waiting for the harbor</h2>
