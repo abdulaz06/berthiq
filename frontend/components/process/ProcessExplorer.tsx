@@ -28,15 +28,21 @@ const stages = [
 export default function ProcessExplorer({
   dataset,
   enabled,
+  focus,
 }: {
   dataset: string;
   enabled: boolean;
+  /** A stage to select from outside (the guided investigation). */
+  focus?: string | null;
 }) {
   const [model, setModel] = useState<ProcessModel | null>(null);
   const [error, setError] = useState("");
   const [attempt, setAttempt] = useState(0);
   const [threshold, setThreshold] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
+  useEffect(() => {
+    if (focus) setSelected(focus);
+  }, [focus, model]);
   useEffect(() => {
     if (!enabled || model) return;
     const controller = new AbortController();
@@ -142,12 +148,39 @@ export default function ProcessExplorer({
     <section className="process-workspace">
       <div className="analysis-header">
         <div>
-          <span className="eyebrow">FROM EVENT LOG TO EVIDENCE</span>
+          <span className="eyebrow">
+            PROCESS DISCOVERY ·{" "}
+            {model.nodes.reduce((n, x) => n + x.frequency, 0).toLocaleString()}{" "}
+            RECORDED STEPS
+          </span>
           <h2>Where the process slows</h2>
-          <p>Pan, zoom and select a stage. Coral edges expose rework paths.</p>
+          <p>
+            Every box is a step a port call goes through; every arrow is a
+            hand-off seen in the log. <span className="coral-text">Coral arrows run
+            backwards</span>: documents sent back to be fixed.
+          </p>
         </div>
         <ProvenanceBadge provenance="observed" />
       </div>
+      {model.bottlenecks[0] && (
+        <section className="finding-card" aria-label="Main finding">
+          <span className="eyebrow">THE BIGGEST CONTROLLABLE DELAY</span>
+          <div>
+            <h3>{model.bottlenecks[0].activity}</h3>
+            <p>
+              {model.bottlenecks[0].evidence.notes
+                .map((n) => n.replace(/ - /g, " — ").replace(/(\d)h\b/g, "$1 h"))
+                .join(". ")}
+              .
+            </p>
+          </div>
+          <strong>
+            {model.bottlenecks[0].value.value.toFixed(1)}
+            <small> {model.bottlenecks[0].value.unit} mean wait to start</small>
+            <ProvenanceBadge provenance={model.bottlenecks[0].value.provenance} />
+          </strong>
+        </section>
+      )}
       <div className="process-layout">
         <div className="analysis-card">
           <div className="graph-toolbar">

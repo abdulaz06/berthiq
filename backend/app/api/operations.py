@@ -24,6 +24,9 @@ from app.services.prediction import STAGES
 
 router = APIRouter(tags=["port operations"])
 
+# One operating week: enough arrivals, pilotage and departures to read the harbor.
+REPLAY_HOURS = 168
+
 
 @router.get("/ports/khalifa/geography")
 def geography():
@@ -49,7 +52,7 @@ def operations(
         from fastapi import HTTPException
 
         raise HTTPException(422, "This dataset has no operational events to replay.")
-    start = end - timedelta(hours=48)
+    start = end - timedelta(hours=REPLAY_HOURS)
     grouped: dict[str, list[Event]] = defaultdict(list)
     for e in events:
         grouped[e.case_id].append(e)
@@ -80,8 +83,19 @@ def operations(
                 ],
             )
         )
-    # Configured operational berth markers are schematic, NOT surveyed geography.
-    coordinates = [([54.6438 + 0.0022 * i, 24.8050 - 0.0018 * i]) for i in range(8)]
+    # Configured operational berth markers are schematic, NOT surveyed geography:
+    # container berths along the island's open west face, bulk and general
+    # berths along its southern causeway face, traced from the public basemap.
+    coordinates = [
+        (54.63923, 24.80321),
+        (54.64093, 24.80123),
+        (54.64263, 24.79925),
+        (54.64433, 24.79728),
+        (54.64603, 24.79530),
+        (54.65060, 24.79232),
+        (54.65402, 24.79211),
+        (54.65744, 24.79191),
+    ]
     active = sum(not any(e.activity == STAGES[-1] for e in evs) for evs in grouped.values())
     return PortOperations(
         dataset_id=dataset_id,

@@ -1,8 +1,12 @@
 import { ImageResponse } from "next/og";
-export const alt = "BerthIQ — Every port call. A clearer decision.";
+import story from "@/lib/fixtures/landing_story.json";
+
+export const alt = "BerthIQ — Why is this ship waiting?";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
+
 export default function Image() {
+  const hero = story.hero!;
   return new ImageResponse(
     (
       <div
@@ -12,48 +16,28 @@ export default function Image() {
           justifyContent: "space-between",
           width: "100%",
           height: "100%",
-          padding: "65px 75px",
-          background: "#0b141c",
-          color: "#e4edf0",
-          borderBottom: "12px solid #74d8c6",
+          padding: "60px 72px",
+          background: "#0a1219",
+          color: "#edf2f4",
+          borderBottom: "14px solid #f2c230",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ fontSize: 40 }}>
-            Berth<span style={{ color: "#74d8c6" }}>IQ</span>
-          </span>
-          <span style={{ color: "#8fa6b1", fontSize: 16 }}>
-            PORT-CALL INTELLIGENCE / KHALIFA, UAE
+        <div style={{ display: "flex", alignItems: "center", gap: 16, fontSize: 40, fontWeight: 800 }}>
+          <div style={{ display: "flex", width: 34, height: 24, background: "#f2c230", borderRadius: 2 }} />
+          <span>
+            Berth<span style={{ color: "#f2c230" }}>IQ</span>
           </span>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            fontSize: 76,
-            letterSpacing: -3,
-            lineHeight: 1.15,
-          }}
-        >
-          <span>Every port call.</span>
-          <span style={{ color: "#74d8c6" }}>A clearer decision.</span>
+        <div style={{ display: "flex", flexDirection: "column", fontSize: 92, fontWeight: 800, lineHeight: 1, letterSpacing: -2 }}>
+          <span>WHY IS THIS SHIP</span>
+          <span style={{ color: "#f2c230" }}>WAITING?</span>
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: 20,
-            color: "#8fa6b1",
-          }}
-        >
-          <span>Observe. Explain. Re-plan.</span>
-          <span>Synthetic operations. Real decision models.</span>
+        <div style={{ display: "flex", justifyContent: "space-between", fontSize: 24, color: "#c3d0d7" }}>
+          <span>
+            {Math.round(hero.anchor_hours ?? 0)} h at anchor · documents returned {hero.rejections}× · berth idle{" "}
+            {Math.round((hero.idle_berth_share ?? 0) * 100)}%
+          </span>
+          <span style={{ color: "#8ea2ae" }}>Synthetic operations · real decision models</span>
         </div>
       </div>
     ),

@@ -27,13 +27,13 @@ test("keyboard skip links, vessel detail focus and Escape work on mobile", async
     page.getByRole("button", { name: "Close vessel details" }),
   ).toHaveCount(0);
   await expect(vessel).toBeFocused();
-  await page.getByRole("button", { name: "Start guided walkthrough" }).click();
+  await page.getByRole("button", { name: "Start guided investigation" }).click();
   await expect(
-    page.getByRole("region", { name: "Guided walkthrough" }),
+    page.getByRole("region", { name: "Guided investigation" }),
   ).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(
-    page.getByRole("button", { name: "Start guided walkthrough" }),
+    page.getByRole("button", { name: "Start guided investigation" }),
   ).toBeFocused();
   await page.goto("/case-study");
   await page.keyboard.press("Tab");
@@ -79,11 +79,11 @@ test("desktop and mobile routes have no automated WCAG A/AA violations", async (
         await page.screenshot({ path: `../DOCS/media/case-study-limits-${width}.png` });
       }
       if (route === "/") {
-        await page.locator("#product").scrollIntoViewIfNeeded();
+        await page.locator("#how").scrollIntoViewIfNeeded();
         await page.screenshot({ path: `../DOCS/media/platform-${width}.png` });
       }
     }
-    for (const view of ["Risk", "Events", "Process", "Studio", "Data"]) {
+    for (const view of ["Risk", "Process", "Decide", "Data"]) {
       await page
         .locator(".rail")
         .getByRole("button", { name: view, exact: true })

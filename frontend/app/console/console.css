@@ -4,11 +4,12 @@
   --line: #263440;
   --muted: #8a9ca9;
   --seafoam: #71d6c4;
+  --signal: #f2c230;
   min-height: 100dvh;
   background: var(--ocean);
   color: #e7edf1;
   display: flex;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 14px;
   color-scheme: dark;
 }
@@ -80,7 +81,7 @@
 }
 .rail-end {
   margin-top: auto;
-  font: 10px/1.6 monospace;
+  font: 10px/1.6 var(--font-mono), monospace;
   color: #8a9ca9;
   letter-spacing: 0.12em;
   text-align: center;
@@ -107,7 +108,7 @@
 }
 .wordmark small {
   display: block;
-  font: 8px/2 monospace;
+  font: 8px/2 var(--font-mono), monospace;
   letter-spacing: 0.18em;
   color: var(--muted);
 }
@@ -119,7 +120,7 @@
   gap: 6px;
 }
 .dataset-select > span {
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   letter-spacing: 0.14em;
   color: var(--muted);
 }
@@ -130,13 +131,13 @@
 }
 .clock-readout {
   margin-left: auto;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   letter-spacing: 0.09em;
   color: var(--muted);
 }
 .clock-readout strong {
   display: block;
-  font: 17px/1.8 monospace;
+  font: 17px/1.8 var(--font-mono), monospace;
   color: #e4ebef;
 }
 .clock-readout small {
@@ -168,7 +169,7 @@
   padding: 27px 0 23px;
 }
 .eyebrow {
-  font: 9px/1.8 monospace;
+  font: 9px/1.8 var(--font-mono), monospace;
   letter-spacing: 0.17em;
   color: var(--muted);
 }
@@ -180,7 +181,7 @@
   display: inline-block;
   vertical-align: middle;
   margin-left: 16px;
-  font: 10px Arial;
+  font: 10px var(--font-sans), sans-serif;
   letter-spacing: 0;
   color: var(--seafoam);
   background: #17312f;
@@ -234,7 +235,7 @@
   margin: 8px 0;
 }
 .telemetry article > strong > small {
-  font: 11px Arial;
+  font: 11px var(--font-sans), sans-serif;
   color: var(--muted);
   margin-left: 8px;
 }
@@ -341,47 +342,140 @@
   color: #869daa;
   font-size: 8px;
 }
+.map-legend span {
+  display: inline-flex;
+  align-items: center;
+}
 .map-legend i {
   display: inline-block;
   background: var(--seafoam);
-  width: 6px;
-  height: 6px;
-  margin-right: 5px;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
   border-radius: 2px;
 }
 .map-legend i.coral {
-  background: #e99080;
+  background: #ec927f;
 }
+.map-legend i.waiting {
+  background: var(--signal);
+}
+.map-legend i.moving {
+  background: var(--seafoam);
+}
+.map-legend i.berthed {
+  background: #c9d6dc;
+}
+/* Vessel markers: the hull colour says what the ship is doing. */
 .vessel-marker {
-  width: 26px;
-  height: 36px;
+  width: 14px;
+  height: 32px;
   color: var(--seafoam);
-  filter: drop-shadow(0 0 6px #57d7ba40);
   background: transparent;
   border: 0;
-  padding: 3px;
+  padding: 0;
+  filter: drop-shadow(0 1px 3px #000a);
+  transition: opacity 0.2s linear;
 }
 .vessel-marker svg {
+  display: block;
   height: 100%;
   width: 100%;
-  transform: rotate(33deg);
+}
+.vessel-marker .hull {
+  fill: currentColor;
+}
+.vessel-marker .deck {
+  fill: #0d1c26;
+  opacity: 0.55;
+}
+.vessel-marker .bridge {
+  fill: #0d1c26;
+  opacity: 0.8;
+}
+.vessel-marker.phase-at-anchor {
+  color: var(--signal);
+}
+.vessel-marker.phase-at-berth {
+  color: #c9d6dc;
 }
 .vessel-marker.danger {
   color: #ec927f;
 }
 .vessel-marker.selected {
-  outline: 1px solid white;
-  outline-offset: 8px;
-  border-radius: 20px;
-  background: #ffffff20;
+  filter: drop-shadow(0 0 0 #fff) drop-shadow(0 0 7px #f2c230cc);
+}
+.vessel-marker.selected .hull {
+  stroke: #fff;
+  stroke-width: 2.4px;
+}
+.awaiting-queue {
+  position: absolute;
+  top: 72px;
+  right: 15px;
+  width: 232px;
+  background: #0d1923ee;
+  border: 1px solid #2a3e4c;
+  border-left: 3px solid var(--signal);
+  border-radius: 8px;
+  padding: 12px 13px 13px;
+}
+.awaiting-queue header {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.awaiting-queue strong {
+  display: block;
+  font-size: 12px;
+}
+.awaiting-queue small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 3px;
+}
+.awaiting-queue > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-height: 118px;
+  overflow: auto;
+}
+.awaiting-queue button {
+  font: 600 10px/1 var(--font-mono), monospace !important;
+  padding: 5px 6px;
+  border-radius: 4px;
+  border: 1px solid #f2c23055;
+  background: #f2c23014;
+  color: #f6dc8a;
+}
+.awaiting-queue button.danger {
+  border-color: #ec927f66;
+  background: #ec927f17;
+  color: #f3b6a8;
+}
+.awaiting-queue button.selected {
+  background: var(--signal);
+  color: #1b1503;
+}
+.q-flag {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  background: var(--signal);
+  border-radius: 1px;
+  box-shadow: -3px 0 0 -1px #c9d6dc;
 }
 .berth-marker {
   color: #b8d2da;
   background: #1a323bec;
   border: 1px solid #3d6974;
-  padding: 5px 8px !important;
+  padding: 3px 6px !important;
   border-radius: 4px;
-  font: 9px monospace !important;
+  font: 600 9px var(--font-mono), monospace !important;
 }
 .playback {
   display: flex;
@@ -405,7 +499,7 @@
 .scrubber > div {
   display: flex;
   justify-content: space-between;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   color: var(--muted);
   margin-bottom: 6px;
 }
@@ -477,7 +571,7 @@
   flex: 1;
 }
 .vessel-list strong {
-  font: 12px monospace;
+  font: 12px var(--font-mono), monospace;
 }
 .vessel-list small,
 .risk-row small,
@@ -542,7 +636,7 @@
 }
 .vessel-portrait span {
   display: block;
-  font: 8px monospace;
+  font: 8px var(--font-mono), monospace;
   letter-spacing: 0.2em;
   margin-top: 8px;
   color: var(--muted);
@@ -562,7 +656,7 @@
   color: var(--muted);
 }
 .detail-grid dd {
-  font: 11px monospace;
+  font: 11px var(--font-mono), monospace;
   text-align: right;
 }
 .risk-detail {
@@ -617,7 +711,7 @@
 }
 .mini-event small {
   display: block;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   color: var(--muted);
   margin-top: 5px;
 }
@@ -653,13 +747,13 @@
   gap: 5px;
 }
 .risk-row strong {
-  font: 13px monospace;
+  font: 13px var(--font-mono), monospace;
 }
 .risk-row > div > strong {
   font-size: 22px;
 }
 .event-row time {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: var(--muted);
 }
 .event-row strong {

@@ -1,9 +1,18 @@
-# BerthIQ — active Codex instructions
+# BerthIQ — agent instructions
 
-The active objective is the portfolio launch sprint in `DOCS/CODEX_LAUNCH_SPRINT.md`.
-Finish the real decision loop and the responsive maritime console; a passing build
-or a fixture-backed screen alone is not completion. Preserve Abdul and Shravani's
+**Current phase: the showcase/product sprint in `DOCS/SHOWCASE_SPRINT.md`** (creative
+direction, milestones, exact next action). The engineering launch sprint in
+`DOCS/CODEX_LAUNCH_SPRINT.md` is complete and is historical record; its correctness,
+security and verification rules below remain binding. Preserve Abdul and Shravani's
 working implementations and contribution history.
+
+Product direction (do not regress it): BerthIQ answers *why is this ship waiting, and
+what should the port change?* The landing, guided investigation (`/console?story=1`),
+console copy, case study, README and showcase media tell that one story. Replay motion
+is event-timed (`lib/motion.ts`); explanations and verdicts are templates over computed
+numbers (`lib/journey.ts`, `lib/verdict.ts`); landing numbers come from the test-checked
+snapshot `lib/fixtures/landing_story.json`. Media is regenerated with
+`frontend/scripts/media/*` (see README “Showcase media”).
 
 ## Architecture and sources of truth
 

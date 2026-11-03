@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
 import {
   ArrowRight,
   Download,
@@ -21,6 +21,7 @@ import { portTime, type Operations } from "@/lib/operations";
 import { ProvenanceBadge } from "@/components/provenance/ProvenanceBadge";
 import DistributionCompare from "./DistributionCompare";
 import BerthSchedule from "@/components/gantt/BerthSchedule";
+import { verdict } from "@/lib/verdict";
 
 const PortMap = dynamic(() => import("@/components/map/PortMap"), {
   ssr: false,
@@ -39,6 +40,17 @@ const initialWeights: Weights = {
   plan_changes: 30,
 };
 const label = (value: string) => value.replaceAll("_", " ");
+
+/** Lets the guided investigation drive the real studio, step by step. */
+export type StudioControl = {
+  optimize: () => Promise<void>;
+  simulate: () => Promise<void>;
+};
+export type StudioState = {
+  busy: string;
+  optimization: OptimizationResult | null;
+  simulation: SimulationResult | null;
+};
 const fmt = (value: number) =>
   value.toLocaleString("en-GB", { maximumFractionDigits: 2 });
 
@@ -47,11 +59,15 @@ export default function ScenarioStudio({
   enabled,
   selected,
   onSelect,
+  control,
+  onState,
 }: {
   data: Operations;
   enabled: boolean;
   selected: string | null;
   onSelect: (id: string) => void;
+  control?: Ref<StudioControl>;
+  onState?: (state: StudioState) => void;
 }) {
   const [name, setName] = useState("Khalifa · capacity study");
   const [reviewers, setReviewers] = useState(5);
@@ -77,6 +93,14 @@ export default function ScenarioStudio({
   const [schedule, setSchedule] = useState<"optimized" | "fifo">("optimized");
   const [clock, setClock] = useState(Date.parse(data.clock_end));
   const controller = useRef<AbortController | null>(null);
+  const runRef = useRef<(kind: "optimize" | "simulate") => Promise<void>>(async () => {});
+  useImperativeHandle(control, () => ({
+    optimize: () => runRef.current("optimize"),
+    simulate: () => runRef.current("simulate"),
+  }));
+  useEffect(() => {
+    onState?.({ busy, optimization, simulation });
+  }, [busy, optimization, simulation, onState]);
   useEffect(() => () => controller.current?.abort(), []);
   useEffect(() => {
     if (!enabled) return;
@@ -173,6 +197,9 @@ export default function ScenarioStudio({
       if (!c.signal.aborted) setBusy("");
     }
   }
+  useEffect(() => {
+    runRef.current = run;
+  });
   async function load(id: string) {
     if (!id) return;
     setBusy("load");
@@ -260,9 +287,13 @@ export default function ScenarioStudio({
     <section className="studio">
       <div className="analysis-header">
         <div>
-          <span className="eyebrow">MAKE THE TRADEOFF VISIBLE</span>
+          <span className="eyebrow">TEST A DECISION BEFORE THE PORT MAKES IT</span>
           <h2>Scenario Studio</h2>
-          <p>A saved snapshot. A constrained plan. A matched simulation.</p>
+          <p>
+            Change reviewer capacity or berth rules. A solver builds a plan
+            that breaks none of them; a simulator replays the open calls under
+            today’s plan and yours.
+          </p>
         </div>
         <div className="saved-select">
           <Save size={15} />
@@ -312,7 +343,7 @@ export default function ScenarioStudio({
             </label>
             <div className="field-pair">
               <label>
-                Reviewers
+                Reviewers on shift
                 <select
                   aria-label="Reviewer count"
                   value={reviewers}
@@ -335,8 +366,9 @@ export default function ScenarioStudio({
               </label>
             </div>
             <p className="form-hint">
-              Approval, berth compatibility, pilot capacity and existing
-              commitments remain hard constraints.
+              The reference port runs three authority reviewers. Vessel size,
+              terminal type, pilot capacity and existing commitments stay hard
+              constraints whatever you change.
             </p>
             <details>
               <summary>Objective weights</summary>
@@ -461,14 +493,24 @@ export default function ScenarioStudio({
               <span className="eyebrow">A COUNTERFACTUAL, NOT A PROMISE</span>
               <h3>What would you change?</h3>
               <p>
-                Adjust reviewer capacity, protect a berth commitment, or test a
-                closure. BerthIQ will show the feasible schedule and the cost of
-                that decision.
+                Paperwork, not berth space, is what keeps ships at anchor here.
+                Try more reviewers, protect a berth for a priority ship, or
+                close one for maintenance — then see what the plan gains and
+                what it costs.
               </p>
               <ol>
-                <li>Configure constraints</li>
-                <li>Inspect the proposed plan</li>
-                <li>Compare matched simulations</li>
+                <li>
+                  <b>Solve.</b> CP-SAT assigns reviewers and berths without
+                  breaking a single hard rule.
+                </li>
+                <li>
+                  <b>Inspect.</b> See which assignments changed and replay
+                  the plan on the harbor.
+                </li>
+                <li>
+                  <b>Simulate.</b> Twenty matched runs compare today’s plan
+                  with yours under the same random delays.
+                </li>
               </ol>
               <p className="form-hint">
                 Synthetic operational data. Simulated outcomes are not measured
@@ -492,6 +534,17 @@ export default function ScenarioStudio({
                     {optimization.solver_status}
                   </span>
                 </div>
+                <p className="plain-summary">
+                  {feasible
+                    ? `A plan for all ${optimization.assignments.length} open calls that breaks none of the ${
+                        Object.keys(optimization.constraint_checks ?? {}).length
+                      } hard-rule checks. ${
+                        optimization.changed_decisions.length
+                          ? `${optimization.changed_decisions.length} reviewer or berth assignments differ from today’s plan.`
+                          : "It keeps today’s berth sequence call for call; what changes is the reviewer capacity behind it."
+                      }`
+                    : "No plan can satisfy every rule you set. The constraints in conflict are listed below."}
+                </p>
                 <p className="result-narrative">{optimization.narrative}</p>
                 <div className="result-metrics">
                   <div>
@@ -749,6 +802,34 @@ export default function ScenarioStudio({
                       <Download size={16} /> Export evidence
                     </button>
                   </div>
+                  {(() => {
+                    const v = verdict(simulation, optimization);
+                    return (
+                      <div className={`verdict ${v.tone}`} data-testid="verdict">
+                        <span className="eyebrow">THE VERDICT · SIMULATED</span>
+                        <h4>{v.headline}</h4>
+                        {v.waiting && (
+                          <div className="verdict-figure">
+                            <span>
+                              {v.waiting.before.toFixed(1)}
+                              <small>h average wait today</small>
+                            </span>
+                            <ArrowRight size={20} />
+                            <strong>
+                              {v.waiting.after.toFixed(1)}
+                              <small>h with this plan</small>
+                            </strong>
+                            <ProvenanceBadge provenance="simulated" />
+                          </div>
+                        )}
+                        <ul>
+                          {v.lines.map((line) => (
+                            <li key={line}>{line}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    );
+                  })()}
                   <div className="comparison-kpis">
                     {Object.entries({
                       ...simulation.headline,
