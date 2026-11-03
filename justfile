@@ -44,6 +44,10 @@ seed:
 train *ARGS:
     cd backend && "{{venv_python}}" scripts/train_models.py {{ARGS}}
 
+# Regenerate THIRD_PARTY_NOTICES.md (runtime deps only) and enforce the no-GPL/AGPL policy.
+notices:
+    cd backend && "{{venv_python}}" scripts/third_party_notices.py
+
 # Regenerate frontend/lib/types/api.ts from the backend's OpenAPI (M0-4).
 # api.ts is committed and generated — never hand-edit it (a banner says so).
 types:
