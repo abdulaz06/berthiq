@@ -65,12 +65,12 @@ with a verdict that states the gain *and* the cost.
 | # | Milestone | State |
 |---|-----------|-------|
 | 0 | Audit, Caravan study, direction, tracker | done |
-| 1 | Motion model + map rewrite (persistent markers, rAF playback) | pending |
-| 2 | Ship journey ("why is it waiting") model + panel | pending |
-| 3 | Identity: fonts, tokens, Q-flag mark, console copy and nav | pending |
-| 4 | Story mode: guided investigation driving the real app | pending |
+| 1 | Motion model + map rewrite (persistent markers, rAF playback) | done (f0781f1) |
+| 2 | Ship journey ("why is it waiting") model + panel | done |
+| 3 | Identity: fonts, tokens, Q-flag mark, console copy and nav | done (console); landing/case study pending |
+| 4 | Story mode: guided investigation driving the real app | done — browser-verified through real solve + simulate |
 | 5 | Landing page rebuilt as the problem → solution story | pending |
-| 6 | Scenario verdict + result clarity | pending |
+| 6 | Scenario verdict + result clarity | done (lib/verdict.ts) |
 | 7 | Case study + README rewrite | pending |
 | 8 | Showcase media: frame-accurate 60 fps recorder, video, stills, GIF, OG | pending |
 | 9 | Full verification, PR, CI, merge, final handoff | pending |
@@ -89,7 +89,20 @@ with a verdict that states the gain *and* the cost.
 
 _(appended per milestone)_
 
+## Decisions made so far
+
+- Replay window widened from 48 h to one week (`REPLAY_HOURS = 168`) so the
+  harbor shows real traffic. Backend berth coordinates re-traced onto the
+  basemap's quay faces (container: west face, bulk/general: south face).
+- Console nav is Harbor / Process / Risk / Decide / Data; Events is a tab.
+- `?story=1` (and legacy `?tour=1`) opens the guided investigation: 8 chapters
+  whose numbers come from `lib/story.ts`, `lib/journey.ts`, the live risk board,
+  and the real optimization/simulation results via `StudioControl`.
+- Honest findings surfaced, not hidden: window compliance 0 % → 0 %, and the
+  solver plan ties FIFO under the same staffing (gain = capacity).
+
 ## Exact next action
 
-Milestone 1: write `frontend/lib/motion.ts` (+ tests) and rewrite
-`components/map/PortMap.tsx` to persistent markers driven by a rAF clock.
+Milestone 5: rebuild `frontend/app/page.tsx` + `public.css` as the
+problem → solution story in the new identity; then update browser tests
+(`live-e2e/*`, `e2e/smoke.spec.ts`) for the new copy/nav.

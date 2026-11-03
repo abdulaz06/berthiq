@@ -5,7 +5,7 @@
   --edge: #263c47;
   background: #0b141c;
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   min-height: 100vh;
   color-scheme: dark;
 }
@@ -105,7 +105,7 @@
   align-items: center;
   gap: 10px;
   color: #8eacb7;
-  font: 10px/1.8 monospace;
+  font: 10px/1.8 var(--font-mono), monospace;
   letter-spacing: 0.15em;
 }
 .public-eyebrow i,
@@ -162,7 +162,7 @@
 .hero-coordinate svg text {
   fill: #809da9;
   stroke: none;
-  font: 11px monospace;
+  font: 11px var(--font-mono), monospace;
 }
 .hero-coordinate .compass-needle {
   fill: #386962;
@@ -176,7 +176,7 @@
   margin-top: 15px;
 }
 .hero-coordinate span {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   letter-spacing: 0.1em;
   color: #82a3af;
 }
@@ -202,7 +202,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   letter-spacing: 0.1em;
   color: #819da9;
   border-bottom: 1px solid #263c47;
@@ -233,7 +233,7 @@
   display: flex;
   justify-content: space-between;
   padding: 30px 0 55px;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   letter-spacing: 0.08em;
   color: #678795;
 }
@@ -290,7 +290,7 @@
   margin-bottom: 45px;
 }
 .product-cards article > div > span {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: #527883;
 }
 .product-cards h3 {
@@ -341,7 +341,7 @@
   padding-top: 5px;
 }
 .method-ledger > div > span {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: #87a7b5;
 }
 .method-ledger strong {

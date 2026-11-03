@@ -113,7 +113,7 @@
   font-size: 11px;
 }
 .process-evidence dd {
-  font: 19px monospace;
+  font: 19px var(--font-mono), monospace;
   margin: 10px 0 22px;
 }
 .transition-detail {
@@ -150,7 +150,7 @@
   border-bottom: 1px solid var(--line);
 }
 .rank {
-  font: 19px monospace;
+  font: 19px var(--font-mono), monospace;
   color: #8aafbd;
 }
 .bottleneck-row > span:nth-child(2) {
@@ -170,7 +170,7 @@
   display: grid;
   gap: 7px;
   justify-items: end;
-  font: 12px monospace;
+  font: 12px var(--font-mono), monospace;
   color: #b9d2dc;
 }
 .variant {
@@ -377,12 +377,12 @@
 }
 .job-progress span {
   margin-left: auto;
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   text-transform: uppercase;
   color: var(--muted);
 }
 .solver-status {
-  font: 11px monospace;
+  font: 11px var(--font-mono), monospace;
   border: 1px solid #395b61;
   border-radius: 20px;
   padding: 7px 11px;
@@ -446,7 +446,7 @@
 .schedule-scale {
   display: grid;
   grid-template-columns: 95px repeat(5, 1fr);
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   color: #819ba9;
   border-bottom: 1px solid var(--line);
   padding-bottom: 15px;
@@ -463,7 +463,7 @@
 .schedule-row > strong {
   width: 95px;
   flex: none;
-  font: 11px monospace;
+  font: 11px var(--font-mono), monospace;
   color: #a8c3ce;
 }
 .schedule-track {
@@ -481,7 +481,7 @@
   position: absolute;
   height: 26px;
   border-radius: 4px;
-  font: 9px monospace !important;
+  font: 9px var(--font-mono), monospace !important;
   padding: 0 3px;
   overflow: hidden;
   white-space: nowrap;
@@ -509,7 +509,7 @@
   margin-bottom: 15px;
 }
 .comparison-toolbar time {
-  font: 11px monospace;
+  font: 11px var(--font-mono), monospace;
   color: #a3bbc7;
 }
 .segmented {
@@ -652,7 +652,7 @@
   font-weight: 400;
 }
 .distribution-table thead th {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: #819eac;
 }
 .distribution-table tbody th {
@@ -666,7 +666,7 @@
   color: #829ba9;
 }
 .distribution-table td {
-  font: 12px monospace;
+  font: 12px var(--font-mono), monospace;
   color: #afc6d2;
 }
 @media (max-width: 1300px) {
@@ -969,7 +969,7 @@
 }
 .dataset-detail > code {
   display: block;
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: #6f8d9e;
   word-break: break-all;
 }
@@ -1051,7 +1051,7 @@
   background: #332422;
 }
 .quality-issue span {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: #d7bd8b;
 }
 .quality-issue strong {
@@ -1162,6 +1162,6 @@
     margin-left: auto;
   }
   .distribution-chart svg text {
-    font-family: Arial, sans-serif;
+    font-family: var(--font-sans), sans-serif, sans-serif;
   }
 }

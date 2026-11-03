@@ -4,19 +4,16 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
-  Anchor,
-  Database,
-  HelpCircle,
-  ArrowUpRight,
   Activity,
-  GitBranch,
-  FlaskConical,
+  Anchor,
   ChevronRight,
   Compass,
+  Database,
+  FlaskConical,
+  GitBranch,
   Maximize2,
   Pause,
   Play,
-  Radio,
   RotateCcw,
   Search,
   Ship,
@@ -26,26 +23,60 @@ import {
 import { sessionRequest } from "@/lib/api/session";
 import DatasetManager from "@/components/datasets/DatasetManager";
 import type { DatasetSummary } from "@/lib/api/contracts";
-import {
-  portTime,
-  vesselState,
-  type Operations,
-  type Risk,
-} from "@/lib/operations";
+import { portTime, vesselState, type Operations, type Risk } from "@/lib/operations";
+import { occupancy, journey as callJourney } from "@/lib/journey";
+import { featureLabel, GLOSSARY } from "@/lib/language";
+import { protagonist, waitingMoment } from "@/lib/story";
+import { verdict } from "@/lib/verdict";
 import { ProvenanceBadge } from "@/components/provenance/ProvenanceBadge";
+import { JourneyStrip } from "@/components/journey/JourneyStrip";
+import { StoryGuide, type StoryChapter } from "@/components/story/StoryGuide";
+import { QFlagMark } from "@/components/brand/QFlagMark";
 import "./console.css";
 import "./analysis.css";
-import ScenarioStudio from "@/components/scenario/ScenarioStudio";
-const ProcessExplorer = dynamic(
-  () => import("@/components/process/ProcessExplorer"),
-  { ssr: false },
-);
+import "./identity.css";
+import ScenarioStudio, { type StudioControl, type StudioState } from "@/components/scenario/ScenarioStudio";
 
+const ProcessExplorer = dynamic(() => import("@/components/process/ProcessExplorer"), { ssr: false });
 const PortMap = dynamic(() => import("@/components/map/PortMap"), {
   ssr: false,
   loading: () => <div className="map-loading">Preparing harbor chart…</div>,
 });
+
 type View = "port" | "risk" | "events" | "process" | "studio" | "data";
+
+const VIEWS: Record<View, { eyebrow: string; title: string; lede: string }> = {
+  port: {
+    eyebrow: "HARBOR · ONE WEEK OF PORT CALLS",
+    title: "Harbor",
+    lede: "Yellow ships are waiting at anchor. Select one to see why.",
+  },
+  risk: {
+    eyebrow: "RISK · CALLS STILL IN PROGRESS",
+    title: "Who is likely to be late",
+    lede: "A model scores each open call’s chance of missing its service window.",
+  },
+  events: {
+    eyebrow: "EVENT LOG · THE RAW RECORD",
+    title: "Event log",
+    lede: "Every step every call took, as recorded. Everything else is built from this.",
+  },
+  process: {
+    eyebrow: "PROCESS · SIX MONTHS OF HISTORY",
+    title: "Process",
+    lede: "The path every call takes, discovered from the log — and where it loops.",
+  },
+  studio: {
+    eyebrow: "DECIDE · TEST A CHANGE",
+    title: "Test a decision",
+    lede: "Change capacity or rules, get a feasible plan, and simulate it against today’s.",
+  },
+  data: {
+    eyebrow: "DATA · BRING YOUR OWN LOG",
+    title: "Data workspace",
+    lede: "Validate and map your own port-call event log into a private dataset.",
+  },
+};
 
 export default function ConsolePage() {
   const [datasets, setDatasets] = useState<DatasetSummary[]>([]);
@@ -64,9 +95,13 @@ export default function ConsolePage() {
   const [focus, setFocus] = useState(false);
   const [showRisk, setShowRisk] = useState(true);
   const [attempt, setAttempt] = useState(0);
-  const [tour, setTour] = useState<number | null>(null);
+  const [story, setStory] = useState<number | null>(null);
+  const [processFocus, setProcessFocus] = useState<string | null>(null);
+  const [studio, setStudio] = useState<StudioState>({ busy: "", optimization: null, simulation: null });
+  const studioControl = useRef<StudioControl>(null);
   const detailClose = useRef<HTMLButtonElement>(null);
   const detailTrigger = useRef<HTMLElement | null>(null);
+
   const closeDetails = useCallback(() => {
     setSelected(null);
     setBerth(null);
@@ -75,59 +110,30 @@ export default function ConsolePage() {
     const target = trigger?.isConnected
       ? trigger
       : label
-        ? document.querySelector<HTMLElement>(
-            `button[aria-label="${CSS.escape(label)}"]`,
-          )
+        ? document.querySelector<HTMLElement>(`button[aria-label="${CSS.escape(label)}"]`)
         : null;
     target?.focus({ preventScroll: true });
   }, []);
   useEffect(() => {
-    if (selected || berth) detailClose.current?.focus({ preventScroll: true });
-  }, [selected, berth]);
+    if ((selected || berth) && story === null) detailClose.current?.focus({ preventScroll: true });
+  }, [selected, berth, story]);
   useEffect(() => {
     const escape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
-      if (selected || berth) closeDetails();
-      else if (tour !== null) {
-        setTour(null);
+      if (story !== null) {
+        setStory(null);
         document.querySelector<HTMLButtonElement>(".tour-trigger")?.focus();
-      }
+      } else if (selected || berth) closeDetails();
     };
     document.addEventListener("keydown", escape);
     return () => document.removeEventListener("keydown", escape);
-  }, [selected, berth, tour, closeDetails]);
+  }, [selected, berth, story, closeDetails]);
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).has("tour")) setTour(0);
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("story") || params.has("tour")) setStory(0);
   }, []);
-  const steps = [
-    {
-      view: "port",
-      title: "Read the harbor",
-      body: "Select a vessel for its observed events and predicted risk. Scrub the clock to replay the last 48 hours.",
-    },
-    {
-      view: "process",
-      title: "Find the bottleneck",
-      body: "The graph is discovered from canonical events. Select Authority review to inspect its transitions and rework.",
-    },
-    {
-      view: "risk",
-      title: "Inspect the prediction",
-      body: "Choose a high-risk call to see signed SHAP contributions. The model is trained on synthetic examples; explanations are not causal.",
-    },
-    {
-      view: "studio",
-      title: "Test a different plan",
-      body: "Start with five reviewers. Save & optimize, inspect constraints and the berth schedule, then run the matched simulation.",
-    },
-    {
-      view: "studio",
-      title: "Compare the whole outcome",
-      body: "Read waiting time alongside compliance, conflicts and staffing cost. Switch the comparison source to see the first matched replication, then export the evidence.",
-    },
-  ] as const;
-  const synthetic =
-    datasets.find((d) => d.id === dataset)?.source !== "uploaded";
+
+  const synthetic = datasets.find((d) => d.id === dataset)?.source !== "uploaded";
   useEffect(() => {
     let active = true;
     sessionRequest<DatasetSummary[]>("/api/datasets")
@@ -136,16 +142,9 @@ export default function ConsolePage() {
         const ready = list.filter((d) => d.status === "ready");
         setDatasets(ready);
         setDataset(ready[0]?.id ?? "");
-        if (!ready.length)
-          setError(
-            "No ready datasets are available. The server needs its demo seed.",
-          );
+        if (!ready.length) setError("No ready datasets are available. The server needs its demo seed.");
       })
-      .catch(
-        () =>
-          active &&
-          setError("The operations server is unavailable. Retry in a moment."),
-      );
+      .catch(() => active && setError("The operations server is unavailable. Retry in a moment."));
     return () => {
       active = false;
     };
@@ -166,22 +165,10 @@ export default function ConsolePage() {
         setSelected(null);
         setBerth(null);
       })
-      .catch(
-        () =>
-          active &&
-          setError(
-            "Operational data could not be loaded. Retry the connection.",
-          ),
-      );
+      .catch(() => active && setError("Operational data could not be loaded. Retry the connection."));
     sessionRequest<Risk>(`/api/datasets/${dataset}/risk`)
       .then((result) => active && setRisk(result))
-      .catch(
-        () =>
-          active &&
-          setRiskError(
-            "Risk model unavailable. Operational replay remains available.",
-          ),
-      );
+      .catch(() => active && setRiskError("Risk model unavailable. Operational replay remains available."));
     return () => {
       active = false;
     };
@@ -204,85 +191,210 @@ export default function ConsolePage() {
   useEffect(() => {
     if (data && clock >= Date.parse(data.clock_end)) setPlaying(false);
   }, [clock, data]);
+
   const selectVessel = useCallback((id: string) => {
-    detailTrigger.current =
-      document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : null;
+    detailTrigger.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setSelected(id);
     setBerth(null);
   }, []);
   const selectBerth = useCallback((id: string) => {
-    detailTrigger.current =
-      document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : null;
+    detailTrigger.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     setBerth(id);
     setSelected(null);
   }, []);
+
+  const occupancyAt = data?.occupancy_assumption_minutes ?? 420;
   const vessel = data?.vessels.find((v) => v.case_id === selected);
   const chosenBerth = data?.berths.find((b) => b.id === berth);
   const score = risk?.cases.find((c) => c.case_id === selected);
-  const vessels = useMemo(
-    () =>
-      data?.vessels.filter(
-        (v) =>
-          v.case_id.toLowerCase().includes(search.toLowerCase()) ||
-          v.vessel_type.includes(search.toLowerCase()),
-      ) ?? [],
-    [data, search],
+  const path = useMemo(() => (vessel && data ? callJourney(vessel, data, clock) : null), [vessel, data, clock]);
+  const query = search.toLowerCase();
+  const matches = (id: string, type?: string | null) =>
+    id.toLowerCase().includes(query) || (type ?? "").toLowerCase().includes(query);
+  const states = useMemo(
+    () => new Map((data?.vessels ?? []).map((v) => [v.case_id, vesselState(v, clock, occupancyAt)])),
+    [data, clock, occupancyAt],
   );
-  const visible = vessels.filter(
-    (v) =>
-      !["Not requested", "Departed"].includes(
-        vesselState(v, clock, data?.occupancy_assumption_minutes ?? 420).phase,
-      ),
+  const visible = (data?.vessels ?? []).filter(
+    (v) => matches(v.case_id, v.vessel_type) && !["Not requested", "Departed"].includes(states.get(v.case_id)!.phase),
   );
+  const count = (phase: string) => [...states.values()].filter((s) => s.phase === phase).length;
+  const busyBerths = useMemo(() => {
+    if (!data) return 0;
+    const busy = occupancy(data);
+    return data.berths.filter((b) => (busy.get(b.id) ?? []).some(([s, e]) => s <= clock && clock < e)).length;
+  }, [data, clock]);
   const events = useMemo(
     () =>
       data?.vessels
         .flatMap((v) => v.events)
         .filter((e) => Date.parse(e.end) <= clock)
         .sort((a, b) => Date.parse(b.end) - Date.parse(a.end))
-        .slice(0, 30) ?? [],
+        .slice(0, 40) ?? [],
     [data, clock],
   );
-  const atBerth =
-    data?.vessels.filter(
-      (v) =>
-        vesselState(v, clock, data.occupancy_assumption_minutes).phase ===
-        "At berth",
-    ).length ?? 0;
   const riskCases = [...(risk?.cases ?? [])]
-    .filter(
-      (c) =>
-        c.case_id.toLowerCase().includes(search.toLowerCase()) ||
-        (c.vessel_type ?? "").toLowerCase().includes(search.toLowerCase()),
-    )
+    .filter((c) => matches(c.case_id, c.vessel_type))
     .sort((a, b) => b.miss_probability - a.miss_probability);
+
+  // ── The guided investigation: each chapter sets the real console up. ──
+  const moment = useMemo(() => (data ? waitingMoment(data) : null), [data]);
+  const hero = useMemo(() => (data ? protagonist(data) : null), [data]);
+  const heroJourney = useMemo(() => {
+    const v = data?.vessels.find((x) => x.case_id === hero?.id);
+    return v && data && hero ? callJourney(v, data, hero.at) : null;
+  }, [data, hero]);
+  const topRisk = useMemo(
+    () => (risk ? [...risk.cases].sort((a, b) => b.miss_probability - a.miss_probability)[0] : null),
+    [risk],
+  );
+  const chapters: StoryChapter[] = useMemo(() => {
+    const result = studio.simulation ? verdict(studio.simulation, studio.optimization) : null;
+    const opt = studio.optimization;
+    return [
+      {
+        kicker: "THE HARBOR",
+        title: "A week at Khalifa Port",
+        body: "This is a replay of one week of port calls, driven by the event log. Ships arrive, wait at anchor, are piloted in and berth. Yellow means waiting.",
+        note: "Synthetic operations on real port geography. Paths are illustrative; every arrival and berthing time comes from a recorded event.",
+      },
+      {
+        kicker: "THE PUZZLE",
+        title:
+          moment && moment.idle === moment.berths
+            ? "Ships wait. Every berth is empty."
+            : "Ships wait while berths sit idle.",
+        body: moment
+          ? `At ${portTime(moment.time)}, ${moment.anchored.length} ships are at anchor — and ${moment.idle} of ${moment.berths} berths are free. Berth space is not what they are waiting for.`
+          : "Ships wait at anchor even when berths are free.",
+      },
+      {
+        kicker: "ONE SHIP",
+        title: hero ? `Why did ${hero.id} wait?` : "Follow one ship",
+        body: heroJourney
+          ? `${heroJourney.headline} ${heroJourney.detail.slice(0, 2).join(" ")}`
+          : "Select any ship to see its journey.",
+        note: "Its timeline puts the paperwork (top lane) above the ship (bottom lane). Every ship has one — select any of them.",
+      },
+      {
+        kicker: "THE PATTERN",
+        title: "It isn’t bad luck. It’s the review queue.",
+        body: "Process discovery over six months of recorded steps finds the same thing across every call: authority review is the largest controllable delay. Coral arrows are documents sent back to be fixed — each loop adds hours.",
+      },
+      {
+        kicker: "THE FORECAST",
+        title: "Who is next?",
+        body: topRisk
+          ? `${topRisk.case_id} is still in paperwork. From its steps so far, the model estimates a ${Math.round(topRisk.miss_probability * 100)}% chance it misses its service window.`
+          : "A model scores every open call’s chance of missing its service window.",
+        note: "A prediction from a model trained on synthetic history. The factors explain the model’s estimate; they are not proof of cause.",
+      },
+      {
+        kicker: "THE DECISION",
+        title: "What if the port staffed five reviewers?",
+        body: opt
+          ? `The solver returned a ${opt.solver_status.toLowerCase()} plan for all ${opt.assignments.length} open calls. ${
+              opt.changed_decisions.length
+                ? `${opt.changed_decisions.length} assignments differ from today’s plan.`
+                : "It keeps today’s berth sequence call for call — the difference is reviewer capacity."
+            } Every hard constraint passed an independent check.`
+          : "Today three reviewers work the queue. The solver (Google OR-Tools CP-SAT) assigns every open call a reviewer and a berth, respecting vessel size, terminal type, pilots and shifts.",
+        action: opt
+          ? undefined
+          : {
+              label: studio.busy === "optimize" ? "Solving…" : "Run the solver",
+              busy: !!studio.busy,
+              run: () => void studioControl.current?.optimize(),
+            },
+      },
+      {
+        kicker: "THE VERDICT",
+        title: result ? result.headline : "Simulate both plans",
+        body: result
+          ? result.lines.slice(0, 3).join(" ")
+          : "Twenty simulated runs replay the open calls twice — today’s plan and yours — with identical random delays, so the only difference is the decision.",
+        action: result
+          ? undefined
+          : {
+              label: studio.busy === "simulate" ? "Simulating…" : "Simulate both plans",
+              busy: !!studio.busy || !opt,
+              run: () => void studioControl.current?.simulate(),
+            },
+      },
+      {
+        kicker: "YOUR TURN",
+        title: "Now try your own decision",
+        body: "Change the staffing, protect a berth for a priority ship, or close one for maintenance. Every number keeps its label: observed, predicted, optimized or simulated.",
+      },
+    ];
+  }, [moment, hero, heroJourney, topRisk, studio]);
+
+  useEffect(() => {
+    if (story === null || !data) return;
+    // Each chapter puts the console where its sentence points.
+    if (story === 0) {
+      setView("port");
+      setSelected(null);
+      setBerth(null);
+      setSpeed(360);
+      setClock(Date.parse(data.clock_start));
+      setPlaying(true);
+    } else if (story === 1) {
+      setView("port");
+      setPlaying(false);
+      setSelected(null);
+      if (moment) setClock(moment.time);
+    } else if (story === 2) {
+      setView("port");
+      setPlaying(false);
+      if (hero) {
+        setSelected(hero.id);
+        setClock(hero.at);
+      }
+    } else if (story === 3) {
+      setView("process");
+      setProcessFocus("Authority review");
+    } else if (story === 4) {
+      setView("risk");
+      setClock(Date.parse(data.clock_end));
+      if (topRisk) setSelected(topRisk.case_id);
+    } else {
+      setView("studio");
+      setSelected(null);
+    }
+  }, [story, data, moment, hero, topRisk]);
+  useEffect(() => {
+    if (story === 6 && studio.simulation)
+      document.querySelector('[data-testid="verdict"]')?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (story === 5 && studio.optimization)
+      document.querySelector(".result-summary")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [story, studio.simulation, studio.optimization]);
+
+  const meta = VIEWS[view];
+  const onRail = (id: View) => view === id || (id === "port" && view === "events");
+  const phaseClass = (phase: string) => `phase-${phase.toLowerCase().replace(/\s+/g, "-")}`;
   return (
-    <main className={`harbor ${focus ? "focus-mode" : ""}`}>
+    <main className={`harbor ${focus ? "focus-mode" : ""} ${story !== null ? "story-on" : ""}`}>
       <a className="skip-link" href="#workspace-heading">
         Skip to workspace
       </a>
       <nav className="rail" aria-label="Workspace navigation">
         <Link href="/" className="brand-mark" aria-label="BerthIQ home">
-          <Waves />
+          <QFlagMark size={28} />
         </Link>
         {(
           [
-            ["port", Compass, "Port"],
-            ["risk", Activity, "Risk"],
-            ["events", Radio, "Events"],
+            ["port", Compass, "Harbor"],
             ["process", GitBranch, "Process"],
-            ["studio", FlaskConical, "Studio"],
+            ["risk", Activity, "Risk"],
+            ["studio", FlaskConical, "Decide"],
             ["data", Database, "Data"],
           ] as const
         ).map(([id, Icon, label]) => (
           <button
             key={id}
-            aria-current={view === id ? "page" : undefined}
-            className={view === id ? "active" : ""}
+            aria-current={onRail(id) ? "page" : undefined}
+            className={onRail(id) ? "active" : ""}
             onClick={() => setView(id)}
           >
             <Icon />
@@ -297,32 +409,31 @@ export default function ConsolePage() {
       </nav>
       <div className="workspace">
         <header className="console-header">
-          <div className="wordmark">
+          <Link href="/" className="wordmark">
             Berth<span>IQ</span>
-            <small>OPERATIONS INTELLIGENCE</small>
-          </div>
+          </Link>
           <label className="dataset-select">
-            <span>WORKSPACE</span>
-            <select
-              aria-label="Select dataset"
-              value={dataset}
-              onChange={(e) => setDataset(e.target.value)}
-            >
+            <span>DATASET</span>
+            <select aria-label="Select dataset" value={dataset} onChange={(e) => setDataset(e.target.value)}>
               {datasets.map((d) => (
                 <option value={d.id} key={d.id}>
-                  {d.port_config === "khalifa" ? "Khalifa reference" : d.name}
+                  {d.port_config === "khalifa" ? "Khalifa reference · synthetic" : d.name}
                 </option>
               ))}
             </select>
           </label>
           <div className="clock-readout">
-            <i />
-            SIMULATED LIVE VIEW
+            <i className={playing ? "live" : ""} />
+            REPLAY CLOCK
             <strong>
               {clock ? portTime(clock) : "Connecting…"}
               <small> GST</small>
             </strong>
           </div>
+          <button className="story-trigger tour-trigger" aria-label="Start guided investigation" onClick={() => setStory(0)}>
+            <span className="q-flag" aria-hidden="true" />
+            <span>Guided investigation</span>
+          </button>
           <button
             className="icon-button"
             aria-label="Toggle map presentation mode"
@@ -333,83 +444,32 @@ export default function ConsolePage() {
           >
             <Maximize2 />
           </button>
-          <button
-            className="icon-button tour-trigger"
-            aria-label="Start guided walkthrough"
-            onClick={() => {
-              setTour(0);
-              setView("port");
-            }}
-          >
-            <HelpCircle size={18} />
-          </button>
         </header>
         <div className="workspace-title">
           <div>
-            <span className="eyebrow">THE HARBOR, IN CONTEXT</span>
+            <span className="eyebrow">{meta.eyebrow}</span>
             <h1 id="workspace-heading" tabIndex={-1}>
-              {view === "port"
-                ? "Port control"
-                : view === "risk"
-                  ? "Risk intelligence"
-                  : view === "process"
-                    ? "Process intelligence"
-                    : view === "studio"
-                      ? "Decision workspace"
-                      : view === "data"
-                        ? "Data workspace"
-                        : "Operational activity"}
-              <span className="status-pill">
-                {synthetic ? "Synthetic dataset" : "Private event log"}
-              </span>
+              {meta.title}
+              <span className="status-pill">{synthetic ? "Synthetic dataset" : "Private event log"}</span>
             </h1>
           </div>
-          <p>
-            Observe the flow.
-            <br />
-            <span>Understand the pressure.</span>
-          </p>
+          <p>{meta.lede}</p>
         </div>
-        {tour !== null && (
-          <section className="tour-card" aria-label="Guided walkthrough">
-            <span className="eyebrow">
-              GUIDED DEMO · {tour + 1} / {steps.length}
-            </span>
-            <div>
-              <h2>{steps[tour].title}</h2>
-              <p>{steps[tour].body}</p>
-            </div>
-            <button
-              className="secondary"
-              onClick={() => {
-                const next = tour + 1;
-                if (next === steps.length) setTour(null);
-                else {
-                  setTour(next);
-                  setView(steps[next].view);
-                }
-              }}
-            >
-              {tour === steps.length - 1 ? "Finish walkthrough" : "Next step"}
-            </button>
-            <button
-              aria-label="Close walkthrough"
-              className="icon-button"
-              onClick={() => setTour(null)}
-            >
-              <X size={16} />
-            </button>
-          </section>
+        {story !== null && (
+          <StoryGuide
+            chapters={chapters}
+            index={story}
+            onBack={() => setStory((s) => Math.max(0, (s ?? 0) - 1))}
+            onNext={() => setStory((s) => (s === null || s >= chapters.length - 1 ? null : s + 1))}
+            onClose={() => setStory(null)}
+          />
         )}
         {error ? (
           <section className="connection-state" role="alert">
             <Anchor size={40} />
             <h2>Waiting for the harbor</h2>
             <p>{error}</p>
-            <button
-              className="primary"
-              onClick={() => setAttempt((a) => a + 1)}
-            >
+            <button className="primary" onClick={() => setAttempt((a) => a + 1)}>
               Retry connection
             </button>
           </section>
@@ -417,57 +477,53 @@ export default function ConsolePage() {
           <section className="connection-state" role="status">
             <Waves size={40} />
             <h2>Preparing the workspace</h2>
-            <p>Loading canonical port events and model predictions…</p>
+            <p>Loading recorded port events and model predictions…</p>
           </section>
         ) : (
           <>
             <section
-              hidden={
-                view === "studio" || view === "process" || view === "data"
-              }
+              hidden={view === "studio" || view === "process" || view === "data"}
               className="telemetry"
               aria-label="Operational indicators"
             >
               {[
                 {
-                  label: "Calls in replay",
-                  value: visible.length,
-                  suffix: "vessels",
-                  detail: "At the selected clock",
+                  label: "Waiting at anchor",
+                  value: count("At anchor"),
+                  suffix: count("At anchor") === 1 ? "ship" : "ships",
+                  detail: "At the replay clock",
+                  provenance: "observed" as const,
+                  tone: "signal",
                 },
                 {
-                  label: "Alongside",
-                  value: atBerth,
-                  suffix: "vessels",
-                  detail: "Assumed occupancy after cargo start",
-                },
-                {
-                  label: "High predicted risk",
-                  value:
-                    risk?.cases.filter((c) => c.miss_probability > 0.66)
-                      .length ?? "—",
-                  suffix: "calls",
-                  detail: "Latest observed prefix · fixed during replay",
-                },
-                {
-                  label: "Configured berths",
-                  value: data.berths.length,
+                  label: "Berths in use",
+                  value: `${busyBerths}/${data.berths.length}`,
                   suffix: "berths",
-                  detail: "Synthetic operational constraints",
+                  detail: `Cargo start + ${Math.round(occupancyAt / 60)} h occupancy assumption`,
+                  provenance: "simulated" as const,
+                  tone: "",
                 },
-              ].map((k, i) => (
-                <article key={k.label}>
+                {
+                  label: "Awaiting clearance",
+                  value: count("Awaiting clearance"),
+                  suffix: "calls",
+                  detail: "Paperwork under way, not yet arrived",
+                  provenance: "observed" as const,
+                  tone: "",
+                },
+                {
+                  label: "Likely to miss window",
+                  value: risk?.cases.filter((c) => c.miss_probability > 0.66).length ?? "—",
+                  suffix: `of ${risk?.cases.length ?? "—"} open`,
+                  detail: "Model estimate above 66% · latest events",
+                  provenance: "predicted" as const,
+                  tone: "coral",
+                },
+              ].map((k) => (
+                <article key={k.label} className={k.tone}>
                   <div className="metric-label">
                     {k.label}
-                    <ProvenanceBadge
-                      provenance={
-                        i === 2
-                          ? "predicted"
-                          : i === 1
-                            ? "simulated"
-                            : "observed"
-                      }
-                    />
+                    <ProvenanceBadge provenance={k.provenance} />
                   </div>
                   <strong>
                     {k.value}
@@ -488,11 +544,7 @@ export default function ConsolePage() {
               </div>
             )}
             <div hidden={view !== "process"}>
-              <ProcessExplorer
-                key={dataset}
-                dataset={dataset}
-                enabled={view === "process"}
-              />
+              <ProcessExplorer key={dataset} dataset={dataset} enabled={view === "process"} focus={processFocus} />
             </div>
             <div hidden={view !== "studio"}>
               <ScenarioStudio
@@ -501,6 +553,8 @@ export default function ConsolePage() {
                 enabled={view === "studio"}
                 selected={selected}
                 onSelect={selectVessel}
+                control={studioControl}
+                onState={setStudio}
               />
             </div>
             <div hidden={view !== "data"}>
@@ -518,31 +572,18 @@ export default function ConsolePage() {
                 <section className="main-panel">
                   <div className="panel-toolbar">
                     <div className="panel-tabs">
-                      <button
-                        className={view === "port" ? "active" : ""}
-                        onClick={() => setView("port")}
-                      >
+                      <button className={view === "port" ? "active" : ""} onClick={() => setView("port")}>
                         Harbor map
                       </button>
-                      <button
-                        className={view === "risk" ? "active" : ""}
-                        onClick={() => setView("risk")}
-                      >
+                      <button className={view === "risk" ? "active" : ""} onClick={() => setView("risk")}>
                         Risk board
                       </button>
-                      <button
-                        className={view === "events" ? "active" : ""}
-                        onClick={() => setView("events")}
-                      >
+                      <button className={view === "events" ? "active" : ""} onClick={() => setView("events")}>
                         Event log
                       </button>
                     </div>
                     <label className="risk-toggle">
-                      <input
-                        type="checkbox"
-                        checked={showRisk}
-                        onChange={(e) => setShowRisk(e.target.checked)}
-                      />
+                      <input type="checkbox" checked={showRisk} onChange={(e) => setShowRisk(e.target.checked)} />
                       Risk overlay
                     </label>
                   </div>
@@ -561,7 +602,7 @@ export default function ConsolePage() {
                       <label className="search-box">
                         <Search size={16} />
                         <input
-                          placeholder="Search case or vessel type"
+                          placeholder="Search call or vessel type"
                           aria-label="Search vessels"
                           value={search}
                           onChange={(e) => setSearch(e.target.value)}
@@ -570,11 +611,9 @@ export default function ConsolePage() {
                       {view === "risk" ? (
                         <>
                           <p className="board-caption">
-                            Predictions use each call’s latest observed event,
-                            independent of replay time. Model:{" "}
-                            {risk?.model_version ??
-                              (riskError ? "unavailable" : "loading")}
-                            .
+                            Chance each open call starts cargo work after its service window, from the steps recorded
+                            so far. Fixed during replay · model{" "}
+                            {risk?.model_version ?? (riskError ? "unavailable" : "loading")}.
                           </p>
                           {riskCases.map((c) => (
                             <button
@@ -589,14 +628,14 @@ export default function ConsolePage() {
                                   {c.vessel_type} · {c.current_stage}
                                 </small>
                               </span>
+                              <span className="risk-meter" aria-hidden="true">
+                                <i
+                                  style={{ width: `${Math.round(c.miss_probability * 100)}%` }}
+                                  className={c.miss_probability > 0.66 ? "high" : ""}
+                                />
+                              </span>
                               <div>
-                                <strong
-                                  className={
-                                    c.miss_probability > 0.66
-                                      ? "coral-text"
-                                      : "seafoam"
-                                  }
-                                >
+                                <strong className={c.miss_probability > 0.66 ? "coral-text" : "seafoam"}>
                                   {Math.round(c.miss_probability * 100)}%
                                 </strong>
                                 <ProvenanceBadge provenance="predicted" />
@@ -607,14 +646,10 @@ export default function ConsolePage() {
                         </>
                       ) : (
                         events
-                          .filter((e) =>
-                            e.case_id
-                              .toLowerCase()
-                              .includes(search.toLowerCase()),
-                          )
+                          .filter((e) => e.case_id.toLowerCase().includes(query))
                           .map((e, i) => (
                             <button
-                              className="event-row"
+                              className={`event-row ${e.status === "rejected" ? "rejected" : ""}`}
                               key={`${e.case_id}-${i}`}
                               onClick={() => selectVessel(e.case_id)}
                             >
@@ -622,7 +657,8 @@ export default function ConsolePage() {
                               <span>
                                 <strong>{e.activity}</strong>
                                 <small>
-                                  {e.case_id} · {e.status}
+                                  {e.case_id} · {e.status === "rejected" ? "returned" : e.status}
+                                  {e.resource ? ` · ${e.resource}` : ""}
                                 </small>
                               </span>
                               <ChevronRight size={16} />
@@ -636,8 +672,7 @@ export default function ConsolePage() {
                       className="play-button"
                       aria-label={playing ? "Pause replay" : "Play replay"}
                       onClick={() => {
-                        if (clock >= Date.parse(data.clock_end))
-                          setClock(Date.parse(data.clock_start));
+                        if (clock >= Date.parse(data.clock_end)) setClock(Date.parse(data.clock_start));
                         setPlaying(!playing);
                       }}
                     >
@@ -656,7 +691,10 @@ export default function ConsolePage() {
                     <div className="scrubber">
                       <div>
                         <span>{portTime(clock)}</span>
-                        <span>48-HOUR EVENT REPLAY</span>
+                        <span>
+                          {Math.round((Date.parse(data.clock_end) - Date.parse(data.clock_start)) / 86_400_000)}-DAY
+                          EVENT REPLAY
+                        </span>
                       </div>
                       <input
                         aria-label="Simulation clock"
@@ -671,20 +709,14 @@ export default function ConsolePage() {
                         }}
                       />
                     </div>
-                    <select
-                      aria-label="Playback speed"
-                      value={speed}
-                      onChange={(e) => setSpeed(Number(e.target.value))}
-                    >
+                    <select aria-label="Playback speed" value={speed} onChange={(e) => setSpeed(Number(e.target.value))}>
                       <option value={60}>1 h/s</option>
                       <option value={180}>3 h/s</option>
                       <option value={360}>6 h/s</option>
                     </select>
                   </div>
                 </section>
-                <aside
-                  className={`context-panel ${vessel || chosenBerth ? "detail-open" : ""}`}
-                >
+                <aside className={`context-panel ${vessel || chosenBerth ? "detail-open" : ""}`}>
                   {vessel ? (
                     <>
                       <div className="panel-heading">
@@ -698,75 +730,51 @@ export default function ConsolePage() {
                           <X size={18} />
                         </button>
                       </div>
-                      <div className="vessel-portrait">
-                        <Ship size={76} strokeWidth={0.7} />
-                        <span>{vessel.vessel_type.toUpperCase()}</span>
-                      </div>
-                      <h2>{vessel.case_id}</h2>
-                      <p className="muted">
-                        {
-                          vesselState(
-                            vessel,
-                            clock,
-                            data.occupancy_assumption_minutes,
-                          ).stage
-                        }
+                      <h2 className="call-title">{vessel.case_id}</h2>
+                      <p className="call-meta">
+                        {vessel.vessel_type} · {vessel.loa ?? "—"} m long · {vessel.draft ?? "—"} m draft{" "}
+                        <b className={`phase-chip ${phaseClass(states.get(vessel.case_id)!.phase)}`}>
+                          {states.get(vessel.case_id)!.phase}
+                        </b>
                       </p>
-                      <dl className="detail-grid">
-                        <div>
-                          <dt>Length / draft</dt>
-                          <dd>
-                            {vessel.loa ?? "—"} / {vessel.draft ?? "—"} m
-                          </dd>
-                        </div>
-                        <div>
-                          <dt>Assigned berth at clock</dt>
-                          <dd>
-                            {vesselState(
-                              vessel,
-                              clock,
-                              data.occupancy_assumption_minutes,
-                            ).berth ?? "Unassigned"}
-                          </dd>
-                        </div>
-                        <div>
-                          <dt>Service target</dt>
-                          <dd>
-                            {vessel.service_window_end
-                              ? portTime(vessel.service_window_end)
-                              : "Not observed"}
-                          </dd>
-                        </div>
-                      </dl>
+                      {path && (
+                        <section className="why" aria-label="Why this call is waiting">
+                          <p className="why-headline">{path.headline}</p>
+                          <JourneyStrip journey={path} />
+                          {path.detail.length > 0 && (
+                            <ul className="why-detail">
+                              {path.detail.map((d) => (
+                                <li key={d}>{d}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </section>
+                      )}
                       {score ? (
                         <section className="risk-detail">
                           <div className="metric-label">
-                            Window miss probability
+                            Chance of missing its window
                             <ProvenanceBadge provenance="predicted" />
                           </div>
                           <strong>
                             {Math.round(score.miss_probability * 100)}
                             <small>%</small>
                           </strong>
-                          <p>
-                            Latest-prefix estimate · synthetic training data
-                          </p>
+                          <p>{GLOSSARY.missRisk}</p>
                           {score.top_factors.map((f) => (
                             <div className="factor" key={f.feature}>
-                              <span>{f.feature.replaceAll("_", " ")}</span>
-                              <b
-                                className={
-                                  f.contribution > 0 ? "coral-text" : "seafoam"
-                                }
-                              >
-                                {f.contribution > 0 ? "+" : ""}
-                                {f.contribution.toFixed(2)}
+                              <span>{featureLabel(f.feature)}</span>
+                              <i
+                                className={f.contribution > 0 ? "up" : "down"}
+                                style={{ width: `${Math.min(100, Math.abs(f.contribution) * 40)}%` }}
+                                aria-hidden="true"
+                              />
+                              <b className={f.contribution > 0 ? "coral-text" : "seafoam"}>
+                                {f.contribution > 0 ? "raises" : "lowers"}
                               </b>
                             </div>
                           ))}
-                          <small>
-                            Signed SHAP contributions; not causal effects.
-                          </small>
+                          <small>What moved the model’s estimate (signed SHAP). Not proof of cause.</small>
                         </section>
                       ) : (
                         <p className="muted">
@@ -774,22 +782,34 @@ export default function ConsolePage() {
                             ? "Loading model prediction…"
                             : riskError
                               ? "Prediction unavailable."
-                              : "No active-case prediction for this call."}
+                              : "No risk score: scores cover calls still in progress."}
                         </p>
                       )}
+                      <dl className="detail-grid">
+                        <div>
+                          <dt>Berth at this time</dt>
+                          <dd>{states.get(vessel.case_id)!.berth ?? "Not assigned yet"}</dd>
+                        </div>
+                        <div>
+                          <dt title={GLOSSARY.serviceWindow}>Service window ends</dt>
+                          <dd>{vessel.service_window_end ? portTime(vessel.service_window_end) : "Not recorded yet"}</dd>
+                        </div>
+                      </dl>
                       <h3>Supporting events</h3>
-                      {vesselState(
-                        vessel,
-                        clock,
-                        data.occupancy_assumption_minutes,
-                      )
-                        .seen.slice(-4)
+                      {states
+                        .get(vessel.case_id)!
+                        .seen.slice(-5)
+                        .reverse()
                         .map((e, i) => (
-                          <div className="mini-event" key={i}>
+                          <div className={`mini-event ${e.status === "rejected" ? "rejected" : ""}`} key={i}>
                             <i />
                             <span>
                               {e.activity}
-                              <small>{portTime(e.end)}</small>
+                              {e.status === "rejected" ? " · returned" : ""}
+                              <small>
+                                {portTime(e.end)}
+                                {e.resource ? ` · ${e.resource}` : ""}
+                              </small>
                             </span>
                           </div>
                         ))}
@@ -807,26 +827,26 @@ export default function ConsolePage() {
                           <X size={18} />
                         </button>
                       </div>
-                      <Anchor size={52} className="seafoam" />
+                      <Anchor size={44} className="seafoam" />
                       <h2>{chosenBerth.id}</h2>
                       <p>{chosenBerth.name}</p>
                       <dl className="detail-grid">
                         <div>
-                          <dt>Length limit</dt>
+                          <dt>Longest ship</dt>
                           <dd>{chosenBerth.length_m} m</dd>
                         </div>
                         <div>
-                          <dt>Draft limit</dt>
+                          <dt>Deepest draft</dt>
                           <dd>{chosenBerth.draft_m} m</dd>
                         </div>
                         <div>
-                          <dt>Terminal compatibility</dt>
+                          <dt>Terminal</dt>
                           <dd>{chosenBerth.terminal_type}</dd>
                         </div>
                       </dl>
                       <p className="muted">
-                        Configured synthetic constraints. Position is
-                        approximate.
+                        A ship may berth here only if it fits all three. The solver treats them as hard rules. Position
+                        is approximate.
                       </p>
                     </>
                   ) : (
@@ -836,9 +856,7 @@ export default function ConsolePage() {
                         <Ship size={17} />
                       </div>
                       <h2>On the radar</h2>
-                      <p className="muted">
-                        Select a vessel to follow its evidence.
-                      </p>
+                      <p className="muted">Each call is one ship’s visit: paperwork, anchorage, pilot, berth.</p>
                       <label className="search-box">
                         <Search size={16} />
                         <input
@@ -849,30 +867,23 @@ export default function ConsolePage() {
                         />
                       </label>
                       <div className="vessel-list">
-                        {visible.map((v) => (
-                          <button
-                            key={v.case_id}
-                            onClick={() => selectVessel(v.case_id)}
-                          >
-                            <span className="ship-icon">
-                              <Ship size={21} />
-                            </span>
-                            <span>
-                              <strong>{v.case_id}</strong>
-                              <small>
-                                {v.vessel_type} ·{" "}
-                                {
-                                  vesselState(
-                                    v,
-                                    clock,
-                                    data.occupancy_assumption_minutes,
-                                  ).phase
-                                }
-                              </small>
-                            </span>
-                            <ArrowUpRight size={15} />
-                          </button>
-                        ))}
+                        {visible.map((v) => {
+                          const phase = states.get(v.case_id)!.phase;
+                          return (
+                            <button key={v.case_id} onClick={() => selectVessel(v.case_id)}>
+                              <span className={`ship-icon ${phaseClass(phase)}`}>
+                                <Ship size={19} />
+                              </span>
+                              <span>
+                                <strong>{v.case_id}</strong>
+                                <small>
+                                  {v.vessel_type} · {phase}
+                                </small>
+                              </span>
+                              <ChevronRight size={15} />
+                            </button>
+                          );
+                        })}
                       </div>
                     </>
                   )}
@@ -882,20 +893,10 @@ export default function ConsolePage() {
             <footer className="console-footer">
               <span>
                 <i />
-                {synthetic ? "Synthetic operations." : "Uploaded events."}{" "}
-                Simulated positions. No live AIS.
+                {synthetic ? "Synthetic operations." : "Uploaded events."} Illustrative vessel paths. No live AIS.
               </span>
-              <span>
-                Replay occupancy uses a configured{" "}
-                {data.occupancy_assumption_minutes}-minute assumption.
-              </span>
-              <a
-                href="https://github.com/abdulaz06/berthiq"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Source & methodology ↗
-              </a>
+              <span>Berth occupancy after cargo start uses a {occupancyAt}-minute assumption.</span>
+              <Link href="/case-study">How it works ↗</Link>
             </footer>
           </>
         )}

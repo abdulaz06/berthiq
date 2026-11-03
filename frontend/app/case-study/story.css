@@ -28,7 +28,7 @@
   flex-wrap: wrap;
   gap: 35px;
   margin-top: 38px;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   letter-spacing: 0.07em;
   color: #638797;
 }
@@ -60,7 +60,7 @@
   border-radius: 8px;
 }
 .story-pipeline span {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: #6ea69f;
 }
 .story-pipeline h3 {

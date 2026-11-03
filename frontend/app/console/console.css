@@ -9,7 +9,7 @@
   background: var(--ocean);
   color: #e7edf1;
   display: flex;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 14px;
   color-scheme: dark;
 }
@@ -81,7 +81,7 @@
 }
 .rail-end {
   margin-top: auto;
-  font: 10px/1.6 monospace;
+  font: 10px/1.6 var(--font-mono), monospace;
   color: #8a9ca9;
   letter-spacing: 0.12em;
   text-align: center;
@@ -108,7 +108,7 @@
 }
 .wordmark small {
   display: block;
-  font: 8px/2 monospace;
+  font: 8px/2 var(--font-mono), monospace;
   letter-spacing: 0.18em;
   color: var(--muted);
 }
@@ -120,7 +120,7 @@
   gap: 6px;
 }
 .dataset-select > span {
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   letter-spacing: 0.14em;
   color: var(--muted);
 }
@@ -131,13 +131,13 @@
 }
 .clock-readout {
   margin-left: auto;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   letter-spacing: 0.09em;
   color: var(--muted);
 }
 .clock-readout strong {
   display: block;
-  font: 17px/1.8 monospace;
+  font: 17px/1.8 var(--font-mono), monospace;
   color: #e4ebef;
 }
 .clock-readout small {
@@ -169,7 +169,7 @@
   padding: 27px 0 23px;
 }
 .eyebrow {
-  font: 9px/1.8 monospace;
+  font: 9px/1.8 var(--font-mono), monospace;
   letter-spacing: 0.17em;
   color: var(--muted);
 }
@@ -181,7 +181,7 @@
   display: inline-block;
   vertical-align: middle;
   margin-left: 16px;
-  font: 10px Arial;
+  font: 10px var(--font-sans), sans-serif;
   letter-spacing: 0;
   color: var(--seafoam);
   background: #17312f;
@@ -235,7 +235,7 @@
   margin: 8px 0;
 }
 .telemetry article > strong > small {
-  font: 11px Arial;
+  font: 11px var(--font-sans), sans-serif;
   color: var(--muted);
   margin-left: 8px;
 }
@@ -411,8 +411,8 @@
 }
 .awaiting-queue {
   position: absolute;
-  top: 120px;
-  left: 27px;
+  top: 72px;
+  right: 15px;
   width: 232px;
   background: #0d1923ee;
   border: 1px solid #2a3e4c;
@@ -475,7 +475,7 @@
   border: 1px solid #3d6974;
   padding: 5px 8px !important;
   border-radius: 4px;
-  font: 9px monospace !important;
+  font: 9px var(--font-mono), monospace !important;
 }
 .playback {
   display: flex;
@@ -499,7 +499,7 @@
 .scrubber > div {
   display: flex;
   justify-content: space-between;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   color: var(--muted);
   margin-bottom: 6px;
 }
@@ -571,7 +571,7 @@
   flex: 1;
 }
 .vessel-list strong {
-  font: 12px monospace;
+  font: 12px var(--font-mono), monospace;
 }
 .vessel-list small,
 .risk-row small,
@@ -636,7 +636,7 @@
 }
 .vessel-portrait span {
   display: block;
-  font: 8px monospace;
+  font: 8px var(--font-mono), monospace;
   letter-spacing: 0.2em;
   margin-top: 8px;
   color: var(--muted);
@@ -656,7 +656,7 @@
   color: var(--muted);
 }
 .detail-grid dd {
-  font: 11px monospace;
+  font: 11px var(--font-mono), monospace;
   text-align: right;
 }
 .risk-detail {
@@ -711,7 +711,7 @@
 }
 .mini-event small {
   display: block;
-  font: 9px monospace;
+  font: 9px var(--font-mono), monospace;
   color: var(--muted);
   margin-top: 5px;
 }
@@ -747,13 +747,13 @@
   gap: 5px;
 }
 .risk-row strong {
-  font: 13px monospace;
+  font: 13px var(--font-mono), monospace;
 }
 .risk-row > div > strong {
   font-size: 22px;
 }
 .event-row time {
-  font: 10px monospace;
+  font: 10px var(--font-mono), monospace;
   color: var(--muted);
 }
 .event-row strong {
