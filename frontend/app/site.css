@@ -551,7 +551,7 @@
   background: var(--panel);
   border: 1px solid var(--line);
 }
-.verdict-numbers span {
+.verdict-numbers > div > span {
   font-size: 13px;
   color: var(--muted);
 }
@@ -618,6 +618,8 @@
 }
 .engine-foot a {
   color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* Honesty */
@@ -680,7 +682,10 @@
 
 /* Provenance chips on public pages */
 .site [data-provenance] {
-  font-size: 9px;
+  font-size: 9.5px;
+  background: #14242e !important;
+  border-color: #34505b !important;
+  color: #d3dde2 !important;
 }
 
 @media (max-width: 1100px) {
@@ -768,5 +773,228 @@
   .site * {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* Case study */
+.case article:focus {
+  outline: none;
+}
+.case-hero,
+.chapter {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+.case-hero {
+  padding-top: 96px;
+  padding-bottom: 80px;
+}
+.case-hero h1 {
+  font-size: clamp(56px, 7vw, 108px);
+  margin: 22px 0 28px;
+}
+.case-hero h1 em {
+  display: block;
+}
+.case-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+.case-meta span {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  font: 500 12px var(--font-mono), monospace;
+  color: var(--soft);
+}
+.chapter {
+  padding-top: 72px;
+  padding-bottom: 72px;
+  border-top: 1px solid #172631;
+}
+.chapter h2 {
+  font-size: clamp(42px, 4.6vw, 68px);
+  margin: 16px 0 28px;
+  max-width: 900px;
+}
+.chapter p,
+.chapter li {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--soft);
+}
+.chapter p {
+  max-width: 760px;
+  margin-bottom: 18px;
+}
+.chapter b {
+  color: var(--ink);
+}
+.chapter a {
+  color: var(--signal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.two {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 48px;
+  align-items: start;
+}
+.portrait-shot,
+.wide-shot {
+  margin: 0;
+}
+.portrait-shot img,
+.wide-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 60px -30px #000;
+}
+.wide-shot {
+  margin: 30px 0;
+}
+.portrait-shot figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.owners,
+.principles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 10px 0 32px;
+}
+.principles {
+  grid-template-columns: repeat(3, 1fr);
+}
+.owners article,
+.principles > div {
+  padding: 22px;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.owners h3,
+.principles h3 {
+  font: 800 26px/1.02 var(--font-display), sans-serif;
+  text-transform: uppercase;
+  margin: 14px 0 10px;
+}
+.principles h3 {
+  margin-top: 0;
+}
+.owners p,
+.principles p {
+  font-size: 14.5px !important;
+  line-height: 1.6;
+  margin: 0;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 26px 0 18px;
+}
+.metrics > div {
+  display: grid;
+  gap: 8px;
+  padding: 22px;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.metrics span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+.metrics strong {
+  font: 800 56px/1 var(--font-display), sans-serif;
+}
+.metrics small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.note {
+  font-size: 14px !important;
+  color: var(--muted) !important;
+}
+.verdict-lines,
+.limits {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  margin: 0 0 28px;
+  list-style: none;
+}
+.verdict-lines li,
+.limits li {
+  position: relative;
+  padding-left: 22px;
+  max-width: 900px;
+}
+.verdict-lines li::before,
+.limits li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 9px;
+  height: 7px;
+  border-radius: 1px;
+  background: var(--signal);
+}
+.limits li {
+  padding-bottom: 12px;
+  border-bottom: 1px solid #172631;
+}
+.case-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 26px;
+  margin-top: 30px;
+}
+@media (max-width: 900px) {
+  .two,
+  .owners,
+  .principles,
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+  .portrait-shot {
+    max-width: 380px;
+  }
+}
+@media (max-width: 760px) {
+  .case-hero,
+  .chapter {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .case-hero {
+    padding-top: 48px;
+  }
+  .case-hero h1 {
+    font-size: 54px;
+  }
+  .chapter p,
+  .chapter li {
+    font-size: 16px;
   }
 }

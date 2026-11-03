@@ -25,7 +25,7 @@ test("real discovery, optimization, matched simulation and private export", asyn
   await page.screenshot({ path: "../DOCS/media/process-explorer.png" });
   await page
     .locator(".rail")
-    .getByRole("button", { name: "Studio", exact: true })
+    .getByRole("button", { name: "Decide", exact: true })
     .click();
   await page
     .getByLabel("Study name", { exact: true })
@@ -108,7 +108,7 @@ test("real discovery, optimization, matched simulation and private export", asyn
   await page.reload();
   await page
     .locator(".rail")
-    .getByRole("button", { name: "Studio", exact: true })
+    .getByRole("button", { name: "Decide", exact: true })
     .click();
   await expect(
     page.getByLabel("Load saved scenario").locator(`option[value="${id}"]`),
@@ -134,7 +134,7 @@ test("incompatible berth lock reports infeasibility without simulated outcomes",
   await page.goto("/console");
   await page
     .locator(".rail")
-    .getByRole("button", { name: "Studio", exact: true })
+    .getByRole("button", { name: "Decide", exact: true })
     .click();
   await page.getByText("Priorities & berth locks", { exact: true }).click();
   await page.getByLabel("Lock berth for KHL-0595").selectOption("KGT-2");

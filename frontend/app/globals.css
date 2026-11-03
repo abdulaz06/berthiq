@@ -14,8 +14,9 @@ body {
   position: absolute;
   left: 20px;
   top: -100px;
-  background: #74d8c6;
-  color: #10232b;
+  background: #f2c230;
+  color: #1b1503;
+  font-weight: 700;
   padding: 15px;
   z-index: 100;
 }

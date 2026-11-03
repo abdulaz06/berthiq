@@ -186,7 +186,7 @@ export default function PortMap({
       instance = new maplibregl.Map({
         container: host.current,
         style: TILES,
-        center: [54.6372, 24.8048],
+        center: [54.6385, 24.8008],
         zoom: host.current.clientWidth < 600 ? 12.3 : 13.35,
         bearing: -20,
         attributionControl: false,
@@ -379,7 +379,7 @@ export default function PortMap({
             {awaiting.map((a) => (
               <button
                 key={a.id}
-                aria-label={`Select awaiting call ${a.id}`}
+                aria-label={`Select vessel ${a.id}`}
                 className={`${selected === a.id ? "selected" : ""} ${showRisk && a.risk !== undefined && a.risk > 0.66 ? "danger" : ""}`}
                 onClick={() => handlers.current.onSelect(a.id)}
                 title={a.risk === undefined ? a.id : `${a.id} · ${Math.round(a.risk * 100)}% predicted miss risk`}

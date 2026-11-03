@@ -25,7 +25,7 @@ test("desktop console loads real events, selects a call and replays", async ({ p
 test("local schematic remains usable when public tiles fail", async ({ page }) => {
   await page.route("https://tiles.openfreemap.org/**", route => route.abort());
   await page.goto("/console");
-  await expect(page.getByText("Local schematic · approximate coastline and berths")).toBeVisible({ timeout: 15000 });
+  await expect(page.getByText(/local schematic, approximate berths/)).toBeVisible({ timeout: 15000 });
   await expect(page.locator("[data-map-ready=true]")).toHaveCount(1);
   await page.getByRole("button", { name: "Inspect berth KCT-1", exact: true }).click();
   await expect(page.getByText("BERTH CONSTRAINTS")).toBeVisible();
