@@ -16,7 +16,6 @@ from xml.etree.ElementTree import ParseError
 
 import sqlalchemy as sa
 from defusedxml.common import DefusedXmlException
-from lxml.etree import XMLSyntaxError
 from sqlalchemy.orm import Session
 
 from app.db.models import Case, CaseOutcome, Dataset, DatasetSource, DatasetStatus, Event
@@ -28,6 +27,24 @@ from app.schemas.datasets import (
 )
 from app.services.discovery import EventLite
 from app.services.prediction import STAGES
+
+# XML errors from a malformed XLSX. openpyxl parses with lxml only when lxml
+# happens to be installed (it is not a dependency); otherwise with the stdlib
+# parser, hardened by defusedxml.
+_XML_ERRORS: tuple[type[Exception], ...] = (ParseError, DefusedXmlException)
+try:
+    from lxml.etree import XMLSyntaxError
+
+    _XML_ERRORS += (XMLSyntaxError,)
+except ImportError:
+    pass
+_WORKBOOK_ERRORS: tuple[type[Exception], ...] = (
+    zipfile.BadZipFile,
+    KeyError,
+    OSError,
+    *_XML_ERRORS,
+)
+_PARSE_ERRORS: tuple[type[Exception], ...] = (csv.Error, *_XML_ERRORS)
 
 MAX_BYTES = 5 * 1024 * 1024
 MAX_ROWS = 50_000
@@ -72,14 +89,7 @@ def parse_upload(content: bytes, filename: str) -> list[dict[str, str]]:
                 workbook.close()
                 raise ValueError("Workbook dimensions exceed the row/column limits.")
             matrix = sheet.iter_rows(values_only=True)
-        except (
-            zipfile.BadZipFile,
-            KeyError,
-            OSError,
-            ParseError,
-            XMLSyntaxError,
-            DefusedXmlException,
-        ) as exc:
+        except _WORKBOOK_ERRORS as exc:
             if workbook:
                 workbook.close()
             raise ValueError("The uploaded file is not a readable XLSX workbook.") from exc
@@ -112,7 +122,7 @@ def parse_upload(content: bytes, filename: str) -> list[dict[str, str]]:
         if not rows:
             raise ValueError("The file contains no event rows.")
         return rows
-    except (csv.Error, ParseError, XMLSyntaxError, DefusedXmlException) as exc:
+    except _PARSE_ERRORS as exc:
         raise ValueError("File parsing failed; check its format and cell contents.") from exc
     finally:
         if workbook:

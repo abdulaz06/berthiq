@@ -2,6 +2,7 @@
 .env
 .env.local
 .env.*.local
+.env.prod
 aisstream_key.txt
 
 # ---- Raw / collected data (never commit) ----

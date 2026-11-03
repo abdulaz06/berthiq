@@ -39,7 +39,6 @@ def main() -> int:
             "fastapi",
             "uvicorn",
             "sqlalchemy",
-            "pm4py",
         ):
             importlib.import_module(name)
         sys.path.insert(0, str(Path(__file__).resolve().parents[1]))

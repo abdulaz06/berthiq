@@ -705,3 +705,38 @@
 .journey figcaption .eyebrow {
   text-transform: uppercase;
 }
+
+/* Engine offline: the story stays reachable without the API */
+.engine-offline {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 0 16px;
+  text-align: center;
+}
+.engine-offline p {
+  line-height: 1.6;
+}
+.engine-offline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.engine-offline-actions a,
+.engine-offline-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.engine-offline .primary {
+  background: var(--signal, #f2c230);
+  color: #10161c;
+  font-weight: 600;
+}
+.engine-offline .text-button {
+  padding: 10px 6px;
+  color: #b8c7cf;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

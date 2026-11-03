@@ -1,0 +1,78 @@
+# Production API host: Caddy (TLS) -> FastAPI -> PostgreSQL 16, on one VM.
+# The frontend is on Vercel. See DOCS/DEPLOYMENT.md.
+#
+#   cd deploy
+#   docker compose --env-file .env.prod -f compose.prod.yml build
+#   docker compose --env-file .env.prod -f compose.prod.yml up -d postgres
+#   docker compose --env-file .env.prod -f compose.prod.yml run --rm release
+#   docker compose --env-file .env.prod -f compose.prod.yml up -d api caddy
+#
+# Only Caddy publishes ports. PostgreSQL and the API are reachable solely on the
+# compose network.
+
+name: berthiq
+
+x-api-image: &api-image
+  image: berthiq-api:latest
+  build:
+    context: ../backend
+  env_file: .env.prod
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env.prod}
+      POSTGRES_DB: berthiq
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d berthiq"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # One-shot release step: migrations + idempotent demo seed. Runs only on demand
+  # (`run --rm release`), never as part of `up`.
+  release:
+    <<: *api-image
+    profiles: ["release"]
+    restart: "no"
+    command: ["sh", "-c", "python -m alembic upgrade head && python scripts/prepare_demo.py"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    <<: *api-image
+    restart: unless-stopped
+    init: true
+    # Jobs may run for up to JOB_TIMEOUT_SECONDS (<=120 s); let them finish.
+    stop_grace_period: 125s
+    mem_limit: 3g
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    environment:
+      API_DOMAIN: ${API_DOMAIN:?set API_DOMAIN in .env.prod}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

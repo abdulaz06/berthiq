@@ -35,12 +35,6 @@ colorama==0.4.6 ; sys_platform == 'win32'
     #   pytest
     #   tqdm
     #   uvicorn
-contourpy==1.4.0
-    # via matplotlib
-cvxopt==1.3.3 ; python_full_version < '3.15'
-    # via pm4py
-cycler==0.12.1
-    # via matplotlib
 cyclonedx-python-lib==11.12.0
     # via pip-audit
 defusedxml==0.7.1
@@ -53,10 +47,6 @@ fastapi==0.162.0
     # via berthiq-backend (backend/pyproject.toml)
 filelock==4.2.4
     # via cachecontrol
-fonttools==4.68.0
-    # via matplotlib
-graphviz==0.21
-    # via pm4py
 greenlet==3.5.6 ; platform_machine == 'AMD64' or platform_machine == 'WIN32' or platform_machine == 'aarch64' or platform_machine == 'amd64' or platform_machine == 'ppc64le' or platform_machine == 'win32' or platform_machine == 'x86_64'
     # via sqlalchemy
 h11==0.16.0
@@ -82,8 +72,6 @@ joblib==1.6.0
     # via
     #   berthiq-backend (backend/pyproject.toml)
     #   scikit-learn
-kiwisolver==1.5.1
-    # via matplotlib
 librt==0.16.0 ; platform_python_implementation != 'PyPy'
     # via mypy
 license-expression==30.4.4
@@ -96,16 +84,12 @@ llvmlite==0.50.0 ; platform_machine != 'x86_64' or sys_platform != 'darwin'
     # via
     #   numba
     #   shap
-lxml==6.1.3
-    # via pm4py
 mako==1.4.3
     # via alembic
 markdown-it-py==4.2.0
     # via rich
 markupsafe==3.0.4
     # via mako
-matplotlib==3.11.2
-    # via pm4py
 mdurl==0.1.2
     # via markdown-it-py
 msgpack==1.2.4
@@ -116,8 +100,6 @@ mypy-extensions==1.1.0
     # via mypy
 narwhals==2.28.0
     # via scikit-learn
-networkx==3.7
-    # via pm4py
 numba==0.53.1 ; platform_machine == 'x86_64' and sys_platform == 'darwin'
     # via shap
 numba==0.68.1 ; platform_machine != 'x86_64' or sys_platform != 'darwin'
@@ -125,12 +107,9 @@ numba==0.68.1 ; platform_machine != 'x86_64' or sys_platform != 'darwin'
 numpy==2.5.4
     # via
     #   berthiq-backend (backend/pyproject.toml)
-    #   contourpy
-    #   matplotlib
     #   numba
     #   ortools
     #   pandas
-    #   pm4py
     #   scikit-learn
     #   scipy
     #   shap
@@ -144,7 +123,6 @@ packageurl-python==0.17.6
     # via cyclonedx-python-lib
 packaging==26.3
     # via
-    #   matplotlib
     #   pip-audit
     #   pip-requirements-parser
     #   pytest
@@ -153,17 +131,16 @@ pandas==3.1.0
     # via
     #   berthiq-backend (backend/pyproject.toml)
     #   ortools
-    #   pm4py
     #   shap
 pathspec==1.1.1
     # via mypy
-pillow==13.0.0
-    # via matplotlib
 pip==26.2.2
     # via pip-api
 pip-api==0.0.35
     # via pip-audit
 pip-audit==2.10.1
+    # via berthiq-backend (backend/pyproject.toml)
+pip-licenses==5.5.5
     # via berthiq-backend (backend/pyproject.toml)
 pip-requirements-parser==32.0.1
     # via pip-audit
@@ -171,8 +148,8 @@ platformdirs==4.14.0
     # via pip-audit
 pluggy==1.7.0
     # via pytest
-pm4py==2.7.23.11
-    # via berthiq-backend (backend/pyproject.toml)
+prettytable==3.18.0
+    # via pip-licenses
 protobuf==6.33.6
     # via ortools
 psycopg2-binary==2.9.13
@@ -193,23 +170,17 @@ pygments==2.21.0
     #   pytest
     #   rich
 pyparsing==3.3.3
-    # via
-    #   matplotlib
-    #   pip-requirements-parser
+    # via pip-requirements-parser
 pytest==9.2.0
     # via berthiq-backend (backend/pyproject.toml)
 python-dateutil==3.0.0
-    # via
-    #   matplotlib
-    #   pandas
+    # via pandas
 python-dotenv==1.2.4
     # via
     #   pydantic-settings
     #   uvicorn
 python-multipart==0.0.32
     # via berthiq-backend (backend/pyproject.toml)
-pytz==2026.6
-    # via pm4py
 pyyaml==6.0.3
     # via uvicorn
 requests==2.34.2
@@ -226,7 +197,6 @@ scikit-learn==1.9.0
     #   shap
 scipy==1.18.1
     # via
-    #   pm4py
     #   scikit-learn
     #   shap
 setuptools==84.2.1 ; platform_machine == 'x86_64' and sys_platform == 'darwin'
@@ -256,9 +226,7 @@ tomli==2.5.0
 tomli-w==1.2.0
     # via pip-audit
 tqdm==4.70.1
-    # via
-    #   pm4py
-    #   shap
+    # via shap
 typing-extensions==4.16.0
     # via
     #   alembic
@@ -292,5 +260,7 @@ uvloop==0.23.0 ; platform_python_implementation != 'PyPy' and sys_platform != 'c
     # via uvicorn
 watchfiles==1.3.0
     # via uvicorn
+wcwidth==0.9.4
+    # via prettytable
 websockets==17.3
     # via uvicorn

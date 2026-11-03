@@ -342,7 +342,7 @@ Real port names and real geography are used as a realistic setting. All operatio
 | Layer | Produced by |
 |---|---|
 | Historical metrics | Deterministic computation over the event log |
-| Process model | PM4Py discovery algorithms |
+| Process model | Directly-follows graph and trace variants (pure Python) |
 | Risk probabilities | Trained gradient-boosted classifier |
 | Feature attributions | SHAP |
 | Assignments and schedules | OR-Tools CP-SAT |

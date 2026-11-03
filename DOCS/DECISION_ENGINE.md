@@ -1,7 +1,7 @@
 # Decision engine implementation
 
 The launch implementation preserves FastAPI/SQLAlchemy/PostgreSQL, the deterministic
-generator, PM4Py discovery and the committed HGB risk model. New services are
+generator, directly-follows discovery and the committed HGB risk model. New services are
 `ingestion`, `planning`, `optimization`, `simulation` and `jobs`.
 
 ## Observable snapshot

@@ -268,7 +268,7 @@ export default function Home() {
         </div>
         <div className="engine-grid">
           {[
-            ["Analytics", "observed", "PM4Py process discovery and event-log analytics own the facts."],
+            ["Analytics", "observed", "Process discovery and event-log analytics own the facts."],
             [
               "Model",
               "predicted",
@@ -336,6 +336,8 @@ export default function Home() {
           <Link href="/case-study">Engineering story</Link>
           <Link href="/console">Console</Link>
           <a href="https://github.com/abdulaz06/berthiq">GitHub ↗</a>
+          <a href="https://github.com/abdulaz06/berthiq/blob/main/LICENSE">License ↗</a>
+          <a href="https://github.com/abdulaz06/berthiq/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices ↗</a>
         </nav>
       </footer>
     </main>

@@ -1,0 +1,14 @@
+.venv/
+**/__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+tests/
+openapi.json
+data/datasets/
+Dockerfile
+.dockerignore
+.env
+.env.*

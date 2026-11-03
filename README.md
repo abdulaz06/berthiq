@@ -69,7 +69,7 @@ verdict says both, in the product, in plain words.
 
 ```mermaid
 flowchart LR
-    Log[(Event log · PostgreSQL)] --> Analytics[Analytics + PM4Py<br/>owns facts]
+    Log[(Event log · PostgreSQL)] --> Analytics[Analytics + process discovery<br/>owns facts]
     Log --> Model[HistGradientBoosting + SHAP<br/>owns probabilities]
     Log --> Solver[OR-Tools CP-SAT<br/>owns assignments]
     Solver --> Sim[SimPy, matched streams<br/>owns counterfactuals]
@@ -167,10 +167,15 @@ ffmpeg must include libx264.
 
 ## Hosting and licensing
 
-**Prepared for persistent hosting; not deployed.** [DEPLOYMENT.md](DOCS/DEPLOYMENT.md)
-covers build settings, HTTPS origins, secrets, release steps and acceptance at real URLs.
-**Licensing is pending contributor approval:** PM4Py is AGPL-3.0 and the repository has
-no project license yet. Public hosting waits for that decision.
+**Deployment-ready; not yet verified live.** The frontend runs on Vercel; the API, Caddy
+and PostgreSQL 16 run under Docker Compose on one Arm64 VM. [DEPLOYMENT.md](DOCS/DEPLOYMENT.md)
+covers setup, the release and update procedure, backups, monitoring and acceptance at the
+real URLs. If the API is down, the landing page and case study still work and the console
+says so plainly.
+
+**Source-available, all rights reserved** ([LICENSE](LICENSE)): published for viewing and
+evaluation only. Third-party licenses are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+(`just notices`); CI rejects GPL/AGPL runtime dependencies.
 
 ## Contributors
 

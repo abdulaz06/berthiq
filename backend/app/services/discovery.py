@@ -7,8 +7,8 @@ these are direct aggregations of the event log, not predictions or simulations
 (docs/DATABASE.md §8).
 
 **Determinism (CLAUDE.md rule #2).** The topology (edge set + frequencies and
-the trace variants) comes from PM4Py, fed a log ordered strictly by each case's
-``seq`` so that instant stages sharing a timestamp can never reorder. All timing
+the trace variants) is counted from each case's activities in strict ``seq``
+order, so instant stages sharing a timestamp can never reorder. All timing
 (durations, waits, p90s, variant totals) is computed directly from the real
 event timestamps in ``seq`` order. Same event log in → identical model out.
 
@@ -28,7 +28,7 @@ from __future__ import annotations
 import statistics
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Protocol
 
 from app.core.provenance import Provenance
@@ -115,46 +115,23 @@ def _group_by_case(events: list[EventLike]) -> dict[str, list[EventLike]]:
     return dict(by_case)
 
 
-# --- PM4Py topology (edge set + variants) ----------------------------------
+# --- Topology (edge set + variants) ---------------------------------------
 
 
 def _discover_topology(
     by_case: dict[str, list[EventLike]],
 ) -> tuple[dict[tuple[str, str], int], dict[tuple[str, ...], int]]:
-    """Use PM4Py to discover the directly-follows edge frequencies and the trace
-    variants. The log is fed a synthetic strictly-increasing timestamp that
-    preserves each case's ``seq`` order, so PM4Py's topology is deterministic and
-    identical to the event log's own ordering."""
-    import pandas as pd
-    import pm4py
-
-    base = datetime(2000, 1, 1)
-    records: list[dict[str, Any]] = []
-    tick = 0
-    for case_id in sorted(by_case):
-        for e in by_case[case_id]:
-            records.append(
-                {
-                    "case_id": case_id,
-                    "activity": e.activity,
-                    "ts": base + timedelta(seconds=tick),
-                }
-            )
-            tick += 1
-
-    frame = pd.DataFrame.from_records(records, columns=["case_id", "activity", "ts"])
-    log = pm4py.format_dataframe(
-        frame, case_id="case_id", activity_key="activity", timestamp_key="ts"
-    )
-    dfg, _start, _end = pm4py.discover_dfg(log)
-    edge_freq: dict[tuple[str, str], int] = {(a, b): int(f) for (a, b), f in dfg.items()}
-
-    variants_raw = pm4py.get_variants(log)
-    variant_counts: dict[tuple[str, ...], int] = {}
-    for key, traces in variants_raw.items():
-        seq = tuple(key) if isinstance(key, tuple | list) else tuple(str(key).split(","))
-        variant_counts[seq] = int(len(traces)) if hasattr(traces, "__len__") else int(traces)
-    return edge_freq, variant_counts
+    """Count the directly-follows edges and the trace variants over each case's
+    ``seq``-ordered activities. Pure Python and order-stable, so the topology is
+    exactly the event log's own ordering (verified identical to PM4Py's DFG and
+    variants before PM4Py was removed; see tests/test_discovery_topology.py)."""
+    edges: Counter[tuple[str, str]] = Counter()
+    variants: Counter[tuple[str, ...]] = Counter()
+    for evs in by_case.values():
+        trace = tuple(e.activity for e in evs)
+        edges.update(zip(trace, trace[1:], strict=False))
+        variants[trace] += 1
+    return dict(edges), dict(variants)
 
 
 # --- Nodes -----------------------------------------------------------------
@@ -178,7 +155,7 @@ def _build_nodes(by_case: dict[str, list[EventLike]]) -> list[DfgNode]:
     ]
 
 
-# --- Edges (timing from real timestamps, frequencies from PM4Py) -----------
+# --- Edges (timing from real timestamps, frequencies from the topology) ----
 
 
 def _edge_start(e: EventLike) -> datetime:
@@ -188,7 +165,7 @@ def _edge_start(e: EventLike) -> datetime:
 def _build_edges(
     by_case: dict[str, list[EventLike]], edge_freq: dict[tuple[str, str], int]
 ) -> tuple[list[DfgEdge], dict[tuple[str, str], list[float]]]:
-    """Edge frequencies come from PM4Py; the wait statistics are computed from the
+    """Edge frequencies come from the topology; the wait statistics are computed from the
     real timestamps as ``max(0, next.start - prev.end)`` — waiting time between
     stages, clamped at zero (the generator lets a vessel physically arrive before
     its berth frees, which would otherwise read as a negative wait)."""

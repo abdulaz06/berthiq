@@ -56,8 +56,10 @@ Use Python 3.12, Node 24 and the committed dependency locks. `just doctor` check
 native imports and model compatibility; do not recreate a working venv. `just seed`
 is insert-if-missing. Production uses one API process and two bounded computation
 subprocess slots; do not increase worker/replica count without redesigning ownership.
-Licensing is explicitly pending: do not add a project license, assume contributor
-consent, ask the licensing question again, or publicly deploy during this sprint.
+Licensing is settled: source-available, all rights reserved (`LICENSE`). Runtime
+dependencies must not be GPL/AGPL; CI enforces this and `just notices` regenerates
+`THIRD_PARTY_NOTICES.md`. Production is Vercel + Docker Compose on one Arm64 VM
+(`DOCS/DEPLOYMENT.md`); never claim it is live without verifying the real URLs.
 
 Required checks: backend `ruff check app scripts tests`, `mypy app`, full pytest
 against disposable PostgreSQL; frontend `npm run lint`, `npm run typecheck`,

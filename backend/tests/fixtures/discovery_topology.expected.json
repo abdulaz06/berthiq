@@ -1,0 +1,506 @@
+{
+ "khalifa": {
+  "edges": [
+   [
+    "Arrival plan confirmed",
+    "Berth planning",
+    598
+   ],
+   [
+    "Authority review",
+    "Arrival plan confirmed",
+    599
+   ],
+   [
+    "Authority review",
+    "Documents submitted",
+    288
+   ],
+   [
+    "Berth assigned",
+    "Vessel arrives / anchorage wait",
+    598
+   ],
+   [
+    "Berth planning",
+    "Berth assigned",
+    598
+   ],
+   [
+    "Completeness check",
+    "Authority review",
+    888
+   ],
+   [
+    "Completeness check",
+    "Documents submitted",
+    111
+   ],
+   [
+    "Documents submitted",
+    "Completeness check",
+    1017
+   ],
+   [
+    "Port call request submitted",
+    "Documents submitted",
+    620
+   ],
+   [
+    "Vessel arrives / anchorage wait",
+    "Berthed, cargo start",
+    598
+   ]
+  ],
+  "variants": [
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    381
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    87
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    25
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    22
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    17
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check"
+    ],
+    16
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    14
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    11
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    11
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    8
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    7
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    5
+   ],
+   [
+    [
+     "Port call request submitted"
+    ],
+    4
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    3
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    3
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check"
+    ],
+    2
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    2
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed",
+     "Berth planning",
+     "Berth assigned",
+     "Vessel arrives / anchorage wait",
+     "Berthed, cargo start"
+    ],
+    2
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted"
+    ],
+    1
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review"
+    ],
+    1
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted"
+    ],
+    1
+   ],
+   [
+    [
+     "Port call request submitted",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Documents submitted",
+     "Completeness check",
+     "Authority review",
+     "Arrival plan confirmed"
+    ],
+    1
+   ]
+  ]
+ },
+ "tiny": {
+  "edges": [
+   [
+    "A",
+    "B",
+    4
+   ],
+   [
+    "B",
+    "A",
+    1
+   ],
+   [
+    "B",
+    "C",
+    3
+   ]
+  ],
+  "variants": [
+   [
+    [
+     "A",
+     "B",
+     "C"
+    ],
+    2
+   ],
+   [
+    [
+     "A",
+     "B",
+     "A",
+     "B",
+     "C"
+    ],
+    1
+   ]
+  ]
+ },
+ "same_time": {
+  "edges": [
+   [
+    "X",
+    "X",
+    1
+   ],
+   [
+    "X",
+    "Y",
+    2
+   ],
+   [
+    "Y",
+    "Z",
+    1
+   ]
+  ],
+  "variants": [
+   [
+    [
+     "X"
+    ],
+    1
+   ],
+   [
+    [
+     "X",
+     "X",
+     "Y"
+    ],
+    1
+   ],
+   [
+    [
+     "X",
+     "Y",
+     "Z"
+    ],
+    1
+   ]
+  ]
+ }
+}

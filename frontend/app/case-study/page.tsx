@@ -63,7 +63,7 @@ export default function CaseStudy() {
           <div className="case-meta">
             <span>Next.js · TypeScript · MapLibre</span>
             <span>FastAPI · PostgreSQL</span>
-            <span>PM4Py · scikit-learn · SHAP · OR-Tools · SimPy</span>
+            <span>Process discovery · scikit-learn · SHAP · OR-Tools · SimPy</span>
           </div>
         </section>
 
@@ -126,7 +126,7 @@ export default function CaseStudy() {
           <h2>Four methods. Four owners.</h2>
           <div className="owners">
             {[
-              ["Analytics owns facts", "observed", "Event normalization, validation and PM4Py process discovery: variants, rework loops, queue times."],
+              ["Analytics owns facts", "observed", "Event normalization, validation and process discovery: variants, rework loops, queue times."],
               ["The model owns probabilities", "predicted", "Prefix-only HistGradientBoosting risk with signed SHAP factors. Trained offline, never during a request."],
               ["The solver owns assignments", "optimized", "OR-Tools CP-SAT schedules reviewers, compatible berths and pilots; an independent checker re-verifies every hard rule."],
               ["The simulator owns counterfactuals", "simulated", "SimPy replays open calls under two plans with matched, case-keyed random streams and fixed seeds."],
@@ -306,6 +306,9 @@ export default function CaseStudy() {
         <p>Synthetic data. Explicit assumptions. Inspectable decisions.</p>
         <nav aria-label="Footer">
           <a href="https://github.com/abdulaz06/berthiq/blob/main/DOCS/DECISION_ENGINE.md">Decision engine docs ↗</a>
+          <a href="https://github.com/abdulaz06/berthiq">Source ↗</a>
+          <a href="https://github.com/abdulaz06/berthiq/blob/main/LICENSE">License ↗</a>
+          <a href="https://github.com/abdulaz06/berthiq/blob/main/THIRD_PARTY_NOTICES.md">Third-party notices ↗</a>
         </nav>
       </footer>
     </main>
