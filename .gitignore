@@ -43,3 +43,8 @@ test-results/
 .DS_Store
 .idea/
 .vscode/
+
+# ---- Showcase media working frames ----
+frontend/.media-work/
+frontend/.audit.tmp.mjs
+frontend/scripts/media/.probe.tmp.mjs

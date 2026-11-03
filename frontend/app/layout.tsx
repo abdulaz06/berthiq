@@ -7,6 +7,7 @@ const display = Big_Shoulders({
   subsets: ["latin"],
   variable: "--font-display",
   axes: ["opsz"],
+  adjustFontFallback: false,
   display: "swap",
 });
 const sans = IBM_Plex_Sans({

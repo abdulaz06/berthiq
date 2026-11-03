@@ -67,13 +67,13 @@ with a verdict that states the gain *and* the cost.
 | 0 | Audit, Caravan study, direction, tracker | done |
 | 1 | Motion model + map rewrite (persistent markers, rAF playback) | done (f0781f1) |
 | 2 | Ship journey ("why is it waiting") model + panel | done |
-| 3 | Identity: fonts, tokens, Q-flag mark, console copy and nav | done (console); landing/case study pending |
+| 3 | Identity: fonts, tokens, Q-flag mark, console copy and nav | done |
 | 4 | Story mode: guided investigation driving the real app | done — browser-verified through real solve + simulate |
-| 5 | Landing page rebuilt as the problem → solution story | pending |
+| 5 | Landing page rebuilt as the problem → solution story | done |
 | 6 | Scenario verdict + result clarity | done (lib/verdict.ts) |
-| 7 | Case study + README rewrite | pending |
-| 8 | Showcase media: frame-accurate 60 fps recorder, video, stills, GIF, OG | pending |
-| 9 | Full verification, PR, CI, merge, final handoff | pending |
+| 7 | Case study + README rewrite | done |
+| 8 | Showcase media: frame-accurate 60 fps recorder, video, stills, GIF, OG | done (`media/`, `DOCS/media/`) |
+| 9 | Full verification, PR, CI, merge, final handoff | in progress |
 
 ## Environment notes
 
@@ -87,7 +87,20 @@ with a verdict that states the gain *and* the cost.
 
 ## Verification evidence
 
-_(appended per milestone)_
+2026-11-03, local, against a production build (`next build && next start`) and the
+seeded API with `ENABLE_UPLOADS=true`:
+
+- Backend: `ruff check app scripts tests` clean; `mypy app` clean (43 files);
+  `backend/scripts/test_backend.py -q` → 108 passed, 0 skipped (isolated `_test` DB).
+- Frontend: ESLint clean, `tsc --noEmit` clean, Vitest 38 passed (1 skipped: the
+  opt-in live snapshot regeneration), provenance lint clean, production build clean.
+- Browser: `playwright.console.config.ts` 11/11 passed — includes the new guided
+  investigation (real solve + simulate) and replay-continuity tests, axe WCAG A/AA at
+  1920×1080 and 390×844, decision loop, infeasible lock, uploads, tile fallback.
+  Fixture smoke test passed.
+- Media: `media/berthiq-showcase.mp4` 1920×1080 H.264 High, constant 60 fps, 61.5 s;
+  GIF 800 px / 12 fps / 7.2 MB; thumbnail + poster; stills in `public/images` and
+  `DOCS/media`. All regenerated from the final build.
 
 ## Decisions made so far
 
@@ -103,6 +116,7 @@ _(appended per milestone)_
 
 ## Exact next action
 
-Milestone 5: rebuild `frontend/app/page.tsx` + `public.css` as the
-problem → solution story in the new identity; then update browser tests
-(`live-e2e/*`, `e2e/smoke.spec.ts`) for the new copy/nav.
+Milestone 9: open the PR from `claude/product-takeover`, get all six CI checks
+green, squash-merge, then write the final handoff. Gotcha on Windows: stop stale
+`next start` processes by PID before restarting (port 3000 can stay held); the API
+must run on :8000 and the frontend on :3000 (CORS).

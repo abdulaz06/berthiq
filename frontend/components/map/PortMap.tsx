@@ -186,9 +186,9 @@ export default function PortMap({
       instance = new maplibregl.Map({
         container: host.current,
         style: TILES,
-        center: [54.6385, 24.8008],
-        zoom: host.current.clientWidth < 600 ? 12.3 : 13.35,
-        bearing: -20,
+        center: [54.6395, 24.8025],
+        zoom: host.current.clientWidth < 600 ? 12.15 : 13.15,
+        bearing: host.current.clientWidth < 600 ? 0 : 40,
         attributionControl: false,
         fadeDuration: 0,
       });
@@ -255,13 +255,14 @@ export default function PortMap({
   useEffect(() => {
     const instance = map.current;
     if (!instance) return;
-    const created = data.berths.map((b) => {
+    const created = data.berths.map((b, i) => {
       const el = document.createElement("button");
       el.className = "berth-marker";
       el.textContent = b.id;
       el.setAttribute("aria-label", `Inspect berth ${b.id}`);
       el.onclick = () => handlers.current.onBerth(b.id);
-      return new maplibregl.Marker({ element: el, anchor: "left" })
+      // Neighbouring labels alternate between two rows so a tight quay stays legible.
+      return new maplibregl.Marker({ element: el, anchor: "bottom-left", offset: [2, i % 2 ? -22 : -2] })
         .setLngLat([b.longitude, b.latitude])
         .addTo(instance);
     });

@@ -12,6 +12,14 @@ Full spec: `docs/PRODUCT_DEFINITION.md`. Architecture: `docs/ARCHITECTURE.md`. C
 
 ---
 
+## Current phase (read first)
+
+The active work is the showcase/product sprint tracked in `DOCS/SHOWCASE_SPRINT.md`:
+creative direction, completed milestones, verification evidence and the **exact next
+action**. If the owner types "Continue", resume from that file — do not restart. The
+claim-queue workflow below (ACTIVE_WORK/HANDOFF, one-hour sessions, M0/M1 milestones)
+is historical; the rules in the next section still apply in full.
+
 ## The rules that override everything
 
 1. **Contracts before code.** Every seam has a Pydantic schema + a committed fixture in both `backend/tests/fixtures/` and `frontend/lib/fixtures/`. Build against the fixture; never wait for the other half to exist. If you change a schema, update it + both fixtures + regenerate `frontend/lib/types/api.ts`, all in the same branch.
