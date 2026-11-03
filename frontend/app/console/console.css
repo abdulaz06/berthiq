@@ -4,6 +4,7 @@
   --line: #263440;
   --muted: #8a9ca9;
   --seafoam: #71d6c4;
+  --signal: #f2c230;
   min-height: 100dvh;
   background: var(--ocean);
   color: #e7edf1;
@@ -341,39 +342,132 @@
   color: #869daa;
   font-size: 8px;
 }
+.map-legend span {
+  display: inline-flex;
+  align-items: center;
+}
 .map-legend i {
   display: inline-block;
   background: var(--seafoam);
-  width: 6px;
-  height: 6px;
-  margin-right: 5px;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
   border-radius: 2px;
 }
 .map-legend i.coral {
-  background: #e99080;
+  background: #ec927f;
 }
+.map-legend i.waiting {
+  background: var(--signal);
+}
+.map-legend i.moving {
+  background: var(--seafoam);
+}
+.map-legend i.berthed {
+  background: #c9d6dc;
+}
+/* Vessel markers: the hull colour says what the ship is doing. */
 .vessel-marker {
-  width: 26px;
-  height: 36px;
+  width: 14px;
+  height: 32px;
   color: var(--seafoam);
-  filter: drop-shadow(0 0 6px #57d7ba40);
   background: transparent;
   border: 0;
-  padding: 3px;
+  padding: 0;
+  filter: drop-shadow(0 1px 3px #000a);
+  transition: opacity 0.2s linear;
 }
 .vessel-marker svg {
+  display: block;
   height: 100%;
   width: 100%;
-  transform: rotate(33deg);
+}
+.vessel-marker .hull {
+  fill: currentColor;
+}
+.vessel-marker .deck {
+  fill: #0d1c26;
+  opacity: 0.55;
+}
+.vessel-marker .bridge {
+  fill: #0d1c26;
+  opacity: 0.8;
+}
+.vessel-marker.phase-at-anchor {
+  color: var(--signal);
+}
+.vessel-marker.phase-at-berth {
+  color: #c9d6dc;
 }
 .vessel-marker.danger {
   color: #ec927f;
 }
 .vessel-marker.selected {
-  outline: 1px solid white;
-  outline-offset: 8px;
-  border-radius: 20px;
-  background: #ffffff20;
+  filter: drop-shadow(0 0 0 #fff) drop-shadow(0 0 7px #f2c230cc);
+}
+.vessel-marker.selected .hull {
+  stroke: #fff;
+  stroke-width: 2.4px;
+}
+.awaiting-queue {
+  position: absolute;
+  top: 120px;
+  left: 27px;
+  width: 232px;
+  background: #0d1923ee;
+  border: 1px solid #2a3e4c;
+  border-left: 3px solid var(--signal);
+  border-radius: 8px;
+  padding: 12px 13px 13px;
+}
+.awaiting-queue header {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.awaiting-queue strong {
+  display: block;
+  font-size: 12px;
+}
+.awaiting-queue small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 3px;
+}
+.awaiting-queue > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-height: 118px;
+  overflow: auto;
+}
+.awaiting-queue button {
+  font: 600 10px/1 var(--font-mono), monospace !important;
+  padding: 5px 6px;
+  border-radius: 4px;
+  border: 1px solid #f2c23055;
+  background: #f2c23014;
+  color: #f6dc8a;
+}
+.awaiting-queue button.danger {
+  border-color: #ec927f66;
+  background: #ec927f17;
+  color: #f3b6a8;
+}
+.awaiting-queue button.selected {
+  background: var(--signal);
+  color: #1b1503;
+}
+.q-flag {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  background: var(--signal);
+  border-radius: 1px;
+  box-shadow: -3px 0 0 -1px #c9d6dc;
 }
 .berth-marker {
   color: #b8d2da;

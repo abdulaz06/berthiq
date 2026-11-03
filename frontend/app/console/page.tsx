@@ -56,7 +56,7 @@ export default function ConsolePage() {
   const [riskError, setRiskError] = useState("");
   const [clock, setClock] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [speed, setSpeed] = useState(10);
+  const [speed, setSpeed] = useState(180);
   const [selected, setSelected] = useState<string | null>(null);
   const [berth, setBerth] = useState<string | null>(null);
   const [view, setView] = useState<View>("port");
@@ -188,14 +188,18 @@ export default function ConsolePage() {
   }, [dataset, attempt]);
   useEffect(() => {
     if (!playing || !data) return;
-    const timer = setInterval(
-      () =>
-        setClock((current) =>
-          Math.min(Date.parse(data.clock_end), current + speed * 60_000),
-        ),
-      1000,
-    );
-    return () => clearInterval(timer);
+    // Continuous playback: ships glide frame by frame instead of stepping.
+    const end = Date.parse(data.clock_end);
+    let frame = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const elapsed = Math.min(now - last, 100);
+      last = now;
+      setClock((current) => Math.min(end, current + (speed * 60_000 * elapsed) / 1000));
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
   }, [playing, data, speed]);
   useEffect(() => {
     if (data && clock >= Date.parse(data.clock_end)) setPlaying(false);
@@ -230,7 +234,7 @@ export default function ConsolePage() {
   );
   const visible = vessels.filter(
     (v) =>
-      !["Expected", "Released"].includes(
+      !["Not requested", "Departed"].includes(
         vesselState(v, clock, data?.occupancy_assumption_minutes ?? 420).phase,
       ),
   );
@@ -672,9 +676,9 @@ export default function ConsolePage() {
                       value={speed}
                       onChange={(e) => setSpeed(Number(e.target.value))}
                     >
-                      <option value={1}>1 min/s</option>
-                      <option value={10}>10 min/s</option>
-                      <option value={60}>60 min/s</option>
+                      <option value={60}>1 h/s</option>
+                      <option value={180}>3 h/s</option>
+                      <option value={360}>6 h/s</option>
                     </select>
                   </div>
                 </section>

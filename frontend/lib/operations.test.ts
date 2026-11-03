@@ -13,13 +13,13 @@ const vessel: Vessel = {
 };
 describe("observed event playback", () => {
   it("does not reveal a future berth or workflow stage", () => {
-    expect(vesselState(vessel,start-1,420).phase).toBe("Expected");
+    expect(vesselState(vessel,start-1,420).phase).toBe("Not requested");
     expect(vesselState(vessel,start,420).berth).toBeNull();
     expect(vesselState(vessel,start,420).seen).toHaveLength(1);
   });
   it("occupies and releases berths using the disclosed duration", () => {
     expect(vesselState(vessel,start+120_000,420).phase).toBe("At berth");
-    expect(vesselState(vessel,start+423*60_000,420).phase).toBe("Released");
+    expect(vesselState(vessel,start+423*60_000,420).phase).toBe("Departed");
     expect(vesselState(vessel,start+60_000,420).berth).toBe("KCT-1");
   });
 });
