@@ -18,6 +18,14 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-11-03 — Abdul (Claude Code) — merge
+**Task(s):** Showcase sprint, milestone 9
+**Branch:** main
+**Did:** Squash-merged PR #12 (`claude/product-takeover`) as `6f92680` after all six CI checks passed; marked milestone 9 done in `DOCS/SHOWCASE_SPRINT.md`.
+**State:** `main` green. Story-led landing, console, guided investigation (`/console?story=1`), case study, event-timed replay motion and showcase media (`media/`, `DOCS/media/`) are all on `main`.
+**Next step:** Owners decide licensing (PM4Py AGPL) and public hosting; nothing else is queued for this sprint.
+**Gotchas:** `.env.example` deletion in Abdul's working tree is local and intentionally uncommitted.
+
 ## 2026-11-03 — Claude Code (for Abdul) — showcase/product sprint
 **Task(s):** Product takeover — see `DOCS/SHOWCASE_SPRINT.md` (direction, milestones, evidence).
 **Branch:** `claude/product-takeover` → PR #12 (squash-merge when CI is green).

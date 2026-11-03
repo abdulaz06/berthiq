@@ -73,7 +73,7 @@ with a verdict that states the gain *and* the cost.
 | 6 | Scenario verdict + result clarity | done (lib/verdict.ts) |
 | 7 | Case study + README rewrite | done |
 | 8 | Showcase media: frame-accurate 60 fps recorder, video, stills, GIF, OG | done (`media/`, `DOCS/media/`) |
-| 9 | Full verification, PR, CI, merge, final handoff | in progress |
+| 9 | Full verification, PR, CI, merge, final handoff | done (PR #12, squash `6f92680`) |
 
 ## Environment notes
 
@@ -116,7 +116,10 @@ seeded API with `ENABLE_UPLOADS=true`:
 
 ## Exact next action
 
-Milestone 9: open the PR from `claude/product-takeover`, get all six CI checks
-green, squash-merge, then write the final handoff. Gotcha on Windows: stop stale
-`next start` processes by PID before restarting (port 3000 can stay held); the API
-must run on :8000 and the frontend on :3000 (CORS).
+Sprint complete: PR #12 merged to `main` as `6f92680` with all six CI checks green.
+Nothing further is queued in this sprint. Still blocked on the owners: a project
+license (PM4Py is AGPL-3.0), Shravani's consent, and any public deployment or
+upload of the showcase media. Re-recording the film needs an ffmpeg with libx264
+(`FFMPEG=...`). Gotcha on Windows: stop stale `next start` processes by PID before
+restarting (port 3000 can stay held); the API must run on :8000 and the frontend on
+:3000 (CORS).
