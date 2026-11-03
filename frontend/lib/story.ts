@@ -45,3 +45,76 @@ export function protagonist(data: Operations) {
   }
   return best;
 }
+
+type Discovery = {
+  nodes: { activity: string; frequency: number }[];
+  bottlenecks: {
+    activity: string;
+    metric: string;
+    value: { value: number; unit: string };
+    evidence: { notes: string[] };
+  }[];
+};
+type RiskBoard = { cases: { case_id: string; miss_probability: number }[]; model_version: string };
+
+/**
+ * Everything the public landing page quotes, computed from the reference
+ * dataset's operations, risk board and discovery output. Committed as
+ * lib/fixtures/landing_story.json so the landing page never needs the API.
+ */
+export function landingSnapshot(data: Operations, risk: RiskBoard, discovery: Discovery) {
+  const hero = protagonist(data);
+  const vessel = data.vessels.find((v) => v.case_id === hero?.id);
+  const j = vessel && hero ? journey(vessel, data, hero.at) : null;
+  const moment = waitingMoment(data);
+  const top = discovery.bottlenecks[0];
+  const rework = discovery.bottlenecks.find((b) => b.metric === "rework_rate");
+  const sorted = [...risk.cases].sort((a, b) => b.miss_probability - a.miss_probability);
+  return {
+    source: {
+      dataset_id: data.dataset_id,
+      replay: [data.clock_start, data.clock_end],
+      note: "Regenerate with BERTHIQ_SNAPSHOT_API=http://localhost:8000 npx vitest run scripts/story-snapshot.test.mjs",
+    },
+    hero:
+      vessel && j
+        ? {
+            id: vessel.case_id,
+            vessel_type: vessel.vessel_type,
+            loa: vessel.loa,
+            berth: j.ship.length ? callBerth(vessel, data) : null,
+            from: j.from,
+            to: j.to,
+            desk: j.desk.map(({ kind, start, end }) => ({ kind, start, end })),
+            ship: j.ship.map(({ kind, start, end }) => ({ kind, start, end })),
+            anchor_hours: j.anchorHours,
+            rejections: j.rejections,
+            queue_hours: j.queueHours,
+            idle_berth_share: j.idleBerthShare,
+            headline: j.headline,
+            detail: j.detail,
+          }
+        : null,
+    moment: moment
+      ? { time: moment.time, anchored: moment.anchored.length, idle: moment.idle, berths: moment.berths }
+      : null,
+    discovery: {
+      steps: discovery.nodes.reduce((n, x) => n + x.frequency, 0),
+      bottleneck: top?.activity ?? null,
+      mean_wait_hours: top?.value.value ?? null,
+      notes: top?.evidence.notes ?? [],
+      rework_activity: rework?.activity ?? null,
+      rework_percent: rework?.value.value ?? null,
+    },
+    risk: {
+      model_version: risk.model_version,
+      open: risk.cases.length,
+      likely_late: risk.cases.filter((c) => c.miss_probability > 0.66).length,
+      top: sorted[0] ? { id: sorted[0].case_id, probability: sorted[0].miss_probability } : null,
+    },
+  };
+}
+
+function callBerth(vessel: Operations["vessels"][number], data: Operations) {
+  return [...vessel.events].reverse().find((e) => e.activity === "Berth assigned")?.resource ?? data.berths[0]?.id ?? null;
+}

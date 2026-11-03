@@ -1,0 +1,153 @@
+{
+  "source": {
+    "dataset_id": "866da630-2c3c-5c67-b061-e6f43fb8534d",
+    "replay": [
+      "2026-07-23T15:00:00-05:00",
+      "2026-07-30T15:00:00-05:00"
+    ],
+    "note": "Regenerate with BERTHIQ_SNAPSHOT_API=http://localhost:8000 npx vitest run scripts/story-snapshot.test.mjs"
+  },
+  "hero": {
+    "id": "KHL-0592",
+    "vessel_type": "container",
+    "loa": 388.2,
+    "berth": "KCT-1",
+    "from": 1785119540534,
+    "to": 1785328603685,
+    "desk": [
+      {
+        "kind": "documents",
+        "start": 1785119540534,
+        "end": 1785144529960
+      },
+      {
+        "kind": "check",
+        "start": 1785144529960,
+        "end": 1785145948164
+      },
+      {
+        "kind": "queue",
+        "start": 1785145948164,
+        "end": 1785156333659
+      },
+      {
+        "kind": "rejected",
+        "start": 1785156333659,
+        "end": 1785169704229
+      },
+      {
+        "kind": "documents",
+        "start": 1785169704229,
+        "end": 1785191899191
+      },
+      {
+        "kind": "check",
+        "start": 1785191899191,
+        "end": 1785193516119
+      },
+      {
+        "kind": "queue",
+        "start": 1785193516119,
+        "end": 1785237386021
+      },
+      {
+        "kind": "rejected",
+        "start": 1785237386021,
+        "end": 1785240986021
+      },
+      {
+        "kind": "documents",
+        "start": 1785240986021,
+        "end": 1785270482665
+      },
+      {
+        "kind": "check",
+        "start": 1785270482665,
+        "end": 1785274204995
+      },
+      {
+        "kind": "rejected",
+        "start": 1785274204995,
+        "end": 1785286300248
+      },
+      {
+        "kind": "documents",
+        "start": 1785286300248,
+        "end": 1785304260071
+      },
+      {
+        "kind": "check",
+        "start": 1785304260071,
+        "end": 1785306594893
+      },
+      {
+        "kind": "review",
+        "start": 1785306594893,
+        "end": 1785315548458
+      },
+      {
+        "kind": "planning",
+        "start": 1785315548458,
+        "end": 1785315548458
+      },
+      {
+        "kind": "planning",
+        "start": 1785315548458,
+        "end": 1785318212782
+      }
+    ],
+    "ship": [
+      {
+        "kind": "anchor",
+        "start": 1785162236267,
+        "end": 1785318212782
+      },
+      {
+        "kind": "pilotage",
+        "start": 1785318212782,
+        "end": 1785328603685
+      },
+      {
+        "kind": "alongside",
+        "start": 1785328603685,
+        "end": 1785328603685
+      }
+    ],
+    "anchor_hours": 43.32680972222222,
+    "rejections": 3,
+    "queue_hours": 15.070943611111112,
+    "idle_berth_share": 1,
+    "headline": "KHL-0592 waited 43 hours at anchor before berthing at KCT-1.",
+    "detail": [
+      "Authority review returned its documents 3 times before approving them.",
+      "Its complete documents sat 15 hours in the reviewers’ queue.",
+      "A compatible berth stood idle for 100% of that wait — the berths were not the constraint."
+    ]
+  },
+  "moment": {
+    "time": 1785182400000,
+    "anchored": 7,
+    "idle": 8,
+    "berths": 8
+  },
+  "discovery": {
+    "steps": 6539,
+    "bottleneck": "Authority review",
+    "mean_wait_hours": 5,
+    "notes": [
+      "3 resources serve 888 Authority review tasks; cases wait a mean of 5.0h (p90 19.0h) to begin",
+      "Total queue for this stage is 4,443h - the largest controllable delay in the process"
+    ],
+    "rework_activity": "Documents submitted",
+    "rework_percent": 35.8
+  },
+  "risk": {
+    "model_version": "risk-hgb-v1",
+    "open": 26,
+    "likely_late": 17,
+    "top": {
+      "id": "KHL-0595",
+      "probability": 0.9925
+    }
+  }
+}
