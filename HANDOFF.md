@@ -18,6 +18,14 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-11-03 — Abdul (Claude Code) — public-deployment prep
+**Task(s):** Deployment preparation (PR #13)
+**Branch:** main (squash `1396c7d`)
+**Did:** Replaced PM4Py with pure-Python discovery (parity-tested; saved ProcessModel identical), relocked without pm4py/cvxopt/matplotlib/graphviz/lxml/networkx/pytz. Added LICENSE (all rights reserved), generated THIRD_PARTY_NOTICES.md (`just notices`) and a CI no-GPL/AGPL check. Added backend/Dockerfile, deploy/compose.prod.yml, Caddyfile, .env.prod.example, console offline panel, uptime workflow and an arm64 image CI job. Rewrote DOCS/DEPLOYMENT.md.
+**State:** Merged; all 8 CI checks green, including the first linux/arm64 image build. Nothing is provisioned or deployed.
+**Next step:** Owner provisions Vercel (root `frontend`, env per DEPLOYMENT.md) and the Oracle A1 VM, follows DEPLOYMENT.md "First start", sets FRONTEND_URL/API_URL repo variables, then runs the acceptance checklist at the real URLs.
+**Gotchas:** Abdul's C: drive is nearly full; a local docker build filled it (Docker Desktop's vhdx is ~15 GB). Build images in CI. Kill stale `next start` on :3000 before Playwright.
+
 ## 2026-11-03 — Abdul (Claude Code) — merge
 **Task(s):** Showcase sprint, milestone 9
 **Branch:** main
