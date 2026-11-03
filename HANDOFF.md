@@ -18,6 +18,14 @@ Keep it to real signal; when it gets long, older entries can be trimmed to a one
 
 -->
 
+## 2026-11-03 — Abdul (Claude Code) — live links and graphics kit
+**Task(s):** Post-deployment record, film removal, graphics kit
+**Branch:** `task/live-links-brand-kit` (PR, not merged)
+**Did:** BerthIQ is deployed (Vercel https://berth-iq.vercel.app + Azure Arm64 VM API, commit `0bd3047`, Alembic `0003`). README gains the live-link line, Hosting section, uptime badge, credits and a code-rendered hero; DEPLOYMENT.md is rewritten around the Azure VM with gotchas and the acceptance record. The film (`media/*.mp4`, thumb, poster) is untracked and gitignored, kept locally for the YouTube edit; the offline panel shows a looping WebP tour preview (still frame under reduced motion). New graphics kit: templates + `render-cards.mjs` in `frontend/scripts/media/cards/`, `just cards`, outputs in `media/brand/`; static Open Graph/Twitter JPGs replace `opengraph-image.tsx`. Repo About/homepage/topics set via gh.
+**State:** On branch, PR open for owner review.
+**Next step:** Owner reviews and merges the PR, uploads `media/brand/github-social.jpg` as the GitHub social preview, then tags v1.0.0.
+**Gotchas:** The animated WebP needs quality ≥ ~66 or libwebp's frame deltas leave block streaks in the dark background; `make-tour-preview.mjs` checks the 2.5 MB budget. Cards load the fonts from Google Fonts at render time (the app self-hosts them through next/font; there is no `public/fonts`).
+
 ## 2026-11-03 — Abdul (Claude Code) — public-deployment prep
 **Task(s):** Deployment preparation (PR #13)
 **Branch:** main (squash `1396c7d`)

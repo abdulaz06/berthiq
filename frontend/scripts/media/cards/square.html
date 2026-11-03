@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="brand.css" />
+<style>
+  .mark { position: absolute; left: 72px; top: 66px; width: 96px; height: 96px; color: var(--ink); }
+  .mark svg { width: 100%; height: 100%; }
+  .word { position: absolute; left: 176px; top: 86px; font: 800 64px/1 var(--display); }
+  .word b { color: var(--signal); }
+  h1 { position: absolute; left: 72px; top: 214px; font-size: 136px; }
+  .harbor { left: 64px; top: 520px; width: 952px; --ratio: 1360 / 600; --w: 125%; --x: -25%; --y: -30%; transform: rotate(-1.5deg); }
+  .url { position: absolute; left: 72px; bottom: 86px; font-size: 30px; }
+  .footline { position: absolute; left: 72px; bottom: 48px; font-size: 16px; }
+</style>
+</head>
+<body>
+<main class="canvas">
+  <span class="mark"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3.5v25" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M9.5 5h17.5v13H9.5z" fill="#f2c230"/><path d="M5 28.5h6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+  <span class="word" data-fit>Berth<b>IQ</b></span>
+  <h1 data-fit>Why is this ship<br /><em>waiting?</em></h1>
+  <figure class="shot window harbor"><img src="crops/harbor.webp" alt="" /></figure>
+  <p class="url" data-fit>berth-iq.vercel.app</p>
+  <p class="footline" data-fit>Synthetic operations on real port geography · map © OpenStreetMap</p>
+</main>
+</body>
+</html>

@@ -58,8 +58,9 @@ is insert-if-missing. Production uses one API process and two bounded computatio
 subprocess slots; do not increase worker/replica count without redesigning ownership.
 Licensing is settled: source-available, all rights reserved (`LICENSE`). Runtime
 dependencies must not be GPL/AGPL; CI enforces this and `just notices` regenerates
-`THIRD_PARTY_NOTICES.md`. Production is Vercel + Docker Compose on one Arm64 VM
-(`DOCS/DEPLOYMENT.md`); never claim it is live without verifying the real URLs.
+`THIRD_PARTY_NOTICES.md`. BerthIQ is deployed: Vercel (https://berth-iq.vercel.app)
++ Docker Compose on one 1 GB Arm64 Azure VM (`DOCS/DEPLOYMENT.md`, acceptance record
+there). Re-verify the real URLs before claiming a new deployment.
 
 Required checks: backend `ruff check app scripts tests`, `mypy app`, full pytest
 against disposable PostgreSQL; frontend `npm run lint`, `npm run typecheck`,

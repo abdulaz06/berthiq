@@ -1,8 +1,16 @@
 # BerthIQ
 
+[![BerthIQ: 'Why is this ship waiting?' Replay a week at Khalifa Port, see what held each ship, and test a fix before the port changes anything. Shown with the harbor map, a simulated verdict of 62.9 to 45.1 hours, and 17 of 26 open calls predicted at risk.](media/brand/readme-hero.jpg)](https://berth-iq.vercel.app)
+
 [![CI](https://github.com/abdulaz06/berthiq/actions/workflows/ci.yml/badge.svg)](https://github.com/abdulaz06/berthiq/actions/workflows/ci.yml)
+[![Uptime](https://github.com/abdulaz06/berthiq/actions/workflows/uptime.yml/badge.svg)](https://github.com/abdulaz06/berthiq/actions/workflows/uptime.yml)
 
 ### Why is this ship waiting — and what should the port do about it?
+
+**[Live app](https://berth-iq.vercel.app)** ·
+[Guided investigation](https://berth-iq.vercel.app/console?story=1) (about 3 minutes) ·
+[Case study](https://berth-iq.vercel.app/case-study) ·
+[API docs](https://berthiq-api-aaa.northcentralus.cloudapp.azure.com/docs)
 
 Ships can ride at anchor for days while berths stand empty. BerthIQ reads a port’s
 event log to find out why, flags which calls will be late next, and tests what the
@@ -11,8 +19,7 @@ changes it.
 
 ![BerthIQ showcase: one ship's 43-hour wait, explained](media/berthiq-showcase.gif)
 
-▶ **[Watch the 60-second film (1080p, 60 fps)](media/berthiq-showcase.mp4)** ·
-Engineering story at `/case-study` ·
+[Engineering story](https://berth-iq.vercel.app/case-study) ·
 [Decision engine](DOCS/DECISION_ENGINE.md) ·
 [Historical validation](DOCS/SIMULATOR_VALIDATION.md)
 
@@ -151,13 +158,15 @@ private uploads, tile failure and axe WCAG A/AA scans at 1920×1080 and 390×844
 
 ## Showcase media
 
-Everything in `media/` and `DOCS/media/` is generated from the running application.
+Everything in `media/`, `DOCS/media/` and `public/media/` is generated from the running application.
 
 | Output | Command |
 | --- | --- |
 | Landing snapshot (`lib/fixtures/landing_story.json`) | `BERTHIQ_SNAPSHOT_API=http://localhost:8000 npx vitest run scripts/story-snapshot.test.mjs` |
 | Product stills (`public/images/step-*`, `DOCS/media/*`) | `node scripts/media/capture-stills.mjs` |
-| Film, thumbnail, poster and GIF (`media/`) | `FFMPEG=/path/to/ffmpeg node scripts/media/record-showcase.mjs` |
+| Tour GIF (`media/`); the film, thumbnail and poster stay local (gitignored) | `FFMPEG=/path/to/ffmpeg node scripts/media/record-showcase.mjs` |
+| Offline-panel tour preview (`public/media/tour-preview*.webp`), cut from the local film | `FFMPEG=/path/to/ffmpeg node scripts/media/make-tour-preview.mjs` |
+| Graphics kit and Open Graph images ([`media/brand/`](media/brand/README.md)) | `just cards` (`CAPTURE=1` refreshes the UI crops first) |
 
 Run them from `frontend/` against a production build on :3000 and the seeded API on
 :8000. The film is captured frame by frame on a virtual clock (BeginFrame control), so
@@ -165,13 +174,17 @@ it is a genuine, constant 60 fps at 1920×1080 regardless of machine speed; solv
 simulator waits happen off camera. Caption numbers are read from committed evidence.
 ffmpeg must include libx264.
 
-## Hosting and licensing
+## Hosting
 
-**Deployment-ready; not yet verified live.** The frontend runs on Vercel; the API, Caddy
-and PostgreSQL 16 run under Docker Compose on one Arm64 VM. [DEPLOYMENT.md](DOCS/DEPLOYMENT.md)
-covers setup, the release and update procedure, backups, monitoring and acceptance at the
-real URLs. If the API is down, the landing page and case study still work and the console
-says so plainly.
+**Deployed.** The frontend runs on Vercel; Caddy, FastAPI and PostgreSQL 16 run under
+Docker Compose on one 1 GB Arm64 VM (Azure). It costs $0/month. There is one API process
+by design: restart recovery and the two computation slots belong to it, so scaling
+would mean redesigning job ownership, not adding workers. [DEPLOYMENT.md](DOCS/DEPLOYMENT.md)
+covers setup, the update procedure, backups, monitoring and the acceptance record. If
+the API is down, the landing page and case study still work and the console says so
+plainly.
+
+## Licensing
 
 **Source-available, all rights reserved** ([LICENSE](LICENSE)): published for viewing and
 evaluation only. Third-party licenses are in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
@@ -179,5 +192,5 @@ evaluation only. Third-party licenses are in [THIRD_PARTY_NOTICES.md](THIRD_PART
 
 ## Contributors
 
-Built by **Abdul and Shravani**. Their implementations, committed risk model and
+Built by [Abdul](https://github.com/abdulaz06) and [Shravani](https://github.com/Shravanib1). Their implementations, committed risk model and
 contribution history are preserved; later work is recorded in milestone pull requests.

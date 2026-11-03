@@ -2,6 +2,14 @@ import { test, expect } from "@playwright/test";
 
 const API = "http://localhost:8000";
 
+test("with reduced motion the offline panel shows the still first frame, not the loop", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.route(`${API}/**`, (route) => route.abort());
+  await page.goto("/console");
+  const preview = page.getByRole("img", { name: /43 hours at anchor/ });
+  await expect.poll(() => preview.evaluate((img: HTMLImageElement) => img.currentSrc)).toMatch(/tour-preview-still\.webp$/);
+});
+
 test("landing page and case study make zero API calls", async ({ page }) => {
   const calls: string[] = [];
   page.on("request", (request) => {
@@ -22,10 +30,10 @@ test("console shows a calm offline panel when the engine is unreachable", async 
   await page.goto("/console");
   const panel = page.getByRole("alert", { name: "The live engine is offline right now" });
   await expect(panel).toBeVisible();
-  await expect(panel.getByRole("link", { name: /Watch the 60-second film/ })).toHaveAttribute(
-    "href",
-    /berthiq-showcase\.mp4$/,
-  );
+  const preview = panel.getByRole("img", { name: /43 hours at anchor/ });
+  await expect(preview).toHaveAttribute("src", "/media/tour-preview.webp");
+  await expect.poll(() => preview.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(1280);
+  await expect(panel.getByRole("link", { name: /film/i })).toHaveCount(0);
   await expect(panel.getByRole("link", { name: "Read the engineering story" })).toHaveAttribute("href", "/case-study");
 
   // The engine comes back: retrying restores the live console.

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="brand.css" />
+<style>
+  .top { position: absolute; left: 72px; top: 72px; right: 72px; }
+  .top .eyebrow { margin-top: 60px; font-size: 20px; }
+  .top h1 { margin-top: 24px; font-size: 138px; }
+  .harbor { left: 64px; top: 520px; width: 952px; --ratio: 1360 / 600; --w: 125%; --x: -12.5%; --y: -33%; transform: rotate(-1.5deg); }
+  .callout { position: absolute; left: 32.5%; top: 70.7%; transform: translate(-50%, calc(-100% - 30px)); display: flex; flex-direction: column; align-items: center; }
+  .callout b { padding: 12px 18px; border: 1px solid var(--signal); border-radius: 12px; background: rgba(10, 18, 25, 0.95); font: 600 26px/1.15 var(--sans); color: var(--ink); white-space: nowrap; }
+  .callout b span { color: var(--signal); }
+  .callout i { width: 2px; height: 26px; background: var(--signal); }
+  .bottom { position: absolute; left: 72px; right: 72px; top: 990px; }
+  .numbers { display: flex; align-items: center; gap: 22px; margin-top: 20px; font: 800 104px/0.9 var(--display); color: var(--muted); }
+  .numbers .to { font: 400 54px/1 var(--sans); }
+  .numbers strong { font-weight: 800; color: var(--teal); }
+  .numbers .pill { font-size: 18px; }
+  .bottom p { margin-top: 18px; font: 400 25px/1.4 var(--sans); color: var(--soft); }
+  .url { position: absolute; left: 72px; bottom: 84px; font-size: 30px; }
+  .footline { position: absolute; left: 72px; bottom: 46px; font-size: 16px; }
+</style>
+</head>
+<body>
+<main class="canvas">
+  <div class="top">
+    <span class="brand" data-fit>
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 3.5v25" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M9.5 5h17.5v13H9.5z" fill="#f2c230"/><path d="M5 28.5h6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      <span>Berth<b>IQ</b></span>
+    </span>
+    <div><span class="eyebrow" data-fit>Port-call decision support</span></div>
+    <h1 data-fit>Why is this ship<br /><em>waiting?</em></h1>
+  </div>
+  <figure class="shot window harbor">
+    <img src="crops/harbor-0592.webp" alt="" />
+    <div class="callout" data-fit><b>KHL-0592 · <span>43 h at anchor</span></b><i></i></div>
+  </figure>
+  <div class="bottom">
+    <span class="eyebrow" data-fit>The verdict · 20 matched simulations</span>
+    <div class="numbers" data-fit><span>62.9 h</span><span class="to">→</span><strong>45.1 h</strong><span class="pill simulated"><i></i>Simulated</span></div>
+    <p data-fit>Average wait with five reviewers instead of three.<br />The price: 168 more reviewer hours.</p>
+  </div>
+  <p class="url" data-fit>berth-iq.vercel.app</p>
+  <p class="footline" data-fit>Synthetic operations on real port geography · map © OpenStreetMap</p>
+</main>
+</body>
+</html>

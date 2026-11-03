@@ -708,13 +708,28 @@
 
 /* Engine offline: the story stays reachable without the API */
 .engine-offline {
-  max-width: 560px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 0 16px;
   text-align: center;
 }
 .engine-offline p {
   line-height: 1.6;
+}
+.engine-offline-preview {
+  display: block;
+  width: 100%;
+  margin: 4px 0 20px;
+}
+.engine-offline-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line, #20323e);
+  border-radius: 10px;
+  background: var(--deep, #070e14);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
 }
 .engine-offline-actions {
   display: flex;

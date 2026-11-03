@@ -48,6 +48,12 @@ train *ARGS:
 notices:
     cd backend && "{{venv_python}}" scripts/third_party_notices.py
 
+# `CAPTURE=1 just cards` first refreshes the real-UI crops from the running app
+# (API on :8000, Next on :3000); templates live in frontend/scripts/media/cards.
+# Render the graphics kit: media/brand/*.jpg and the Open Graph images.
+cards:
+    cd frontend && node scripts/media/cards/render-cards.mjs
+
 # Regenerate frontend/lib/types/api.ts from the backend's OpenAPI (M0-4).
 # api.ts is committed and generated — never hand-edit it (a banner says so).
 types:

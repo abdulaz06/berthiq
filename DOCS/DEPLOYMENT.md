@@ -1,12 +1,22 @@
 # Deployment
 
-BerthIQ deploys as two pieces:
+BerthIQ is deployed and live:
+
+| | |
+| --- | --- |
+| Frontend | <https://berth-iq.vercel.app> (Vercel Hobby, root directory `frontend`) |
+| API | <https://berthiq-api-aaa.northcentralus.cloudapp.azure.com> (docs at `/docs`) |
+| API host | Azure for Students, `Standard_B2pts_v2` (2 vCPU Arm64, 1 GB RAM + 3 GB swap), North Central US, Ubuntu 24.04 |
+| Stack on the host | Docker Compose: Caddy → FastAPI (one process) → PostgreSQL 16 |
+| Cost | $0/month (Vercel Hobby + Azure for Students credit) |
+
+It runs as two pieces:
 
 - **Frontend on Vercel.** The Next.js app in `frontend/`. The landing page and case
   study are static and make no API calls, so they stay up when the API is down; the
-  console then shows "The live engine is offline right now" with links to the film
-  and the case study.
-- **API host on one Oracle Cloud Always Free Arm64 VM** running Docker Compose
+  console then shows "The live engine is offline right now" with a looping preview
+  of the tour and a link to the case study.
+- **API host on one small Arm64 VM** running Docker Compose
   (`deploy/compose.prod.yml`): Caddy (HTTPS, edge limits) → FastAPI (one process) →
   PostgreSQL 16. Only Caddy publishes ports (80/443). PostgreSQL and the API are
   reachable only on the compose network.
@@ -16,8 +26,9 @@ browser ──https──▶ Vercel (Next.js)            static pages, console U
    └────https──▶ Caddy :443 ──▶ api:8000 ──▶ postgres:5432    (one VM)
 ```
 
-No public deployment has been verified yet. Until the acceptance checks at the end
-pass at the real URLs, describe BerthIQ as deployment-ready, not deployed.
+One API process is a design decision, not a cost shortcut: restart recovery and the
+two computation slots are owned by that process. Scaling would need durable external
+job ownership, not more workers or replicas.
 
 ## Licensing
 
@@ -39,54 +50,106 @@ variables are bundled at build time:
 
 | Variable | Value |
 | --- | --- |
-| `NEXT_PUBLIC_API_BASE_URL` | `https://API_DOMAIN` (no trailing slash) |
+| `NEXT_PUBLIC_API_BASE_URL` | `https://berthiq-api-aaa.northcentralus.cloudapp.azure.com` (no trailing slash) |
 | `NEXT_PUBLIC_USE_FIXTURES` | `false` |
-| `SITE_URL` | `https://YOUR_VERCEL_DOMAIN` (Open Graph URLs) |
+| `SITE_URL` | `https://berth-iq.vercel.app` (absolute Open Graph image URLs) |
 
-Never put secrets in `NEXT_PUBLIC_*`. The API accepts only the exact origins in
-`CORS_ORIGINS`, so preview deployments on other `*.vercel.app` hosts show the
-offline panel in the console unless their origin is added.
+Never put secrets in `NEXT_PUBLIC_*`. Changing a `NEXT_PUBLIC_*` value needs a
+**redeploy with the build cache turned off** (Deployments → ⋯ → Redeploy → untick
+"Use existing Build Cache"); otherwise the old value stays baked into the bundle.
+The API accepts only the exact origins in `CORS_ORIGINS`, so preview deployments on
+other `*.vercel.app` hosts show the offline panel in the console unless their origin
+is added.
 
-## API host (Oracle Cloud Arm64 VM)
+## API host (Azure Arm64 VM)
 
-### One-time setup
+### Create the VM
 
-1. Create an **Ampere A1** instance (Ubuntu 24.04, aarch64; the Always Free allowance
-   covers up to 4 OCPU / 24 GB). 2 OCPU / 12 GB is plenty: the API is capped at 3 GB.
-2. In the VCN security list, allow ingress TCP 80 and 443 (and UDP 443 for HTTP/3).
-   Oracle's Ubuntu images also ship host iptables rules that drop these; open them:
-   ```sh
-   sudo iptables -I INPUT 6 -p tcp -m multiport --dports 80,443 -j ACCEPT
-   sudo iptables -I INPUT 6 -p udp --dport 443 -j ACCEPT
-   sudo netfilter-persistent save
-   ```
-3. Point a DNS **A record** for `API_DOMAIN` at the instance's public IP. Caddy needs
-   it to obtain the certificate on first start.
-4. Install Docker Engine with the Compose plugin
-   (`https://docs.docker.com/engine/install/ubuntu/`), then clone the repository.
-5. Create the private environment file, which is gitignored:
-   ```sh
-   cd berthiq/deploy
-   cp .env.prod.example .env.prod
-   chmod 600 .env.prod
-   ```
-   Set `POSTGRES_PASSWORD` (e.g. `openssl rand -hex 24`) and use the same password in
-   `DATABASE_URL`, which points at the `postgres` service with no `sslmode`: traffic
-   stays on the internal network. Set `CORS_ORIGINS` to a JSON list holding the one
-   Vercel HTTPS origin, and set `API_DOMAIN`. Keep `ENABLE_UPLOADS=false` and
-   `JOB_TIMEOUT_SECONDS=90`.
+From **Azure Cloud Shell** (Bash):
+
+```sh
+az account set --subscription "Azure for Students"
+az vm create -g berthiq-rg -n berthiq -l northcentralus \
+  --image Canonical:ubuntu-24_04-lts:server-arm64:latest \
+  --size Standard_B2pts_v2 --admin-username azureuser \
+  --generate-ssh-keys --public-ip-sku Standard \
+  --public-ip-address-dns-name berthiq-api-aaa \
+  --storage-sku StandardSSD_LRS --os-disk-delete-option Delete
+az vm open-port -g berthiq-rg -n berthiq --port 80,443 --priority 1010
+```
+
+Create the resource group first if it does not exist
+(`az group create -n berthiq-rg -l northcentralus`). The DNS label gives the VM the
+stable name `berthiq-api-aaa.northcentralus.cloudapp.azure.com`, which Caddy uses to
+obtain its certificate; no separate DNS record is needed. `open-port` adds the
+network security group rule for 80 and 443; Ubuntu's own firewall is inactive by
+default on Azure images.
+
+### Prepare the host
+
+SSH in (`ssh azureuser@berthiq-api-aaa.northcentralus.cloudapp.azure.com`), then add
+swap. 1 GB of RAM is not enough to build the image or to run the solver and simulator
+next to PostgreSQL without it:
+
+```sh
+sudo fallocate -l 3G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+echo 'vm.swappiness=10' | sudo tee /etc/sysctl.d/99-swappiness.conf
+sudo sysctl --system
+free -h                  # Swap: 3.0Gi
+```
+
+Install Docker Engine with the Compose plugin from Docker's apt repository
+(<https://docs.docker.com/engine/install/ubuntu/>), then let `azureuser` use it
+without `sudo` (log out and back in afterwards):
+
+```sh
+sudo usermod -aG docker azureuser
+```
+
+Clone the repository to `/srv/berthiq`:
+
+```sh
+sudo mkdir -p /srv/berthiq && sudo chown azureuser: /srv/berthiq
+git clone https://github.com/abdulaz06/berthiq.git /srv/berthiq
+```
+
+### Private environment file
+
+```sh
+cd /srv/berthiq/deploy
+cp .env.prod.example .env.prod
+chmod 600 .env.prod
+```
+
+Set `POSTGRES_PASSWORD` (e.g. `openssl rand -hex 24`) and use the same password in
+`DATABASE_URL`, which points at the `postgres` service with no `sslmode`: traffic
+stays on the internal network. Set:
+
+- `CORS_ORIGINS=["https://berth-iq.vercel.app"]`: the exact Vercel origin, scheme
+  and host, no trailing slash.
+- `API_DOMAIN=berthiq-api-aaa.northcentralus.cloudapp.azure.com`.
+- Keep `ENABLE_UPLOADS=false` and `JOB_TIMEOUT_SECONDS=90`.
+
+`.env.prod` is gitignored. Never commit it.
 
 ### First start
 
-All commands run from `deploy/`. To shorten them:
-`alias dc='docker compose --env-file .env.prod -f compose.prod.yml'`.
+All commands run from `/srv/berthiq/deploy`. Add the alias to `~/.bashrc`:
 
 ```sh
-dc build                 # backend/Dockerfile, native arm64
+alias dc='docker compose --env-file .env.prod -f compose.prod.yml'
+```
+
+```sh
+dc build                 # backend/Dockerfile, native arm64 (uses swap; takes a while)
 dc up -d postgres
 dc run --rm release      # alembic upgrade head && scripts/prepare_demo.py
 dc up -d api caddy
-curl -fsS https://$API_DOMAIN/api/ready
+curl -fsS https://berthiq-api-aaa.northcentralus.cloudapp.azure.com/api/ready
 ```
 
 `release` lives in the `release` compose profile, so `up` never runs it; it runs only
@@ -98,19 +161,22 @@ not require TLS to the database.
 ### Update procedure
 
 ```sh
-git pull
+cd /srv/berthiq && git pull
+cd deploy
 dc build
 dc stop api              # drains in-flight jobs (stop_grace_period 125 s)
 dc run --rm release      # migrations + idempotent seed; a failure blocks the start
 dc up -d api
-curl -fsS https://$API_DOMAIN/api/ready
+curl -fsS https://berthiq-api-aaa.northcentralus.cloudapp.azure.com/api/ready
 ```
 
-Then redeploy the frontend on Vercel if it changed (pushes to `main` do this
-automatically once the project is linked). Never run two API containers at once:
-restart recovery and the two compute slots are owned by the process. Don't automate
-schema downgrades as an application rollback; to roll back code, check out the
-previous commit and repeat the procedure only if its migrations are compatible.
+Vercel redeploys the frontend automatically on pushes to `main`. Never run two API
+containers at once. Don't automate schema downgrades as an application rollback; to
+roll back code, check out the previous commit and repeat the procedure only if its
+migrations are compatible.
+
+After editing `.env.prod`, recreate the API container: `dc up -d --force-recreate api`.
+A plain `restart` keeps the old environment.
 
 ### Backups
 
@@ -119,8 +185,24 @@ dc exec -T postgres pg_dump -U postgres -Fc berthiq > berthiq-$(date +%F).dump
 ```
 
 Copy dumps off the VM. Test a restore (`pg_restore --clean -d berthiq`) into a scratch
-database before launch. The `pgdata`, `caddy_data` (certificates) and `caddy_config`
-volumes persist across `down`/`up`; `down -v` deletes them.
+database. The `pgdata`, `caddy_data` (certificates) and `caddy_config` volumes persist
+across `down`/`up`; `down -v` deletes them.
+
+## Gotchas we hit
+
+- **Wrong subscription.** The Azure portal and Cloud Shell default to a university
+  subscription when your account has one. Run
+  `az account set --subscription "Azure for Students"` first, and use the portal's
+  subscription filter to see the resources.
+- **Region policy.** Azure for Students only allows some regions; creating the VM
+  elsewhere fails with a policy error. North Central US works.
+- **Environment changes.** Editing `.env.prod` has no effect until
+  `dc up -d --force-recreate api`.
+- **Public Next variables.** `NEXT_PUBLIC_*` changes need a Vercel redeploy without
+  the build cache.
+- **CORS.** `CORS_ORIGINS` must match the exact Vercel origin
+  (`https://berth-iq.vercel.app`). Anything else, including a trailing slash, makes
+  the console show the offline panel.
 
 ## Runtime properties
 
@@ -129,10 +211,10 @@ volumes persist across `down`/`up`; `down -v` deletes them.
   It ships the committed risk model (scikit-learn exactly 1.9.0) and never trains at
   startup. `HEALTHCHECK` probes `/api/health`. CI builds it for `linux/arm64` on every
   push and checks it runs as non-root and loads the model.
+- **Memory:** the API container is capped at 3 GB, which on this host includes swap.
 - **Liveness / readiness:** `/api/health` / `/api/ready` (database plus model).
 - **One process, one replica.** Uvicorn runs one worker, concurrency is capped at 64
-  and keep-alive at five seconds. Scaling would need durable external job ownership,
-  not more workers.
+  and keep-alive at five seconds.
 - **Jobs:** optimization and simulation run in at most two subprocesses.
   `JOB_TIMEOUT_SECONDS` (1–120, default 90) kills and reaps an overdue child; a child
   watchdog expires five seconds later if the supervisor dies. Compose uses `init: true`
@@ -151,10 +233,11 @@ volumes persist across `down`/`up`; `down -v` deletes them.
 ## Monitoring
 
 `.github/workflows/uptime.yml` runs every 30 minutes and fails if the frontend URL or
-`${API}/api/ready` returns anything but 200. Set the repository variables
-`FRONTEND_URL` and `API_URL` (Settings → Secrets and variables → Actions →
-Variables); the job skips cleanly until both exist. Failed scheduled runs email the
-repository owner by default.
+`${API}/api/ready` returns anything but 200. It reads the repository variables
+`FRONTEND_URL` (`https://berth-iq.vercel.app`) and `API_URL`
+(`https://berthiq-api-aaa.northcentralus.cloudapp.azure.com`) from Settings → Secrets
+and variables → Actions → Variables, and skips cleanly until both exist. Failed
+scheduled runs email the repository owner by default.
 
 ## Geography and claims
 
@@ -166,13 +249,22 @@ never measured port savings or real-world validation.
 The older systemd examples in `deploy/*.service` describe a non-container host and
 are not part of this architecture.
 
-## Acceptance at the real URLs
+## Acceptance record
 
-After deploying, record the frontend URL, API URL, deployed commit, database
-migration head and deployment date. Verify HTTPS, exact-origin CORS, readiness,
+| | |
+| --- | --- |
+| Frontend URL | <https://berth-iq.vercel.app> |
+| API URL | <https://berthiq-api-aaa.northcentralus.cloudapp.azure.com> |
+| Deployed commit | `0bd3047` |
+| Alembic head | `0003` |
+| Deployment date | 2026-11-03 |
+| Host | Azure for Students, `Standard_B2pts_v2` (2 vCPU Arm64, 1 GB RAM + 3 GB swap), North Central US, Ubuntu 24.04 |
+
+The full guided investigation (`/console?story=1`) runs end to end in production.
+
+Checklist to repeat after each deployment: HTTPS, exact-origin CORS, readiness,
 asset/worker loading, model predictions, optimization polling, matched simulation,
 private export and session isolation. Check a restart during a job and confirm it
 fails recoverably. Stop the API and confirm the landing page and case study still
 render and the console shows the offline panel. Inspect both 1920×1080 and 390×844
-on the real host, including tile failure. Until those checks pass, describe the
-application as deployment-ready, not deployed.
+on the real host, including tile failure.
