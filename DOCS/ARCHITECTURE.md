@@ -14,7 +14,7 @@ flowchart TB
     DB[(PostgreSQL: immutable datasets, scenarios, jobs, results)]
     UI -->|REST + private session header| API
     API --> Ingestion[Bounded CSV/XLSX normalization]
-    API --> Discovery[PM4Py topology + observed analytics]
+    API --> Discovery[Directly-follows topology + observed analytics]
     API --> Risk[Prefix-only HGB risk / SHAP]
     API --> Jobs[Two-slot job supervisor]
     Jobs -->|JSON snapshot| Child[Isolated computation subprocess]
@@ -42,7 +42,7 @@ until job ownership becomes durable across workers.
 | `api/` | HTTP validation, owner checks, quotas, service orchestration |
 | `db/` | SQLAlchemy models, sessions and Alembic migrations |
 | `services/ingestion.py` | Bounded CSV/openpyxl parsing, mapping, quality reports and immutable versions |
-| `services/discovery.py` | PM4Py directly-follows topology, trace variants and observed bottleneck statistics |
+| `services/discovery.py` | Directly-follows topology (pure Python), trace variants and observed bottleneck statistics |
 | `services/prediction.py` | Observed-prefix features, committed HGB model, probability and SHAP inference |
 | `services/planning.py` | Observed scheduling input, configured assumptions and independent constraint checks |
 | `services/optimization.py` | CP-SAT reviewer/berth model, FIFO/greedy/no-change baselines and solver evidence |
@@ -137,5 +137,5 @@ Simulation variability is not calibrated arrival confidence or real-world saving
 CI verifies backend correctness against disposable PostgreSQL, frontend checks,
 production build, security audits and real Playwright journeys. See
 [SETUP.md](SETUP.md) for commands and [DEPLOYMENT.md](DEPLOYMENT.md) for release and
-startup settings. Public deployment is prohibited for this sprint: PM4Py/project
-licensing remains pending contributor decision. No public URL has been verified.
+startup settings. Production runs as a Vercel frontend plus one Docker Compose host
+(Caddy, FastAPI, PostgreSQL 16). No public URL has been verified yet.
